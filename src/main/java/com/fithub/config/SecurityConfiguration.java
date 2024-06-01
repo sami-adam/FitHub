@@ -34,11 +34,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.USER.name())
-                        .requestMatchers("/api/v1/category/**").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/v1/product/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
-                        .requestMatchers("/api/v1/order/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
