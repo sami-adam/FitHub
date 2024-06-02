@@ -1,6 +1,8 @@
 package com.fithub.model;
 
+import com.fithub.model.address.Address;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 @Entity
@@ -12,4 +14,11 @@ public class Company {
     private Long id;
 
     private String company_name;
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+    @Email
+    private String email;
+    private String phone;
+    private String logo;
 }
