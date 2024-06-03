@@ -25,4 +25,10 @@ public class MembershipServiceImpl implements MembershipService{
         List<Membership> memberships = membershipRepository.findAll().stream().toList();
         return memberships.stream().map(membership -> mapper.map(membership, MembershipDTO.class)).toList();
     }
+
+    @Override
+    public MembershipDTO addMembership(MembershipDTO membershipDTO) {
+        membershipRepository.save(mapper.map(membershipDTO, Membership.class));
+        return membershipDTO;
+    }
 }
