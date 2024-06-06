@@ -1,5 +1,6 @@
 package com.fithub.model.membership;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.model.member.Member;
 import com.fithub.model.subscription.Subscription;
 import jakarta.persistence.*;
@@ -22,17 +23,19 @@ public class Membership {
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     private Subscription subscription;
+
     @JoinColumn(name = "start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date startDate;
+
     @JoinColumn(name = "end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date endDate;
     // Membership Amounts
-    @JoinColumn(name = "subscription_price")
-    private double subscriptionPrice;
+    @JoinColumn(name = "subscription_unit_price")
+    private double subscriptionUnitPrice;
     @JoinColumn(name = "subscription_qty")
     private double subscriptionQty;
     @JoinColumn(name = "total_amount")

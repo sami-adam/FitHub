@@ -1,5 +1,7 @@
 package com.fithub.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.address.AddressDTO;
 import com.fithub.dto.membership.MembershipDTO;
 import com.fithub.model.User;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @Data
 public class MemberDTO {
-
+    private Long id;
     private String firstName;
     private String lastName;
     private User user;

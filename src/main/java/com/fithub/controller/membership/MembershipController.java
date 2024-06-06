@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Data
@@ -21,14 +22,33 @@ public class MembershipController {
         this.membershipService = membershipService;
     }
 
-
+    // Get All Memberships
     @GetMapping(path = "/memberships", produces = {"Application/json"})
     public ResponseEntity<List<MembershipDTO>> getMemberships(){
         return new ResponseEntity<>(membershipService.getMemberships(), HttpStatus.OK);
     }
 
+    // Add New Membership
     @PostMapping("membership")
     public ResponseEntity<MembershipDTO> addMembership(@RequestBody MembershipDTO membershipDTO){
-        return new ResponseEntity<>(membershipService.addMembership(membershipDTO), HttpStatus.OK);
+        return new ResponseEntity<>(membershipService.addMembership(membershipDTO), HttpStatus.CREATED);
+    }
+
+    // Update Membership
+    @PutMapping("membership")
+    public ResponseEntity<MembershipDTO> updateMembership(@RequestBody MembershipDTO membershipDTO){
+        return new ResponseEntity<>(membershipService.updateMembership(membershipDTO), HttpStatus.OK);
+    }
+
+    // Delete Membership
+    @DeleteMapping("membership/{id}")
+    public ResponseEntity<Map<String, String>> deleteMembership(@PathVariable("id") Long id){
+        return new ResponseEntity<>(membershipService.deleteMembership(id), HttpStatus.OK);
+    }
+
+    // Search Memberships
+    @GetMapping("memberships/keyword/{keyword}")
+    public ResponseEntity<List<MembershipDTO>> searchMembership(@PathVariable("keyword") String keyword){
+        return new ResponseEntity<>(membershipService.searchMemberShip(keyword), HttpStatus.OK);
     }
 }
