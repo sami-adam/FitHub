@@ -1,5 +1,6 @@
 package com.fithub.model.address;
 
+import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import java.util.Locale;
 @Entity
 @Table(name = "addresses")
 @Data
-public class Address {
+public class Address extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

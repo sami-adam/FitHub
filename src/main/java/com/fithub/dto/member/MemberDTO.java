@@ -8,6 +8,7 @@ import com.fithub.model.User;
 import com.fithub.model.member.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -15,13 +16,17 @@ import java.util.List;
 @Data
 public class MemberDTO {
     private Long id;
+    @NotNull(message = "First name cannot be null")
+    @Size(min = 2, message = "First name must be at least 2 characters long")
     private String firstName;
+    @NotNull(message = "Last name cannot be null")
+    @Size(min = 2, message = "Last name must be at least 2 characters long")
     private String lastName;
     private User user;
     private Gender gender;
     private AddressDTO address;
-    @Email
-    @NotNull
+    @Email(message = "Email should be valid")
+    @NotNull(message = "Email cannot be null")
     private String email;
     private String Phone;
     private List<MembershipDTO> memberShips;

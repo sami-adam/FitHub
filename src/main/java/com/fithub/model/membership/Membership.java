@@ -1,6 +1,7 @@
 package com.fithub.model.membership;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fithub.model.base.BaseEntity;
 import com.fithub.model.member.Member;
 import com.fithub.model.subscription.Subscription;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "memberships")
 @Data
-public class Membership {
+public class Membership extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

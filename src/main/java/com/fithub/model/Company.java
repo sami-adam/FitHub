@@ -1,6 +1,7 @@
 package com.fithub.model;
 
 import com.fithub.model.address.Address;
+import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "companies")
 @Data
-public class Company {
+public class Company extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

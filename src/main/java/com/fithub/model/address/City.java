@@ -1,12 +1,13 @@
 package com.fithub.model.address;
 
+import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name = "cities")
 @Data
-public class City {
+public class City extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

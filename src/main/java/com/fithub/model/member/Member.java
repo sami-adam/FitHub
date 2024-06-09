@@ -2,6 +2,7 @@ package com.fithub.model.member;
 
 import com.fithub.model.User;
 import com.fithub.model.address.Address;
+import com.fithub.model.base.BaseEntity;
 import com.fithub.model.membership.Membership;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "members")
 @Data
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
