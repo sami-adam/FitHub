@@ -1,6 +1,6 @@
 package com.fithub.model.base;
 
-import com.fithub.model.User;
+import com.fithub.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;

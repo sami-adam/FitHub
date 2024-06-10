@@ -1,11 +1,11 @@
-package com.fithub.controller;
+package com.fithub.controller.user;
 
-import com.fithub.dto.JWTAuthenticationResponse;
-import com.fithub.dto.RefreshTokenDTO;
-import com.fithub.dto.SignInDTO;
-import com.fithub.dto.SignUpDTO;
-import com.fithub.model.User;
-import com.fithub.service.AuthenticationService;
+import com.fithub.dto.user.JWTAuthenticationResponse;
+import com.fithub.dto.user.RefreshTokenDTO;
+import com.fithub.dto.user.SignInDTO;
+import com.fithub.dto.user.SignUpDTO;
+import com.fithub.model.user.User;
+import com.fithub.service.user.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.fithub.model.member;
 
-import com.fithub.model.User;
+import com.fithub.model.user.User;
 import com.fithub.model.address.Address;
 import com.fithub.model.base.BaseEntity;
 import com.fithub.model.membership.Membership;

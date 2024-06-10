@@ -1,7 +1,7 @@
 package com.fithub.service.impl;
 
-import com.fithub.repository.UserRepository;
-import com.fithub.service.UserService;
+import com.fithub.repository.user.UserRepository;
+import com.fithub.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

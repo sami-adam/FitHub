@@ -1,4 +1,4 @@
-package com.fithub.dto;
+package com.fithub.dto.user;
 
 import lombok.Data;
 

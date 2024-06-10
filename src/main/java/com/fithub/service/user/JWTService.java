@@ -1,9 +1,7 @@
-package com.fithub.service;
+package com.fithub.service.user;
 
-import com.fithub.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface JWTService {

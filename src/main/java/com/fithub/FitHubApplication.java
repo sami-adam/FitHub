@@ -1,8 +1,8 @@
 package com.fithub;
 
-import com.fithub.model.Role;
-import com.fithub.model.User;
-import com.fithub.repository.UserRepository;
+import com.fithub.model.user.Role;
+import com.fithub.model.user.User;
+import com.fithub.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

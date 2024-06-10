@@ -1,5 +1,5 @@
 package com.fithub.service.impl;
-import com.fithub.service.JWTService;
+import com.fithub.service.user.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

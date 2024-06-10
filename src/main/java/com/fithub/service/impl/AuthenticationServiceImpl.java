@@ -1,14 +1,14 @@
 package com.fithub.service.impl;
 
-import com.fithub.dto.JWTAuthenticationResponse;
-import com.fithub.dto.RefreshTokenDTO;
-import com.fithub.dto.SignInDTO;
-import com.fithub.dto.SignUpDTO;
-import com.fithub.model.Role;
-import com.fithub.model.User;
-import com.fithub.repository.UserRepository;
-import com.fithub.service.AuthenticationService;
-import com.fithub.service.JWTService;
+import com.fithub.dto.user.JWTAuthenticationResponse;
+import com.fithub.dto.user.RefreshTokenDTO;
+import com.fithub.dto.user.SignInDTO;
+import com.fithub.dto.user.SignUpDTO;
+import com.fithub.model.user.Role;
+import com.fithub.model.user.User;
+import com.fithub.repository.user.UserRepository;
+import com.fithub.service.user.AuthenticationService;
+import com.fithub.service.user.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,11 +1,10 @@
 package com.fithub.model.base;
 
-import com.fithub.model.User;
+import com.fithub.model.user.User;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class AuditListener {

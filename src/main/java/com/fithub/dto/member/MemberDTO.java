@@ -1,10 +1,8 @@
 package com.fithub.dto.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.address.AddressDTO;
 import com.fithub.dto.membership.MembershipDTO;
-import com.fithub.model.User;
+import com.fithub.model.user.User;
 import com.fithub.model.member.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

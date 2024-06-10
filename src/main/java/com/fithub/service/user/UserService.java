@@ -1,4 +1,4 @@
-package com.fithub.service;
+package com.fithub.service.user;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

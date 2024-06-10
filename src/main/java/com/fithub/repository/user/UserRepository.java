@@ -1,7 +1,7 @@
-package com.fithub.repository;
+package com.fithub.repository.user;
 
-import com.fithub.model.Role;
-import com.fithub.model.User;
+import com.fithub.model.user.Role;
+import com.fithub.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.fithub.model;
+package com.fithub.model.user;
 
 import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;

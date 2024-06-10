@@ -1,7 +1,6 @@
-package com.fithub.model;
+package com.fithub.model.base;
 
 import com.fithub.model.address.Address;
-import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
