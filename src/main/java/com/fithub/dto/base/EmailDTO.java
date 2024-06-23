@@ -1,8 +1,15 @@
 package com.fithub.dto.base;
 import com.fithub.model.base.EmailStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmailDTO {
     private Long id;
     private String subject;
