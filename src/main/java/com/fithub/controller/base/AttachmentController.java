@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,6 +23,11 @@ public class AttachmentController {
     @PostMapping("/attachment/url")
     public AttachmentDTO storeAttachmentByUrl(@RequestBody AttachmentDTO attachmentDTO){
         return attachmentService.storeAttachmentByUrl(attachmentDTO);
+    }
+
+    @GetMapping("/attachments")
+    public List<AttachmentDTO> getAttachments(){
+        return attachmentService.getAttachments();
     }
 
 }
