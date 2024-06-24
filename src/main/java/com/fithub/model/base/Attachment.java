@@ -16,4 +16,8 @@ public class Attachment extends BaseEntity {
     private String type;
     private byte[] data;
     private String url;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "email_id")
+    private Email email;
 }

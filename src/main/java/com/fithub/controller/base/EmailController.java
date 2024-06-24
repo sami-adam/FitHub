@@ -1,7 +1,5 @@
 package com.fithub.controller.base;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.base.EmailDTO;
 import com.fithub.model.base.AttachmentType;
@@ -10,8 +8,6 @@ import com.fithub.service.base.EmailService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.mail.MessagingException;
-import org.apache.tomcat.util.json.JSONParser;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +26,11 @@ public class EmailController {
     @Autowired
     public EmailController(EmailService emailService){
         this.emailService = emailService;
+    }
+
+    @GetMapping("/emails")
+    public ResponseEntity<List<EmailDTO>> getEmails(){
+        return new ResponseEntity<>(emailService.getEmails(), HttpStatus.OK);
     }
 
     @PostMapping("/email")
