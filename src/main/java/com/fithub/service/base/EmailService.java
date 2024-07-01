@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface EmailService {
     List<EmailDTO> getEmails();
-    void sendEmail(EmailDTO emailDTO) throws MessagingException, IOException;
+    String sendEmail(EmailDTO emailDTO) throws MessagingException, IOException;
 }

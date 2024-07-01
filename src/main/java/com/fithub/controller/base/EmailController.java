@@ -55,7 +55,7 @@ public class EmailController {
                 json.get("emailBody").getAsString(),
                 attachments,
                 EmailStatus.OUTGOING);
-        emailService.sendEmail(emailDTO);
-        return new ResponseEntity<>("Mail Sent Successfully", HttpStatus.OK);
+        String res = emailService.sendEmail(emailDTO);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

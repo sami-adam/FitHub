@@ -37,7 +37,7 @@ public class EmailServiceImpl implements EmailService{
         this.mailSender = mailSender;
     }
 
-    public void sendEmail(EmailDTO emailDTO) throws MessagingException, IOException {
+    public String sendEmail(EmailDTO emailDTO) throws MessagingException, IOException {
         Email email = mapper.map(emailDTO, Email.class);
         email.setId(null);
         // Sending Email
@@ -53,13 +53,16 @@ public class EmailServiceImpl implements EmailService{
             }
         }
         Email savedEmail;
+        String emailStatus = "";
         try {
             mailSender.send(message);
             email.setStatus(EmailStatus.SENT);
             savedEmail = emailRepository.save(email);
+            emailStatus = "Mail sent Successfully";
         } catch (Exception e){
             email.setStatus(EmailStatus.FAILED);
             savedEmail = emailRepository.save(email);
+            emailStatus = "Mail failed to send " + e;
         }
 
         // Store Attachment
@@ -69,7 +72,7 @@ public class EmailServiceImpl implements EmailService{
             attachment.setEmail(savedEmail);
             attachmentRepository.save(attachment);
         }
-
+        return emailStatus;
     }
 
     public List<EmailDTO> getEmails() {
