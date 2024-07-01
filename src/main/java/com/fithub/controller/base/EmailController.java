@@ -28,6 +28,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/emails")
     public ResponseEntity<List<EmailDTO>> getEmails(){
         return new ResponseEntity<>(emailService.getEmails(), HttpStatus.OK);
