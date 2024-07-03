@@ -2,8 +2,8 @@ package com.fithub.repository.subscription;
 
 import com.fithub.model.subscription.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(collectionResourceRel = "subscription", path = "subscription")
+@Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 }
