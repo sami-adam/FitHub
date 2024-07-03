@@ -1,6 +1,7 @@
 package com.fithub.service.subscription;
 
 import com.fithub.dto.subscription.SubscriptionDTO;
+import com.fithub.model.subscription.Subscription;
 import com.fithub.repository.subscription.SubscriptionRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,11 @@ public class SubscriptionServiceImpl implements SubscriptionService{
         List<SubscriptionDTO> subscriptionDTOS = new ArrayList<>();
         subscriptionRepository.findAll().stream().forEach(subscription -> subscriptionDTOS.add(mapper.map(subscription, SubscriptionDTO.class)));
         return subscriptionDTOS;
+    }
+
+    @Override
+    public SubscriptionDTO addSubscription(SubscriptionDTO subscriptionDTO) {
+        subscriptionRepository.save(mapper.map(subscriptionDTO, Subscription.class));
+        return subscriptionDTO;
     }
 }

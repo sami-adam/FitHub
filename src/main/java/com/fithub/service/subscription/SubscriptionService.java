@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SubscriptionService {
     List<SubscriptionDTO> getSubscriptions();
+    SubscriptionDTO addSubscription(SubscriptionDTO subscriptionDTO);
 }
