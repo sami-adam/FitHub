@@ -28,6 +28,11 @@ public class MembershipController {
         return new ResponseEntity<>(membershipService.getMemberships(), HttpStatus.OK);
     }
 
+    @GetMapping("/membership/{id}")
+    public ResponseEntity<MembershipDTO> getMembership(@PathVariable("id") Long id){
+        return new ResponseEntity<>(membershipService.getMembership(id), HttpStatus.OK);
+    }
+
     // Add New Membership
     @PostMapping("membership")
     public ResponseEntity<MembershipDTO> addMembership(@RequestBody MembershipDTO membershipDTO){

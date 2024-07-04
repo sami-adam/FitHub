@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class EmailController {
     private final EmailService emailService;
     @Autowired
@@ -32,6 +33,12 @@ public class EmailController {
     @GetMapping("/emails")
     public ResponseEntity<List<EmailDTO>> getEmails(){
         return new ResponseEntity<>(emailService.getEmails(), HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/email/{id}")
+    public ResponseEntity<EmailDTO> getEmail(@PathVariable("id") Long id){
+        return new ResponseEntity<>(emailService.getEmail(id), HttpStatus.OK);
     }
 
     @PostMapping("/email")
@@ -58,5 +65,10 @@ public class EmailController {
                 EmailStatus.OUTGOING);
         String res = emailService.sendEmail(emailDTO);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/email/{id}")
+    public ResponseEntity<String> deleteEmail(@PathVariable("id") Long id){
+        return new ResponseEntity<>(emailService.deleteEmail(id), HttpStatus.OK);
     }
 }

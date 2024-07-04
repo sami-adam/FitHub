@@ -75,11 +75,31 @@ public class EmailServiceImpl implements EmailService{
         return emailStatus;
     }
 
+    @Override
+    public String deleteEmail(Long id) {
+        Email email = emailRepository.findById(id).orElseThrow();
+        if(email.getId() > 0){
+            emailRepository.deleteById(id);
+            return "Email Deleted Successfully";
+        } else {
+            return "Email Not Found";
+        }
+    }
+
     public List<EmailDTO> getEmails() {
         List<EmailDTO> emailDTOS = new ArrayList<>();
         for(Email email: emailRepository.findAll()){
             emailDTOS.add(mapper.map(email, EmailDTO.class));
         }
         return emailDTOS;
+    }
+
+    @Override
+    public EmailDTO getEmail(Long id) {
+        Email email = emailRepository.findById(id).orElseThrow();
+        if (email.getId() > 0){
+            return mapper.map(email, EmailDTO.class);
+        }
+        return null;
     }
 }

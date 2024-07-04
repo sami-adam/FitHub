@@ -32,6 +32,15 @@ public class MembershipServiceImpl implements MembershipService{
         return memberships.stream().map(membership -> mapper.map(membership, MembershipDTO.class)).toList();
     }
 
+    @Override
+    public MembershipDTO getMembership(Long id) {
+        Membership membership = membershipRepository.findById(id).orElseThrow();
+        if(membership.getId() > 0){
+            return mapper.map(membership, MembershipDTO.class);
+        }
+        return null;
+    }
+
     // Add New Membership
     public MembershipDTO addMembership(MembershipDTO membershipDTO) {
         System.out.println(membershipDTO);

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface MembershipService {
     List<MembershipDTO> getMemberships();
+    MembershipDTO getMembership(Long id);
     MembershipDTO addMembership(MembershipDTO membershipDTO);
     MembershipDTO updateMembership(MembershipDTO membershipDTO);
     Map<String, String> deleteMembership(Long id);
