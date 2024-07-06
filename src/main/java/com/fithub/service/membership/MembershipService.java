@@ -9,7 +9,8 @@ public interface MembershipService {
     List<MembershipDTO> getMemberships();
     MembershipDTO getMembership(Long id);
     MembershipDTO addMembership(MembershipDTO membershipDTO);
-    MembershipDTO updateMembership(MembershipDTO membershipDTO);
+    MembershipDTO updateMembership(MembershipDTO membershipDTO, Long id);
     Map<String, String> deleteMembership(Long id);
     List<MembershipDTO> searchMemberShip(String keyword);
+    String changeStatus(Long id);
 }

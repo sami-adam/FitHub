@@ -34,9 +34,9 @@ public class MemberController {
     }
 
     // Update Member
-    @PutMapping("/member")
-    public ResponseEntity<MemberDTO> updateMember(@RequestBody MemberDTO memberDTO){
-        return new ResponseEntity<>(memberService.updateMember(memberDTO), HttpStatus.OK);
+    @PutMapping("/member/{id}")
+    public ResponseEntity<MemberDTO> updateMember(@PathVariable("id") Long id,@RequestBody MemberDTO memberDTO){
+        return new ResponseEntity<>(memberService.updateMember(id, memberDTO), HttpStatus.OK);
     }
 
     // Delete Member

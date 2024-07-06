@@ -40,9 +40,9 @@ public class MembershipController {
     }
 
     // Update Membership
-    @PutMapping("membership")
-    public ResponseEntity<MembershipDTO> updateMembership(@RequestBody MembershipDTO membershipDTO){
-        return new ResponseEntity<>(membershipService.updateMembership(membershipDTO), HttpStatus.OK);
+    @PutMapping("membership/{id}")
+    public ResponseEntity<MembershipDTO> updateMembership(@RequestBody MembershipDTO membershipDTO, @PathVariable("id") Long id){
+        return new ResponseEntity<>(membershipService.updateMembership(membershipDTO, id), HttpStatus.OK);
     }
 
     // Delete Membership
@@ -55,5 +55,10 @@ public class MembershipController {
     @GetMapping("memberships/keyword/{keyword}")
     public ResponseEntity<List<MembershipDTO>> searchMembership(@PathVariable("keyword") String keyword){
         return new ResponseEntity<>(membershipService.searchMemberShip(keyword), HttpStatus.OK);
+    }
+
+    @PutMapping("/membership/status/{id}")
+    public ResponseEntity<String> changeStatus(@PathVariable Long id){
+        return new ResponseEntity<>(membershipService.changeStatus(id), HttpStatus.OK);
     }
 }

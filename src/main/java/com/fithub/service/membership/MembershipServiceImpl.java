@@ -3,6 +3,7 @@ package com.fithub.service.membership;
 import com.fithub.dto.membership.MembershipDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.model.membership.Membership;
+import com.fithub.model.membership.MembershipStatus;
 import com.fithub.model.subscription.Subscription;
 import com.fithub.repository.membership.MembershipRepository;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +51,12 @@ public class MembershipServiceImpl implements MembershipService{
     }
 
     // Update Membership
-    public MembershipDTO updateMembership(MembershipDTO membershipDTO) {
-        Membership membership = membershipRepository.save(mapper.map(membershipDTO, Membership.class));
+    public MembershipDTO updateMembership(MembershipDTO membershipDTO, Long id) {
+        Membership membership = membershipRepository.findById(id).orElseThrow();
+        if(membershipDTO.getStartDate() != null){
+            membership.setStartDate(membershipDTO.getStartDate());
+        }
+        membershipRepository.save(membership);
         return mapper.map(membership, MembershipDTO.class);
     }
 
@@ -67,6 +73,23 @@ public class MembershipServiceImpl implements MembershipService{
     public List<MembershipDTO> searchMemberShip(String keyword){
         List<Membership> memberships = membershipRepository.searchByKeyword(keyword, keyword, keyword);
         return memberships.stream().map(membership -> mapper.map(membership, MembershipDTO.class)).toList();
+    }
+
+    @Override
+    public String changeStatus(Long id) {
+        Membership membership = membershipRepository.findById(id).orElseThrow();
+        if(membership.getId() > 0){
+            List<MembershipStatus> statuses = Arrays.stream(MembershipStatus.values()).toList();
+            try {
+                membership.setStatus(statuses.get(membership.getStatus().ordinal() + 1));
+                membershipRepository.save(membership);
+            } catch (Exception e){
+                return e.toString();
+            }
+
+            return "Status Changed";
+        }
+        return "Failed To Change Status";
     }
 
 }

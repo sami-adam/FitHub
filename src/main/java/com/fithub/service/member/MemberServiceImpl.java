@@ -35,9 +35,26 @@ public class MemberServiceImpl implements MemberService{
     }
 
     // Update Member
-    public MemberDTO updateMember(MemberDTO membershipDTO) {
-        Member member = memberRepository.save(mapper.map(membershipDTO, Member.class));
-        return mapper.map(member, MemberDTO.class);
+    public MemberDTO updateMember(Long id, MemberDTO membershipDTO) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        if(member.getId() > 0) {
+            if(membershipDTO.getFirstName() != null && !membershipDTO.getFirstName().isEmpty()){
+                member.setFirstName(membershipDTO.getFirstName());
+            }
+            if(membershipDTO.getLastName() != null && !membershipDTO.getLastName().isEmpty()){
+                member.setLastName(membershipDTO.getLastName());
+            }
+            if(membershipDTO.getEmail() != null && !membershipDTO.getEmail().isEmpty()){
+                member.setEmail(membershipDTO.getEmail());
+            }
+            if(membershipDTO.getPhone() != null && !membershipDTO.getPhone().isEmpty()){
+                member.setPhone(membershipDTO.getPhone());
+            }
+
+            memberRepository.save(member);
+            return mapper.map(member, MemberDTO.class);
+        }
+        return null;
     }
 
     // Delete Member
