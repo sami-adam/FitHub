@@ -1,16 +1,29 @@
 package com.fithub.dto.subscription;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fithub.model.subscription.SubscriptionPeriod;
+import com.fithub.dto.member.MemberDTO;
+import com.fithub.model.subscription.SubscriptionStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.Date;
 
 @Data
 public class SubscriptionDTO {
     private Long id;
-    private String name;
-    private SubscriptionPlanDTO plan;
-    private SubscriptionPeriod periodType;
-    private double price;
+    @JsonIgnoreProperties({"memberShips"})
+    private MemberDTO member;
+    @NotNull(message = "Start date cannot be null")
+    private Date startDate;
+    @NotNull(message = "End date cannot be null")
+    private Date endDate;
+    // Membership Amounts
+    private double subscriptionUnitPrice;
+    private double subscriptionQty;
+    private double totalAmount;
+    private double discountAmount;
+    private double netAmount;
+
+    private SubscriptionStatus status;
+
 }

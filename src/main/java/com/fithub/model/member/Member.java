@@ -3,7 +3,7 @@ package com.fithub.model.member;
 import com.fithub.model.user.User;
 import com.fithub.model.address.Address;
 import com.fithub.model.base.BaseEntity;
-import com.fithub.model.membership.Membership;
+import com.fithub.model.subscription.Subscription;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -41,7 +41,7 @@ public class Member extends BaseEntity {
     private String Phone;
 
     @OneToMany(orphanRemoval = true, mappedBy = "member")
-    private List<Membership> memberships;
+    private List<Subscription> subscriptions;
 
 
 }
