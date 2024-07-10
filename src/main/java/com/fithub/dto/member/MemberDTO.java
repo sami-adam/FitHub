@@ -27,7 +27,7 @@ public class MemberDTO {
     @NotNull(message = "Email cannot be null")
     private String email;
     private String Phone;
-    private List<SubscriptionDTO> memberShips;
+    private List<SubscriptionDTO> subscriptions;
 
 
 }

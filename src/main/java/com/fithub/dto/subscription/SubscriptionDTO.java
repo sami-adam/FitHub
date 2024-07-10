@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class SubscriptionDTO {
     private Long id;
-    @JsonIgnoreProperties({"memberShips"})
+    @JsonIgnoreProperties({"subscriptions"})
     private MemberDTO member;
     @NotNull(message = "Start date cannot be null")
     private Date startDate;
