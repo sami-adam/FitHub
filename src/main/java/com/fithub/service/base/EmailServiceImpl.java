@@ -66,11 +66,13 @@ public class EmailServiceImpl implements EmailService{
         }
 
         // Store Attachment
-        for(AttachmentDTO attachmentDTO: emailDTO.getAttachments()){
-            attachmentDTO.setId(null);
-            Attachment attachment = mapper.map(attachmentDTO, Attachment.class);
-            attachment.setEmail(savedEmail);
-            attachmentRepository.save(attachment);
+        if(emailDTO.getAttachments() != null) {
+            for (AttachmentDTO attachmentDTO : emailDTO.getAttachments()) {
+                attachmentDTO.setId(null);
+                Attachment attachment = mapper.map(attachmentDTO, Attachment.class);
+                attachment.setEmail(savedEmail);
+                attachmentRepository.save(attachment);
+            }
         }
         return emailStatus;
     }

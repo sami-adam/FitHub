@@ -67,6 +67,12 @@ public class EmailController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
+    @PostMapping("/email2")
+    public ResponseEntity<String> sendEmail2(@RequestBody EmailDTO emailDTO) throws MessagingException, IOException {
+        String res = emailService.sendEmail(emailDTO);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
     @DeleteMapping("/email/{id}")
     public ResponseEntity<String> deleteEmail(@PathVariable("id") Long id){
         return new ResponseEntity<>(emailService.deleteEmail(id), HttpStatus.OK);
