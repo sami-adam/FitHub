@@ -6,15 +6,21 @@ import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
 import com.fithub.repository.member.MemberRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
+import com.fithub.service.user.JWTService;
+import com.fithub.service.user.UserService;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.*;
 
 @Service
 @Data
@@ -22,6 +28,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final MemberRepository memberRepository;
     private final ModelMapper mapper;
+
+    @Autowired
+    private UserService usersService;
+
+    @Autowired
+    private JWTService jwtUtil;
+
     @Autowired
     public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository){
         this.subscriptionRepository = subscriptionRepository;
@@ -105,6 +118,35 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             return "Status Changed";
         }
         return "Failed To Change Status";
+    }
+
+    public void checkSubscriptionStatus(String token){
+        System.out.println("Cron Checking Subscription Status");
+        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        for(Subscription subscription : subscriptions){
+            if(subscription.getEndDate().before(new Date(System.currentTimeMillis()))){
+                subscription.setStatus(SubscriptionStatus.EXPIRED);
+                subscriptionRepository.save(subscription);
+            }
+        }
+    }
+
+    @Scheduled(fixedRate = 1000 * 60 * 30) // Adjust the fixedRate as needed
+    public void performTask() {
+        UserDetails userDetails = usersService.userDetailsService().loadUserByUsername("admin@fithub.com"); // Replace with actual username
+        String jwtToken = jwtUtil.generateToken(userDetails);
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+
+        try {
+            checkSubscriptionStatus(jwtToken);
+        } finally {
+            SecurityContextHolder.clearContext(); // Clear context after task
+        }
     }
 
 }
