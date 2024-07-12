@@ -31,7 +31,7 @@ public class Email extends BaseEntity{
     @Column(name = "email_body")
     private String emailBody;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "email", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "email")
     private List<Attachment> attachments;
 
     private EmailStatus status;
