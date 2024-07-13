@@ -2,6 +2,7 @@ package com.fithub.dto.subscription;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.member.MemberDTO;
+import com.fithub.dto.product.ProductDTO;
 import com.fithub.model.subscription.SubscriptionStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class SubscriptionDTO {
     @NotNull(message = "End date cannot be null")
     private Date endDate;
     // Membership Amounts
+    private ProductDTO product;
     private double subscriptionUnitPrice;
     private double subscriptionQty;
     private double totalAmount;

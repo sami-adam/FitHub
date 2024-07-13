@@ -2,6 +2,7 @@ package com.fithub.model.subscription;
 
 import com.fithub.model.base.BaseEntity;
 import com.fithub.model.member.Member;
+import com.fithub.model.product.Product;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,9 @@ public class Subscription extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     // Membership Amounts
+    @JoinColumn(name = "product_id")
+    @ManyToOne
+    private Product product;
     @JoinColumn(name = "subscription_unit_price")
     private double subscriptionUnitPrice;
     @JoinColumn(name = "subscription_qty")

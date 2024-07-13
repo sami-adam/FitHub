@@ -2,9 +2,11 @@ package com.fithub.service.subscription;
 
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.model.member.Member;
+import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
 import com.fithub.repository.member.MemberRepository;
+import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
 import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
@@ -27,6 +29,7 @@ import java.util.*;
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
     private final ModelMapper mapper;
 
     @Autowired
@@ -36,9 +39,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private JWTService jwtUtil;
 
     @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository){
+    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository){
         this.subscriptionRepository = subscriptionRepository;
         this.memberRepository = memberRepository;
+        this.productRepository = productRepository;
         this.mapper = new ModelMapper();
     }
 
@@ -67,9 +71,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     // Update Membership
     public SubscriptionDTO updateSubscription(SubscriptionDTO subscriptionDTO, Long id) {
         Subscription subscription = subscriptionRepository.findById(id).orElseThrow();
-        if (subscriptionDTO.getMember() != null) {
+        if (subscriptionDTO.getMember() != null && subscriptionDTO.getMember().getId() != null) {
             Member member = memberRepository.findById(subscriptionDTO.getMember().getId()).orElseThrow();
             subscription.setMember(member);
+        }
+        if(subscriptionDTO.getProduct() != null && subscriptionDTO.getProduct().getId() != null){
+            Product product = productRepository.findById(subscriptionDTO.getProduct().getId()).orElseThrow();
+            subscription.setProduct(product);
         }
         if(subscriptionDTO.getStartDate() != null){
             subscription.setStartDate(subscriptionDTO.getStartDate());
