@@ -52,7 +52,7 @@ public class SubscriptionController {
     }
 
     // Search Subscriptions
-    @GetMapping("subscriptions/keyword/{keyword}")
+    @GetMapping("subscriptions/search/{keyword}")
     public ResponseEntity<List<SubscriptionDTO>> searchSubscription(@PathVariable("keyword") String keyword){
         return new ResponseEntity<>(subscriptionService.searchSubscription(keyword), HttpStatus.OK);
     }

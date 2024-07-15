@@ -70,6 +70,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // Update Membership
     public SubscriptionDTO updateSubscription(SubscriptionDTO subscriptionDTO, Long id) {
+        List<SubscriptionStatus> statuses = Arrays.stream(SubscriptionStatus.values()).toList();
         Subscription subscription = subscriptionRepository.findById(id).orElseThrow();
         if (subscriptionDTO.getMember() != null && subscriptionDTO.getMember().getId() != null) {
             Member member = memberRepository.findById(subscriptionDTO.getMember().getId()).orElseThrow();
@@ -90,6 +91,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         if(subscriptionDTO.getSubscriptionQty() > 0){
             subscription.setSubscriptionQty(subscriptionDTO.getSubscriptionQty());
+        }
+        if(subscriptionDTO.getStatus() !=null && subscriptionDTO.getStatus().ordinal() > 0 && subscriptionDTO.getStatus().ordinal() < statuses.size()){
+            subscription.setStatus(statuses.get(subscriptionDTO.getStatus().ordinal()));
         }
 
         subscriptionRepository.save(subscription);

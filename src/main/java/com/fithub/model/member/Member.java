@@ -18,6 +18,10 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "identification_number")
+    @Column(unique = true, nullable = false)
+    private String identificationNumber;
+
     @JoinColumn(name = "first_name")
     private String firstName;
 

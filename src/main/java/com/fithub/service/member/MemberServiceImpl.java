@@ -38,6 +38,9 @@ public class MemberServiceImpl implements MemberService{
     public MemberDTO updateMember(Long id, MemberDTO membershipDTO) {
         Member member = memberRepository.findById(id).orElseThrow();
         if(member.getId() > 0) {
+            if(membershipDTO.getIdentificationNumber() != null && !membershipDTO.getIdentificationNumber().isEmpty()){
+                member.setIdentificationNumber(membershipDTO.getIdentificationNumber());
+            }
             if(membershipDTO.getFirstName() != null && !membershipDTO.getFirstName().isEmpty()){
                 member.setFirstName(membershipDTO.getFirstName());
             }
@@ -68,7 +71,7 @@ public class MemberServiceImpl implements MemberService{
 
     // Search Members
     public List<MemberDTO> searchMembers(String keyword) {
-        List<Member> members = memberRepository.searchByFirstNameContainingOrLastNameContainingOrEmailContaining(keyword, keyword, keyword);
+        List<Member> members = memberRepository.searchByFirstNameContainingOrLastNameContainingOrEmailContainingOrIdentificationNumberContaining(keyword, keyword, keyword, keyword);
         return members.stream().map(member -> mapper.map(member, MemberDTO.class)).toList();
     }
 }

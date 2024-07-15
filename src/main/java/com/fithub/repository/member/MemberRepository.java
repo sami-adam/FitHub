@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    List<Member> searchByFirstNameContainingOrLastNameContainingOrEmailContaining(String firstName, String lastName, String email);
+    List<Member> searchByFirstNameContainingOrLastNameContainingOrEmailContainingOrIdentificationNumberContaining(String firstName, String lastName, String email, String identificationNumber);
 }

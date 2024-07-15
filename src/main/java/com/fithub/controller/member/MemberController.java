@@ -46,7 +46,7 @@ public class MemberController {
     }
 
     // Search Members
-    @GetMapping("/members/keyword/{keyword}")
+    @GetMapping("/members/search/{keyword}")
     public ResponseEntity<List<MemberDTO>> searchMembers(@PathVariable("keyword") String keyword){
         return new ResponseEntity<>(memberService.searchMembers(keyword), HttpStatus.OK);
     }

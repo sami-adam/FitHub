@@ -14,6 +14,9 @@ import java.util.List;
 @Data
 public class MemberDTO {
     private Long id;
+
+    @NotNull(message = "Identification number cannot be null")
+    private String identificationNumber;
     @NotNull(message = "First name cannot be null")
     @Size(min = 2, message = "First name must be at least 2 characters long")
     private String firstName;
