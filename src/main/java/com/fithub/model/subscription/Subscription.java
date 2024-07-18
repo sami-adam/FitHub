@@ -17,6 +17,8 @@ public class Subscription extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String reference;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -46,5 +48,22 @@ public class Subscription extends BaseEntity {
     private double netAmount;
 
     private SubscriptionStatus status;
+
+
+    @PostPersist
+    public void postPersist() {
+        reference = "SUB" + String.format("%06d", id);
+    }
+
+    public double getSubscriptionUnitPrice() {
+        return (double) product.getPrice();
+    }
+    public double getTotalAmount() {
+        return subscriptionUnitPrice * subscriptionQty;
+    }
+
+    public double getNetAmount() {
+        return getTotalAmount() - discountAmount;
+    }
 
 }

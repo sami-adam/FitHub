@@ -92,6 +92,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if(subscriptionDTO.getSubscriptionQty() > 0){
             subscription.setSubscriptionQty(subscriptionDTO.getSubscriptionQty());
         }
+        if(subscriptionDTO.getDiscountAmount() > 0){
+            subscription.setDiscountAmount(subscriptionDTO.getDiscountAmount());
+        }
         if(subscriptionDTO.getStatus() !=null && subscriptionDTO.getStatus().ordinal() > 0 && subscriptionDTO.getStatus().ordinal() < statuses.size()){
             subscription.setStatus(statuses.get(subscriptionDTO.getStatus().ordinal()));
         }
@@ -111,7 +114,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // Search Memberships
     public List<SubscriptionDTO> searchSubscription(String keyword){
-        List<Subscription> subscriptions = subscriptionRepository.searchByKeyword(keyword, keyword);
+        List<Subscription> subscriptions = subscriptionRepository.searchByKeyword(keyword, keyword, keyword, keyword, SubscriptionStatus.valueOf(keyword));
         return subscriptions.stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
     }
 
@@ -139,6 +142,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             if(subscription.getEndDate().before(new Date(System.currentTimeMillis()))){
                 subscription.setStatus(SubscriptionStatus.EXPIRED);
                 subscriptionRepository.save(subscription);
+            }
+            // Update Reference
+            if(subscription.getReference() == null || subscription.getReference().length() != 9){
+                subscription.setReference("SUB" + String.format("%06d", subscription.getId()));
+                subscriptionRepository.save(subscription);
+
             }
         }
     }
