@@ -5,6 +5,7 @@ import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
+import com.fithub.repository.base.TaxRepository;
 import com.fithub.repository.member.MemberRepository;
 import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
@@ -30,6 +31,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
+    private final TaxRepository taxRepository;
     private final ModelMapper mapper;
 
     @Autowired
@@ -39,10 +41,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private JWTService jwtUtil;
 
     @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository){
+    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository, TaxRepository taxRepository) {
         this.subscriptionRepository = subscriptionRepository;
         this.memberRepository = memberRepository;
         this.productRepository = productRepository;
+        this.taxRepository = taxRepository;
         this.mapper = new ModelMapper();
     }
 
@@ -79,6 +82,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if(subscriptionDTO.getProduct() != null && subscriptionDTO.getProduct().getId() != null){
             Product product = productRepository.findById(subscriptionDTO.getProduct().getId()).orElseThrow();
             subscription.setProduct(product);
+        }
+        if(subscriptionDTO.getTax() != null && subscriptionDTO.getTax().getId() != null){
+            subscription.setTax(taxRepository.findById(subscriptionDTO.getTax().getId()).orElseThrow());
         }
         if(subscriptionDTO.getStartDate() != null){
             subscription.setStartDate(subscriptionDTO.getStartDate());

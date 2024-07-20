@@ -1,6 +1,7 @@
 package com.fithub.model.subscription;
 
 import com.fithub.model.base.BaseEntity;
+import com.fithub.model.base.Tax;
 import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import jakarta.persistence.*;
@@ -44,8 +45,16 @@ public class Subscription extends BaseEntity {
     private double totalAmount;
     @JoinColumn(name = "discount_amount")
     private double discountAmount;
+
+    @Column(name = "tax_amount")
+    private Double taxAmount;
+
     @JoinColumn(name = "net_amount")
     private double netAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "tax_id")
+    private Tax tax;
 
     private SubscriptionStatus status;
 
@@ -63,7 +72,14 @@ public class Subscription extends BaseEntity {
     }
 
     public double getNetAmount() {
-        return getTotalAmount() - discountAmount;
+        return (getTotalAmount() - discountAmount);
+    }
+
+    public double getTaxAmount() {
+        if(tax != null){
+            return getTotalAmount() * tax.getRate()/100;
+        }
+        return 0.0;
     }
 
 }

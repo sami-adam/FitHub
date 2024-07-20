@@ -1,6 +1,7 @@
 package com.fithub.dto.subscription;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fithub.dto.base.TaxDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.product.ProductDTO;
 import com.fithub.model.subscription.SubscriptionStatus;
@@ -25,7 +26,9 @@ public class SubscriptionDTO {
     private double subscriptionQty;
     private double totalAmount;
     private double discountAmount;
+    private Double taxAmount;
     private double netAmount;
+    private TaxDTO tax;
 
     private SubscriptionStatus status;
 
