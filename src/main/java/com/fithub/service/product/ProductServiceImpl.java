@@ -2,6 +2,8 @@ package com.fithub.service.product;
 
 import com.fithub.dto.product.ProductDTO;
 import com.fithub.model.product.Product;
+import com.fithub.repository.base.TaxRepository;
+import com.fithub.repository.product.ProductCategoryRepository;
 import com.fithub.repository.product.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository productCategoryRepository;
+    private final TaxRepository taxRepository;
     private final ModelMapper mapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository) {
         this.productRepository = productRepository;
+        this.productCategoryRepository = productCategoryRepository;
+        this.taxRepository = taxRepository;
         this.mapper = new ModelMapper();
     }
     @Override
@@ -49,6 +55,12 @@ public class ProductServiceImpl implements ProductService{
         }
         if(productDTO.getImage()!=null && !productDTO.getImage().isEmpty()) {
             product.setImage(productDTO.getImage());
+        }
+        if(productDTO.getCategory().getId() != null) {
+            product.setCategory(productCategoryRepository.findById(productDTO.getCategory().getId()).orElseThrow());
+        }
+        if(productDTO.getTax().getId() != null) {
+            product.setTax(taxRepository.findById(productDTO.getTax().getId()).orElseThrow());
         }
         productRepository.save(product);
         return mapper.map(product, ProductDTO.class);

@@ -1,5 +1,6 @@
 package com.fithub.model.product;
 
+import com.fithub.model.base.Tax;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,4 +20,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private ProductCategory category;
+
+    @ManyToOne
+    @JoinColumn(name = "tax_id")
+    private Tax tax;
 }
