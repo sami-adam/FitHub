@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 @Data
@@ -33,6 +34,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final ProductRepository productRepository;
     private final TaxRepository taxRepository;
     private final ModelMapper mapper;
+    private final Logger logger = Logger.getLogger(SubscriptionServiceImpl.class.getName());
 
     @Autowired
     private UserService usersService;
@@ -122,7 +124,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public List<SubscriptionDTO> searchSubscription(String keyword){
         SubscriptionStatus status;
         try{
-            status = SubscriptionStatus.valueOf(keyword);
+            status = SubscriptionStatus.valueOf(keyword.toUpperCase());
         } catch (Exception e){
             status = null;
         }
@@ -148,7 +150,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     public void checkSubscriptionStatus(String token){
-        System.out.println("Cron Checking Subscription Status");
+        logger.info("Checking subscription status");
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         for(Subscription subscription : subscriptions){
             if(subscription.getEndDate().before(new Date(System.currentTimeMillis()))){

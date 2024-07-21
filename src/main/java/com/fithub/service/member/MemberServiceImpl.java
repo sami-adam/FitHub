@@ -1,20 +1,34 @@
 package com.fithub.service.member;
 
+import com.fithub.config.SecurityContextGenerator;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.model.member.Member;
+import com.fithub.model.member.MemberStatus;
+import com.fithub.model.subscription.Subscription;
 import com.fithub.repository.member.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Service
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final ModelMapper mapper;
+
+    private final Logger logger = Logger.getLogger(MemberServiceImpl.class.getName());
+
+    @Autowired
+    private SecurityContextGenerator securityContextGenerator;
 
     @Autowired
     public MemberServiceImpl(MemberRepository memberRepository){
@@ -71,7 +85,52 @@ public class MemberServiceImpl implements MemberService{
 
     // Search Members
     public List<MemberDTO> searchMembers(String keyword) {
-        List<Member> members = memberRepository.searchByFirstNameContainingOrLastNameContainingOrEmailContainingOrIdentificationNumberContaining(keyword, keyword, keyword, keyword);
+        MemberStatus status;
+        try {
+            status = MemberStatus.valueOf(keyword.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            status = null;
+        }
+        List<Member> members = memberRepository.searchByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingOrIdentificationNumberContainingOrStatusEquals(keyword, keyword, keyword, keyword, status);
         return members.stream().map(member -> mapper.map(member, MemberDTO.class)).toList();
     }
+
+    // Crons
+
+    public void checkMemberStatus(SecurityContext context) {
+        logger.info("Checking member status");
+        List<Member> members = memberRepository.findAll();
+        for(Member member: members){
+            List<Subscription> subscriptions = member.getSubscriptions().stream().toList();
+            if(!subscriptions.isEmpty()){
+                List<Subscription> currentSubscriptions = subscriptions.stream().filter(subscription -> subscription.getEndDate().after(new Date(System.currentTimeMillis()))).toList();
+                if(!currentSubscriptions.isEmpty()){
+                    // Expiring
+                    Subscription currentSubscription = currentSubscriptions.stream().max((s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate())).orElseThrow();
+                    if(currentSubscription.getEndDate().before(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7 * 2))){
+                        member.setStatus(MemberStatus.EXPIRING);
+                    } else {
+                        member.setStatus(MemberStatus.ACTIVE);
+                    }
+                } else {
+                    member.setStatus(MemberStatus.EXPIRED);
+                }
+            } else {
+                member.setStatus(MemberStatus.NEW);
+            }
+            memberRepository.save(member);
+        }
+    }
+
+    @Transactional
+    @Scheduled(fixedRate = 1000 * 60 * 30) // Adjust the fixedRate as needed
+    public void performTask() {
+        SecurityContext context = securityContextGenerator.createSecurityContext();
+        try {
+            checkMemberStatus(context);
+        } finally {
+            //context.setAuthentication(null);
+        }
+    }
+
 }

@@ -47,5 +47,7 @@ public class Member extends BaseEntity {
     @OneToMany(orphanRemoval = true, mappedBy = "member")
     private List<Subscription> subscriptions;
 
+    private MemberStatus status;
+
 
 }

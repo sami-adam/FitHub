@@ -2,6 +2,7 @@ package com.fithub.dto.member;
 
 import com.fithub.dto.address.AddressDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
+import com.fithub.model.member.MemberStatus;
 import com.fithub.model.user.User;
 import com.fithub.model.member.Gender;
 import jakarta.validation.constraints.Email;
@@ -31,6 +32,7 @@ public class MemberDTO {
     private String email;
     private String Phone;
     private List<SubscriptionDTO> subscriptions;
+    private MemberStatus status;
 
 
 }

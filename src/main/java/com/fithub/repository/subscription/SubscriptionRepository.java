@@ -10,6 +10,11 @@ import java.util.List;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
-    @Query("select m from Subscription as m where m.reference like %:reference% or m.member.firstName like %:firstName% or m.member.lastName like %:lastName% or m.member.identificationNumber like %:identificationNumber% or m.status = :status")
+    @Query("SELECT m FROM Subscription AS m WHERE " +
+            "LOWER(m.reference) LIKE LOWER(CONCAT('%', :reference, '%')) OR " +
+            "LOWER(m.member.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) OR " +
+            "LOWER(m.member.lastName) LIKE LOWER(CONCAT('%', :lastName, '%')) OR " +
+            "LOWER(m.member.identificationNumber) LIKE LOWER(CONCAT('%', :identificationNumber, '%')) OR " +
+            "m.status = :status")
     List<Subscription> searchByKeyword(String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status);
 }
