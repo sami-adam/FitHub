@@ -1,10 +1,10 @@
-package com.fithub.dto.coach;
+package com.fithub.dto.employee;
 
 import com.fithub.model.user.User;
 import lombok.Data;
 
 @Data
-public class CoachDTO {
+public class EmployeeDTO {
     private Long id;
     private String identificationNumber;
     private String name;

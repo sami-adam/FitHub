@@ -1,13 +1,13 @@
-package com.fithub.model.coach;
+package com.fithub.model.employee;
 
 import com.fithub.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "coaches")
+@Table(name = "employees")
 @Data
-public class Coach {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
