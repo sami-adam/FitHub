@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class FitnessClassController {
     private final FitnessClassService fitnessClassService;
 
@@ -19,27 +20,27 @@ public class FitnessClassController {
         this.fitnessClassService = fitnessClassService;
     }
 
-    @GetMapping("/fitnessClasses")
+    @GetMapping("/fitness-classes")
     public ResponseEntity<List<FitnessClassDTO>> getFitnessClasses() {
         return new ResponseEntity<>(fitnessClassService.getFitnessClasses(), HttpStatus.OK);
     }
 
-    @PostMapping("/fitnessClass")
-    public ResponseEntity<FitnessClassDTO> addFitnessClass(FitnessClassDTO fitnessClassDTO) {
+    @PostMapping("/fitness-class")
+    public ResponseEntity<FitnessClassDTO> addFitnessClass(@RequestBody FitnessClassDTO fitnessClassDTO) {
         return new ResponseEntity<>(fitnessClassService.addFitnessClass(fitnessClassDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/fitnessClass/{id}")
-    public ResponseEntity<FitnessClassDTO> updateFitnessClass(@PathVariable Long id, FitnessClassDTO fitnessClassDTO) {
+    @PutMapping("/fitness-class/{id}")
+    public ResponseEntity<FitnessClassDTO> updateFitnessClass(@PathVariable Long id, @RequestBody FitnessClassDTO fitnessClassDTO) {
         return new ResponseEntity<>(fitnessClassService.updateFitnessClass(id, fitnessClassDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/fitnessClass/{id}")
+    @DeleteMapping("/fitness-class/{id}")
     public ResponseEntity<Map<String, String>> deleteFitnessClass(@PathVariable Long id) {
         return new ResponseEntity<>(fitnessClassService.deleteFitnessClass(id), HttpStatus.OK);
     }
 
-    @GetMapping("/fitnessClasses/search/{keyword}")
+    @GetMapping("/fitness-classes/search/{keyword}")
     public ResponseEntity<List<FitnessClassDTO>> searchFitnessClasses(@PathVariable String keyword) {
         return new ResponseEntity<>(fitnessClassService.searchFitnessClasses(keyword), HttpStatus.OK);
     }
