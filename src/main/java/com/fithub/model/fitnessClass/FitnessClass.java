@@ -13,6 +13,7 @@ public class FitnessClass {
 
     private String name;
 
+    @Column(columnDefinition = "TEXT", length = 1024)
     private String description;
 
     @Enumerated(EnumType.STRING)
