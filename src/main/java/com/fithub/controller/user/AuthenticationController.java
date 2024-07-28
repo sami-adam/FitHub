@@ -1,9 +1,6 @@
 package com.fithub.controller.user;
 
-import com.fithub.dto.user.JWTAuthenticationResponse;
-import com.fithub.dto.user.RefreshTokenDTO;
-import com.fithub.dto.user.SignInDTO;
-import com.fithub.dto.user.SignUpDTO;
+import com.fithub.dto.user.*;
 import com.fithub.model.user.User;
 import com.fithub.service.user.AuthenticationService;
 import com.fithub.service.user.JWTService;
@@ -16,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,5 +47,10 @@ public class AuthenticationController {
         String userEmail = jwtService.extractUsername(token.substring(7));
         UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
         return new ResponseEntity<>(userDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getUsers(){
+        return ResponseEntity.ok(userService.getUsers());
     }
 }
