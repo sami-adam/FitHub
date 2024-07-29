@@ -37,19 +37,19 @@ public class Subscription extends BaseEntity {
     @JoinColumn(name = "product_id")
     @ManyToOne
     private Product product;
-    @JoinColumn(name = "subscription_unit_price")
+    @Column(name = "subscription_unit_price")
     private double subscriptionUnitPrice;
-    @JoinColumn(name = "subscription_qty")
+    @Column(name = "subscription_qty")
     private double subscriptionQty;
-    @JoinColumn(name = "total_amount")
+    @Column(name = "total_amount")
     private double totalAmount;
-    @JoinColumn(name = "discount_amount")
+    @Column(name = "discount_amount")
     private double discountAmount;
 
     @Column(name = "tax_amount")
     private Double taxAmount;
 
-    @JoinColumn(name = "net_amount")
+    @Column(name = "net_amount")
     private double netAmount;
 
     @ManyToOne
@@ -62,6 +62,22 @@ public class Subscription extends BaseEntity {
     @PostPersist
     public void postPersist() {
         reference = "SUB" + String.format("%06d", id);
+        status = SubscriptionStatus.NEW;
+        subscriptionUnitPrice = product.getPrice();
+        totalAmount = product.getPrice() * subscriptionQty;
+        taxAmount = tax != null ? totalAmount * tax.getRate()/100 : 0.0;
+        netAmount = totalAmount + taxAmount - discountAmount;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if(status == null){
+            status = SubscriptionStatus.NEW;
+        }
+        subscriptionUnitPrice = product.getPrice();
+        totalAmount = product.getPrice() * subscriptionQty;
+        taxAmount = tax != null ? totalAmount * tax.getRate()/100 : 0.0;
+        netAmount = totalAmount + taxAmount - discountAmount;
     }
 
     public double getSubscriptionUnitPrice() {
