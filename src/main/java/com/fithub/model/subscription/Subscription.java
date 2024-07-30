@@ -63,8 +63,8 @@ public class Subscription extends BaseEntity {
     public void postPersist() {
         reference = "SUB" + String.format("%06d", id);
         status = SubscriptionStatus.NEW;
-        subscriptionUnitPrice = product.getPrice();
-        totalAmount = product.getPrice() * subscriptionQty;
+        subscriptionUnitPrice = product.getPrice() != null ? product.getPrice() : 0.0;
+        totalAmount = (product.getPrice() != null ? product.getPrice() : 0.0) * subscriptionQty;
         taxAmount = tax != null ? totalAmount * tax.getRate()/100 : 0.0;
         netAmount = totalAmount + taxAmount - discountAmount;
     }
@@ -74,6 +74,7 @@ public class Subscription extends BaseEntity {
         if(status == null){
             status = SubscriptionStatus.NEW;
         }
+        // To Be Removed
         subscriptionUnitPrice = product.getPrice();
         totalAmount = product.getPrice() * subscriptionQty;
         taxAmount = tax != null ? totalAmount * tax.getRate()/100 : 0.0;
