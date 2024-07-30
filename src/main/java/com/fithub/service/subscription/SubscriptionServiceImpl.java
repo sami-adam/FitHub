@@ -100,7 +100,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if(subscriptionDTO.getSubscriptionQty() > 0){
             subscription.setSubscriptionQty(subscriptionDTO.getSubscriptionQty());
         }
-        if(subscriptionDTO.getDiscountAmount() > 0){
+        if(subscriptionDTO.getDiscountAmount() >= 0){
             subscription.setDiscountAmount(subscriptionDTO.getDiscountAmount());
         }
         if(subscriptionDTO.getStatus() !=null && subscriptionDTO.getStatus().ordinal() > 0 && subscriptionDTO.getStatus().ordinal() < statuses.size()){
