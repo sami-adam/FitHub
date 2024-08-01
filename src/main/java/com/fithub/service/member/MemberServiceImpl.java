@@ -67,6 +67,9 @@ public class MemberServiceImpl implements MemberService{
             if(membershipDTO.getPhone() != null && !membershipDTO.getPhone().isEmpty()){
                 member.setPhone(membershipDTO.getPhone());
             }
+            if(membershipDTO.getGender() != null){
+                member.setGender(membershipDTO.getGender());
+            }
 
             memberRepository.save(member);
             return mapper.map(member, MemberDTO.class);

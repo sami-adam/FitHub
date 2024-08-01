@@ -4,6 +4,7 @@ import com.fithub.dto.user.JWTAuthenticationResponse;
 import com.fithub.dto.user.RefreshTokenDTO;
 import com.fithub.dto.user.SignInDTO;
 import com.fithub.dto.user.SignUpDTO;
+import com.fithub.exception.LoginException;
 import com.fithub.model.user.Role;
 import com.fithub.model.user.User;
 import com.fithub.repository.user.UserRepository;
@@ -38,9 +39,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public JWTAuthenticationResponse signIn(SignInDTO signInDTO){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signInDTO.getEmail(), signInDTO.getPassword())
-        );
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(signInDTO.getEmail(), signInDTO.getPassword())
+            );
+        } catch (Exception e){
+            throw new LoginException("Invalid Username or Password");
+        }
 
         var user = userRepository.findByEmail(signInDTO.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid Username or Password"));
         var jwt = jwtService.generateToken(user);
