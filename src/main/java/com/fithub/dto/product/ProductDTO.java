@@ -1,6 +1,7 @@
 package com.fithub.dto.product;
 
 import com.fithub.dto.base.TaxDTO;
+import com.fithub.model.base.DurationType;
 import lombok.Data;
 
 @Data
@@ -12,4 +13,5 @@ public class ProductDTO {
     private Double price;
     private ProductCategoryDTO category;
     private TaxDTO tax;
+    private DurationType durationType;
 }

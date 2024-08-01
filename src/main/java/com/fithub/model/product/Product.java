@@ -1,5 +1,6 @@
 package com.fithub.model.product;
 
+import com.fithub.model.base.DurationType;
 import com.fithub.model.base.Tax;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,6 +17,9 @@ public class Product {
     private String name;
     private String description;
     private Double price;
+
+    @Enumerated(EnumType.STRING)
+    private DurationType durationType;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

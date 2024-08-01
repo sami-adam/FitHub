@@ -62,6 +62,9 @@ public class ProductServiceImpl implements ProductService{
         if(productDTO.getTax()!= null && productDTO.getTax().getId() != null) {
             product.setTax(taxRepository.findById(productDTO.getTax().getId()).orElseThrow());
         }
+        if(productDTO.getDurationType() != null) {
+            product.setDurationType(productDTO.getDurationType());
+        }
         productRepository.save(product);
         return mapper.map(product, ProductDTO.class);
     }
