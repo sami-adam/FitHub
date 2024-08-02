@@ -45,6 +45,9 @@ public class FitnessClassServiceImpl implements FitnessClassService{
         if(fitnessClassDTO.getIntensityLevel() != null && !fitnessClassDTO.getIntensityLevel().isEmpty()) {
             fitnessClass.setIntensityLevel(FitnessClass.IntensityLevel.valueOf(fitnessClassDTO.getIntensityLevel()));
         }
+        if(fitnessClassDTO.getImages() != null && !fitnessClassDTO.getImages().isEmpty()) {
+            fitnessClass.setImages(fitnessClassDTO.getImages());
+        }
 
         fitnessClassRepository.save(fitnessClass);
         return mapper.map(fitnessClass, FitnessClassDTO.class);

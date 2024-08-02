@@ -19,6 +19,9 @@ public class FitnessClass {
     @Enumerated(EnumType.STRING)
     private IntensityLevel intensityLevel;
 
+    @Column(columnDefinition = "TEXT", length = 1024)
+    private String images;
+
     public enum IntensityLevel {
         LOW, MEDIUM, HIGH
     }
