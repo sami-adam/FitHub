@@ -21,7 +21,7 @@ public class StripeController {
         String successUrl = "http://localhost:8080/home";
         String cancelUrl = "http://your-domain.com/cancel";
         try {
-            Session session = stripeService.createCheckoutSession(successUrl, cancelUrl, product, amount, "usd");
+            Session session = stripeService.createCheckoutSession(successUrl, cancelUrl, product, amount, "sar");
             Map<String, String> responseData = new HashMap<>();
             responseData.put("id", session.getId());
             return responseData;
