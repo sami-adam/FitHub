@@ -1,8 +1,11 @@
 package com.fithub.service.product;
 
 import com.fithub.dto.product.ProductCategoryDTO;
+import com.fithub.model.product.Benefit;
 import com.fithub.model.product.ProductCategory;
+import com.fithub.repository.product.BenefitRepository;
 import com.fithub.repository.product.ProductCategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +14,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductCategoryServiceImpl implements ProductCategoryService{
     private final ProductCategoryRepository productCategoryRepository;
-    private final ModelMapper mapper;
+    private final BenefitRepository benefitRepository;
+    private final ModelMapper mapper = new ModelMapper();
 
-    public ProductCategoryServiceImpl(ProductCategoryRepository productCategoryRepository) {
-        this.productCategoryRepository = productCategoryRepository;
-        this.mapper = new ModelMapper();
-    }
 
     @Override
     public List<ProductCategoryDTO> getProductCategories() {
@@ -43,7 +44,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         if(productCategoryDTO.getDescription() != null) {
             productCategory.setDescription(productCategoryDTO.getDescription());
         }
+        if(productCategoryDTO.getBenefits() != null) {
+            List<Benefit> benefits = productCategoryDTO.getBenefits().stream()
+                    .map(benefitDTO -> benefitRepository.findById(benefitDTO.getId()).orElseThrow())
+                    .toList();
+            productCategory.setBenefits(benefits);
+        }
         productCategoryRepository.save(productCategory);
+
         return mapper.map(productCategory, ProductCategoryDTO.class);
     }
 

@@ -39,4 +39,9 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
     }
+
+    @GetMapping("/products/search/{keyword}")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@PathVariable String keyword) {
+        return new ResponseEntity<>(productService.searchProducts(keyword), HttpStatus.OK);
+    }
 }

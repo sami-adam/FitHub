@@ -2,13 +2,9 @@ package com.fithub.dto.product;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class ProductCategoryDTO {
+public class BenefitDTO {
     private Long id;
     private String name;
     private String description;
-
-    private List<BenefitDTO> benefits;
 }

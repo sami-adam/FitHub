@@ -74,4 +74,10 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(productId);
         return Map.of("message", "Product deleted successfully", "status", "success");
     }
+
+    @Override
+    public List<ProductDTO> searchProducts(String keyword) {
+        return  productRepository.searchProducts(keyword).stream().map(product -> mapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+    }
 }

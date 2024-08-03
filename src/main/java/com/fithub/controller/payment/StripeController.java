@@ -17,11 +17,11 @@ public class StripeController {
     private StripeService stripeService;
 
     @PostMapping("/stripe/create-checkout-session")
-    public Map<String, String> createCheckoutSession(@RequestParam Long amount) {
+    public Map<String, String> createCheckoutSession(@RequestParam("product") String product ,@RequestParam("amount") Long amount) {
         String successUrl = "http://localhost:8080/home";
         String cancelUrl = "http://your-domain.com/cancel";
         try {
-            Session session = stripeService.createCheckoutSession(successUrl, cancelUrl, amount, "usd");
+            Session session = stripeService.createCheckoutSession(successUrl, cancelUrl, product, amount, "usd");
             Map<String, String> responseData = new HashMap<>();
             responseData.put("id", session.getId());
             return responseData;

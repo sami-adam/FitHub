@@ -23,7 +23,7 @@ public class StripeService {
         Stripe.apiKey = apiKey;
     }
 
-    public Session createCheckoutSession(String successUrl, String cancelUrl, long amount, String currency) throws StripeException {
+    public Session createCheckoutSession(String successUrl, String cancelUrl, String product, long amount, String currency) throws StripeException {
         SessionCreateParams params = SessionCreateParams.builder()
             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
             .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -37,7 +37,7 @@ public class StripeService {
                             .setUnitAmount(amount)
                             .setProductData(
                                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                    .setName("Sample Product")
+                                    .setName(product)
                                     .build()
                             )
                             .build()
