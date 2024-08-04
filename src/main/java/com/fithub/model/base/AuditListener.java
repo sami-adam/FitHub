@@ -12,10 +12,11 @@ public class AuditListener {
     @PrePersist
     public void setAuditCreate(BaseEntity baseEntity) {
         baseEntity.setCreateDate(new Date(System.currentTimeMillis()));
-        baseEntity.setCreatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
         baseEntity.setUpdateDate(new Date(System.currentTimeMillis()));
-        baseEntity.setUpdatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        if(SecurityContextHolder.getContext().getAuthentication() != null) {
+            baseEntity.setCreatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            baseEntity.setUpdatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        }
     }
 
     @PreUpdate
