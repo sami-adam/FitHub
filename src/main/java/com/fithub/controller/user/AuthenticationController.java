@@ -1,6 +1,7 @@
 package com.fithub.controller.user;
 
 import com.fithub.dto.user.*;
+import com.fithub.model.base.ResponseModel;
 import com.fithub.model.user.User;
 import com.fithub.service.user.AuthenticationService;
 import com.fithub.service.user.JWTService;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
@@ -26,30 +27,42 @@ public class AuthenticationController {
     private final JWTService jwtService;
     private final UserService userService;
 
-    @PostMapping("/signUp")
-    public ResponseEntity<User> signUp(@RequestBody SignUpDTO signUpDTO){
-        return ResponseEntity.ok(authenticationService.signUp(signUpDTO));
+    @PostMapping("/v1/auth/signUp")
+    public ResponseEntity<ResponseModel<User>> signUp(@RequestBody SignUpDTO signUpDTO){
+        return ResponseEntity.ok(
+                new ResponseModel<>(
+                        true,
+                        authenticationService.signUp(signUpDTO),
+                        "User signed up successfully"
+                )
+        );
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/signIn")
-    public ResponseEntity<JWTAuthenticationResponse> signIn(@RequestBody SignInDTO signInDTO){
-        return ResponseEntity.ok(authenticationService.signIn(signInDTO));
+    @PostMapping("/v1/auth/signIn")
+    public ResponseEntity<ResponseModel<JWTAuthenticationResponse>> signIn(@RequestBody SignInDTO signInDTO){
+        return ResponseEntity.ok(
+                new ResponseModel<>(
+                        true,
+                        authenticationService.signIn(signInDTO),
+                        "User signed in successfully"
+                )
+        );
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/v1/auth/refresh")
     public ResponseEntity<JWTAuthenticationResponse> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO){
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenDTO));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/v1/auth/user")
     public ResponseEntity<UserDetails> getUser(@RequestHeader("Authorization") String token){
         String userEmail = jwtService.extractUsername(token.substring(7));
         UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
         return new ResponseEntity<>(userDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/v1/auth/users")
     public ResponseEntity<List<UserDTO>> getUsers(){
         return ResponseEntity.ok(userService.getUsers());
     }
