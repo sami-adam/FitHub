@@ -1,16 +1,19 @@
 package com.fithub.model.member;
 
+import com.fithub.model.base.BaseEntity;
 import com.fithub.model.product.Product;
 import com.fithub.model.product.ProductCategory;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "memberships")
 @Data
-public class Membership {
+public class Membership extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

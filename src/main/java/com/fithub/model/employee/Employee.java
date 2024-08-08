@@ -1,13 +1,16 @@
 package com.fithub.model.employee;
 
+import com.fithub.model.base.BaseEntity;
 import com.fithub.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "employees")
 @Data
-public class Employee {
+public class Employee extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

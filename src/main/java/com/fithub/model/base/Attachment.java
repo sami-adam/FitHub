@@ -1,7 +1,9 @@
 package com.fithub.model.base;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "attachments")
 @Data

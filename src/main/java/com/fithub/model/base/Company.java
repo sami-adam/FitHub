@@ -4,7 +4,9 @@ import com.fithub.model.address.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "companies")
 @Data

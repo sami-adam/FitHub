@@ -1,15 +1,18 @@
 package com.fithub.model.fitnessClass;
 
+import com.fithub.model.base.BaseEntity;
 import com.fithub.model.employee.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name = "class_schedules")
-public class ClassSchedule {
+public class ClassSchedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

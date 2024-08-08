@@ -1,12 +1,15 @@
 package com.fithub.model.fitnessClass;
 
+import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "fitness_classes")
 @Data
-public class FitnessClass {
+public class FitnessClass extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

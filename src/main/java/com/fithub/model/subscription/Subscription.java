@@ -6,10 +6,12 @@ import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "subscriptions")
 @Data
