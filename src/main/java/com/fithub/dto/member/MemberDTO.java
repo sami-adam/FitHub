@@ -1,6 +1,7 @@
 package com.fithub.dto.member;
 
 import com.fithub.dto.address.AddressDTO;
+import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.model.member.MemberStatus;
 import com.fithub.model.user.User;
@@ -13,7 +14,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MemberDTO {
+public class MemberDTO extends BaseEntityDTO {
     private Long id;
 
     @NotNull(message = "Identification number cannot be null")

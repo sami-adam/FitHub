@@ -1,11 +1,12 @@
 package com.fithub.dto.product;
 
+import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.base.TaxDTO;
 import com.fithub.model.base.DurationType;
 import lombok.Data;
 
 @Data
-public class ProductDTO {
+public class ProductDTO extends BaseEntityDTO {
     private Long id;
     private String image;
     private String name;

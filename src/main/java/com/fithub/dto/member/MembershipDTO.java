@@ -1,5 +1,6 @@
 package com.fithub.dto.member;
 
+import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.product.ProductCategoryDTO;
 import com.fithub.dto.product.ProductDTO;
 import com.fithub.model.member.Gender;
@@ -8,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class MembershipDTO {
+public class MembershipDTO extends BaseEntityDTO {
     private Long id;
     // Member Information
     private String firstName;

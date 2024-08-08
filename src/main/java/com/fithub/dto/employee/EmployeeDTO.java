@@ -1,10 +1,11 @@
 package com.fithub.dto.employee;
 
+import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.model.user.User;
 import lombok.Data;
 
 @Data
-public class EmployeeDTO {
+public class EmployeeDTO extends BaseEntityDTO {
     private Long id;
     private String identificationNumber;
     private String name;
