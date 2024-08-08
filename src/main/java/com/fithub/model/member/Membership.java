@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "memberships")
 @Data

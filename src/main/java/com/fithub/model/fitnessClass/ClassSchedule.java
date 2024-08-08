@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Data
 @Table(name = "class_schedules")

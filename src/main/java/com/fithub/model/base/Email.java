@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "emails")
 @Data
