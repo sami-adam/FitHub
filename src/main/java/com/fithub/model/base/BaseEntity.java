@@ -22,4 +22,8 @@ public class BaseEntity {
     @JoinColumn(name = "updated_by")
     @ManyToOne
     private User updatedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

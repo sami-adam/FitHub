@@ -15,9 +15,6 @@ public class Company {
     private Long id;
 
     private String company_name;
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
     @Email
     private String email;
     private String phone;

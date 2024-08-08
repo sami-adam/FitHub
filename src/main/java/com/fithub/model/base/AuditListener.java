@@ -16,6 +16,7 @@ public class AuditListener {
         if(SecurityContextHolder.getContext().getAuthentication() != null) {
             baseEntity.setCreatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             baseEntity.setUpdatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            baseEntity.setCompany(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCompany());
         }
     }
 
@@ -23,5 +24,6 @@ public class AuditListener {
     public void setAuditUpdate(BaseEntity baseEntity) {
         baseEntity.setUpdateDate(new Date(System.currentTimeMillis()));
         baseEntity.setUpdatedBy((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        baseEntity.setCompany(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCompany());
     }
 }

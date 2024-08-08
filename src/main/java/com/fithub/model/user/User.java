@@ -1,6 +1,7 @@
 package com.fithub.model.user;
 
 import com.fithub.model.base.BaseEntity;
+import com.fithub.model.base.Company;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -60,4 +61,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

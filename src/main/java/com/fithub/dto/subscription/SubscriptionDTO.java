@@ -1,6 +1,7 @@
 package com.fithub.dto.subscription;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.base.TaxDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.product.ProductDTO;
@@ -11,7 +12,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class SubscriptionDTO {
+public class SubscriptionDTO extends BaseEntityDTO {
     private Long id;
     private String reference;
     @JsonIgnoreProperties({"subscriptions"})
