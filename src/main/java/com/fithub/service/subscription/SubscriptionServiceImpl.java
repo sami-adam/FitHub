@@ -157,6 +157,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 subscription.setStatus(SubscriptionStatus.EXPIRED);
                 subscriptionRepository.save(subscription);
             }
+            if(new Date(System.currentTimeMillis()).after(subscription.getStartDate()) && new Date(System.currentTimeMillis()).before(subscription.getEndDate())){
+                subscription.setStatus(SubscriptionStatus.ACTIVE);
+                subscriptionRepository.save(subscription);
+            }
             // Update Reference
             if(subscription.getReference() == null || subscription.getReference().length() != 9){
                 subscription.setReference("SUB" + String.format("%06d", subscription.getId()));
