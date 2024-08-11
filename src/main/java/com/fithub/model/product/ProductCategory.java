@@ -5,13 +5,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @Table(name = "product_categories")
-public class ProductCategory extends BaseEntity {
+public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,11 +18,11 @@ public class ProductCategory extends BaseEntity {
     private String name;
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "product_category_benefits",
         joinColumns = @JoinColumn(name = "product_category_id"),
         inverseJoinColumns = @JoinColumn(name = "benefit_id")
     )
-    private List<Benefit> benefits;
+    private Set<Benefit> benefits;
 }

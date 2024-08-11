@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getDescription(false)
         );
+        ex.printStackTrace();
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

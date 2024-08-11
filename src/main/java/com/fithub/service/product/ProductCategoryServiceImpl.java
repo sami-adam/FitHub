@@ -1,5 +1,6 @@
 package com.fithub.service.product;
 
+import com.fithub.dto.product.BenefitDTO;
 import com.fithub.dto.product.ProductCategoryDTO;
 import com.fithub.model.product.Benefit;
 import com.fithub.model.product.ProductCategory;
@@ -9,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,9 +48,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
             productCategory.setDescription(productCategoryDTO.getDescription());
         }
         if(productCategoryDTO.getBenefits() != null) {
-            List<Benefit> benefits = productCategoryDTO.getBenefits().stream()
-                    .map(benefitDTO -> benefitRepository.findById(benefitDTO.getId()).orElseThrow())
-                    .toList();
+            Set<Benefit> benefits = new HashSet<>();
+            for(BenefitDTO benefitDTO : productCategoryDTO.getBenefits()) {
+                Benefit benefit = benefitRepository.findById(benefitDTO.getId()).orElseThrow();
+                benefits.add(benefit);
+            }
+            productCategory.getBenefits().clear();
             productCategory.setBenefits(benefits);
         }
         productCategoryRepository.save(productCategory);

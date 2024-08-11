@@ -1,15 +1,17 @@
 package com.fithub.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = false)
+import java.util.Set;
+
 @Entity
 @Table(name = "benefits")
 @Data
-public class Benefit extends BaseEntity {
+public class Benefit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
