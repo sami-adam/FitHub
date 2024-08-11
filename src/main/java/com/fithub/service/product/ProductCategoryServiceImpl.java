@@ -2,6 +2,7 @@ package com.fithub.service.product;
 
 import com.fithub.dto.product.BenefitDTO;
 import com.fithub.dto.product.ProductCategoryDTO;
+import com.fithub.model.accounting.Account;
 import com.fithub.model.product.Benefit;
 import com.fithub.model.product.ProductCategory;
 import com.fithub.repository.product.BenefitRepository;
@@ -46,6 +47,12 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         }
         if(productCategoryDTO.getDescription() != null) {
             productCategory.setDescription(productCategoryDTO.getDescription());
+        }
+        if(productCategoryDTO.getIncomeAccount() != null) {
+            productCategory.setIncomeAccount(mapper.map(productCategoryDTO.getIncomeAccount(), Account.class));
+        }
+        if(productCategoryDTO.getExpenseAccount() != null) {
+            productCategory.setExpenseAccount(mapper.map(productCategoryDTO.getExpenseAccount(), Account.class));
         }
         if(productCategoryDTO.getBenefits() != null) {
             Set<Benefit> benefits = new HashSet<>();

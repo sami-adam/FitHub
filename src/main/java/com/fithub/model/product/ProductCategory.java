@@ -1,5 +1,6 @@
 package com.fithub.model.product;
 
+import com.fithub.model.accounting.Account;
 import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,4 +26,12 @@ public class ProductCategory {
         inverseJoinColumns = @JoinColumn(name = "benefit_id")
     )
     private Set<Benefit> benefits;
+
+    @ManyToOne
+    @JoinColumn(name = "income_account_id")
+    private Account incomeAccount;
+
+    @ManyToOne
+    @JoinColumn(name = "expense_account_id")
+    private Account expenseAccount;
 }

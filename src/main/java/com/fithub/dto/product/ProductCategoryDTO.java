@@ -1,5 +1,6 @@
 package com.fithub.dto.product;
 
+import com.fithub.dto.accounting.AccountDTO;
 import com.fithub.dto.base.BaseEntityDTO;
 import lombok.Data;
 
@@ -12,4 +13,6 @@ public class ProductCategoryDTO {
     private String description;
 
     private Set<BenefitDTO> benefits;
+    private AccountDTO incomeAccount;
+    private AccountDTO expenseAccount;
 }
