@@ -4,6 +4,7 @@ import com.fithub.dto.accounting.EntryDTO;
 import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Entry;
+import com.fithub.model.accounting.Journal;
 import com.fithub.model.accounting.Transaction;
 import com.fithub.repository.accounting.EntryRepository;
 import com.fithub.repository.accounting.TransactionRepository;
@@ -52,6 +53,9 @@ public class TransactionServiceImpl implements TransactionService{
                 ));
             }
             transaction.setEntries(entries);
+        }
+        if(transactionDTO.getJournal() != null){
+            transaction.setJournal(mapper.map(transactionDTO.getJournal(), Journal.class));
         }
         transactionRepository.save(transaction);
         return mapper.map(transaction, TransactionDTO.class);

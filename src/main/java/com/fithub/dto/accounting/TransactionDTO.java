@@ -12,5 +12,6 @@ public class TransactionDTO {
     private LocalDateTime timestamp;
     private String description;
     private List<EntryDTO> entries;
+    private JournalDTO journal;
     private Transaction.Status status;
 }

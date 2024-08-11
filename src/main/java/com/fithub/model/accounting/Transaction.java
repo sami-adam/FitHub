@@ -26,6 +26,10 @@ public class Transaction extends BaseEntity {
     @OneToMany(mappedBy = "transaction")
     private List<Entry> entries;
 
+    @JoinColumn(name = "journal_id")
+    @ManyToOne
+    private Journal journal;
+
     private Status status;
 
     public enum Status {
