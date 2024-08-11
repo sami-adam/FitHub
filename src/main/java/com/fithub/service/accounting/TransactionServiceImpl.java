@@ -33,6 +33,9 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public TransactionDTO addTransaction(TransactionDTO transactionDTO) {
         Transaction transaction = mapper.map(transactionDTO, Transaction.class);
+        for(EntryDTO entryDTO: transactionDTO.getEntries()){
+            entryRepository.save(mapper.map(entryDTO, Entry.class));
+        }
         transactionRepository.save(transaction);
         return mapper.map(transaction, TransactionDTO.class);
     }
@@ -48,9 +51,7 @@ public class TransactionServiceImpl implements TransactionService{
         if(transactionDTO.getEntries() != null){
             List<Entry> entries = new ArrayList<>();
             for(EntryDTO entryDTO: transactionDTO.getEntries()){
-                entries.add(entryRepository.findById(entryDTO.getId()).orElseThrow(
-                        ()-> new ResourceNotFoundException("Entry Not Found")
-                ));
+                entries.add(entryRepository.save(mapper.map(entryDTO, Entry.class)));
             }
             transaction.setEntries(entries);
         }
