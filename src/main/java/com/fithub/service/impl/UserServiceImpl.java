@@ -2,6 +2,7 @@ package com.fithub.service.impl;
 
 import com.fithub.dto.user.UserDTO;
 import com.fithub.repository.user.UserRepository;
+import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private ModelMapper mapper = new ModelMapper();
+    private JWTService jwtService;
 
     public UserDetailsService  userDetailsService(){
         return username -> userRepository.findByEmail(username)
@@ -27,5 +29,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(user -> mapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO getUserByToken(String token){
+        String username = jwtService.extractUsername(token);
+        return mapper.map(userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found")), UserDTO.class);
     }
 }
