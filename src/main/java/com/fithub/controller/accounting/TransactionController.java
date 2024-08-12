@@ -35,4 +35,10 @@ public class TransactionController {
         transactionService.deleteTransaction(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/v1/transaction/post/{id}")
+    public ResponseEntity<String> postTransaction(@PathVariable Long id){
+        transactionService.postTransaction(id);
+        return ResponseEntity.ok("Transaction posted successfully");
+    }
 }

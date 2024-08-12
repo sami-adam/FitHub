@@ -33,10 +33,11 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public TransactionDTO addTransaction(TransactionDTO transactionDTO) {
         Transaction transaction = mapper.map(transactionDTO, Transaction.class);
+        Transaction savedTransaction = transactionRepository.save(transaction);
         for(EntryDTO entryDTO: transactionDTO.getEntries()){
+            entryDTO.setTransaction(mapper.map(savedTransaction, TransactionDTO.class));
             entryRepository.save(mapper.map(entryDTO, Entry.class));
         }
-        transactionRepository.save(transaction);
         return mapper.map(transaction, TransactionDTO.class);
     }
 
@@ -68,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public String post(Long id) {
+    public String postTransaction(Long id) {
         Transaction transaction = transactionRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Transaction not found with id: " + id));
         for(Entry entry: transaction.getEntries()){
@@ -79,6 +80,7 @@ public class TransactionServiceImpl implements TransactionService{
             }
         }
         transaction.setStatus(Transaction.Status.POSTED);
+        transactionRepository.save(transaction);
         return "Transaction posted successfully";
     }
 }

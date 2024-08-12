@@ -10,5 +10,5 @@ public interface TransactionService {
     TransactionDTO addTransaction(TransactionDTO transactionDTO);
     TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO);
     Map<String, String> deleteTransaction(Long id);
-    String post(Long id);
+    String postTransaction(Long id);
 }
