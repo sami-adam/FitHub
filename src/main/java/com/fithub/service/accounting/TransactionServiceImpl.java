@@ -3,11 +3,13 @@ package com.fithub.service.accounting;
 import com.fithub.dto.accounting.EntryDTO;
 import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.exception.ResourceNotFoundException;
+import com.fithub.model.accounting.Account;
 import com.fithub.model.accounting.Entry;
 import com.fithub.model.accounting.Journal;
 import com.fithub.model.accounting.Transaction;
 import com.fithub.repository.accounting.EntryRepository;
 import com.fithub.repository.accounting.TransactionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,7 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
+    @Transactional
     public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
         Transaction transaction = transactionRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Transaction not found with id: " + id));
@@ -51,8 +54,22 @@ public class TransactionServiceImpl implements TransactionService{
         }
         if(transactionDTO.getEntries() != null){
             List<Entry> entries = new ArrayList<>();
+            // Remove deleted entries
+            transaction.getEntries().clear();
             for(EntryDTO entryDTO: transactionDTO.getEntries()){
-                entries.add(entryRepository.save(mapper.map(entryDTO, Entry.class)));
+                if(entryDTO.getId() != null){
+                    Entry entry = entryRepository.findById(entryDTO.getId()).orElseThrow(
+                            ()-> new ResourceNotFoundException("Entry not found with id: " + entryDTO.getId()));
+                    entry.setAccount(mapper.map(entryDTO.getAccount(), Account.class));
+                    entry.setDebit(entryDTO.getDebit());
+                    entry.setCredit(entryDTO.getCredit());
+                    entry.setType(entryDTO.getType());
+                    entry.setTransaction(transaction);
+                    entries.add(entryRepository.save(entry));
+                } else {
+                    entryDTO.setTransaction(transactionDTO);
+                    entries.add(entryRepository.save(mapper.map(entryDTO, Entry.class)));
+                }
             }
             transaction.setEntries(entries);
         }

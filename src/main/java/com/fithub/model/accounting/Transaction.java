@@ -17,6 +17,8 @@ public class Transaction extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String reference;
+
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
@@ -34,6 +36,18 @@ public class Transaction extends BaseEntity {
 
     public enum Status {
         DRAFT, POSTED, CANCELLED
+    }
+
+    @PostPersist
+    public void postPersist() {
+        reference = "TRX" + String.format("%06d", id);
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if(reference == null) {
+            reference = "TRX" + String.format("%06d", id);
+        }
     }
 }
 
