@@ -3,6 +3,7 @@ package com.fithub.controller.member;
 import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.model.base.AttachmentType;
+import com.fithub.service.base.AttachmentService;
 import com.fithub.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1")
 public class MemberController {
-    private MemberService memberService;
+    private final MemberService memberService;
+    private final AttachmentService attachmentService;
 
-    @Autowired
-    public void setMemberService(MemberService memberService){
+    public MemberController(MemberService memberService, AttachmentService attachmentService) {
         this.memberService = memberService;
+        this.attachmentService = attachmentService;
     }
 
     // Get Members
@@ -65,13 +67,7 @@ public class MemberController {
     // Upload Profile Picture
     @PostMapping("/member/{id}/picture")
     public ResponseEntity<MemberDTO> uploadProfilePicture(@PathVariable("id") Long id, @RequestParam("attachment") MultipartFile picture) throws IOException {
-        AttachmentDTO attachmentDTO = new AttachmentDTO();
-        if(picture != null){
-            attachmentDTO.setAttachmentType(AttachmentType.FILE);
-            attachmentDTO.setName(picture.getOriginalFilename());
-            attachmentDTO.setData(picture.getBytes());
-            attachmentDTO.setType(picture.getContentType());
-        }
+        AttachmentDTO attachmentDTO = attachmentService.storeAttachmentByContent(picture);
         return new ResponseEntity<>(memberService.uploadProfilePicture(id, attachmentDTO), HttpStatus.OK);
     }
 }

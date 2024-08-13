@@ -111,19 +111,27 @@ public class MemberServiceImpl implements MemberService{
     public MemberDTO getMyProfile(String token) {
         UserDTO userDTO = userService.getUserByToken(token.substring(7));
         Member member = memberRepository.findByEmail(userDTO.getEmail());
-        if (member != null)  return mapper.map(member, MemberDTO.class);
-        else throw new ResourceNotFoundException("Member not found");
+        if (member != null) {
+            member.setUser(mapper.map(userDTO, User.class));
+            return mapper.map(member, MemberDTO.class);
+        }
+        else {
+            throw new ResourceNotFoundException("Member not found");}
     }
 
     @Override
     public MemberDTO uploadProfilePicture(Long id, AttachmentDTO picture) {
-        Member member = memberRepository.findById(id).orElseThrow();
-        if(member.getId() > 0){
-            member.setProfilePicture(mapper.map(picture, Attachment.class));
+        Member member = memberRepository.findById(id).orElse(null);
+        if (member != null) {
+            Attachment attachment = mapper.map(picture, Attachment.class);
+            member.setProfilePicture(attachment);
+            member.setUser(mapper.map(userService.getUserByEmail(member.getEmail()), User.class));
             memberRepository.save(member);
             return mapper.map(member, MemberDTO.class);
         }
-        return null;
+        else {
+            throw new ResourceNotFoundException("Member not found");
+        }
     }
 
     // Crons

@@ -34,9 +34,13 @@ public class MemberDTO extends BaseEntityDTO {
     @NotNull(message = "Email cannot be null")
     private String email;
     private String Phone;
-    @JsonIgnoreProperties({"member"})
+    @JsonIgnoreProperties({"member", "updatedBy", "createdBy", "updateDate", "createDate"})
     private List<SubscriptionDTO> subscriptions;
     private MemberStatus status;
     private AttachmentDTO profilePicture;
+
+    void setUser(UserDTO user) {
+        this.user = user;
+    }
 
 }

@@ -22,6 +22,7 @@ public class SubscriptionDTO extends BaseEntityDTO {
     @NotNull(message = "End date cannot be null")
     private Date endDate;
     // Membership Amounts
+    @JsonIgnoreProperties({"updatedBy", "createdBy", "updateDate", "createDate"})
     private ProductDTO product;
     private double subscriptionUnitPrice;
     private double subscriptionQty;
