@@ -1,10 +1,11 @@
 package com.fithub.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.address.AddressDTO;
 import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
+import com.fithub.dto.user.UserDTO;
 import com.fithub.model.member.MemberStatus;
-import com.fithub.model.user.User;
 import com.fithub.model.member.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -25,13 +26,14 @@ public class MemberDTO extends BaseEntityDTO {
     @NotNull(message = "Last name cannot be null")
     @Size(min = 2, message = "Last name must be at least 2 characters long")
     private String lastName;
-    private User user;
+    private UserDTO user;
     private Gender gender;
     private AddressDTO address;
     @Email(message = "Email should be valid")
     @NotNull(message = "Email cannot be null")
     private String email;
     private String Phone;
+    @JsonIgnoreProperties({"member"})
     private List<SubscriptionDTO> subscriptions;
     private MemberStatus status;
 

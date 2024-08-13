@@ -2,11 +2,16 @@ package com.fithub.service.member;
 
 import com.fithub.config.SecurityContextGenerator;
 import com.fithub.dto.member.MemberDTO;
+import com.fithub.dto.user.UserDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.member.Member;
 import com.fithub.model.member.MemberStatus;
 import com.fithub.model.subscription.Subscription;
+import com.fithub.model.user.User;
 import com.fithub.repository.member.MemberRepository;
+import com.fithub.service.user.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,6 +28,7 @@ import java.util.logging.Logger;
 @Service
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    private final UserService userService;
     private final ModelMapper mapper;
 
     private final Logger logger = Logger.getLogger(MemberServiceImpl.class.getName());
@@ -31,8 +37,9 @@ public class MemberServiceImpl implements MemberService{
     private SecurityContextGenerator securityContextGenerator;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository){
+    public MemberServiceImpl(MemberRepository memberRepository, UserService userService){
         this.memberRepository = memberRepository;
+        this.userService = userService;
         this.mapper = new ModelMapper();
     }
 
@@ -98,6 +105,14 @@ public class MemberServiceImpl implements MemberService{
         return members.stream().map(member -> mapper.map(member, MemberDTO.class)).toList();
     }
 
+    // Get My Member Profile
+    public MemberDTO getMyProfile(String token) {
+        UserDTO userDTO = userService.getUserByToken(token.substring(7));
+        Member member = memberRepository.findByEmail(userDTO.getEmail());
+        if (member != null)  return mapper.map(member, MemberDTO.class);
+        else throw new ResourceNotFoundException("Member not found");
+    }
+
     // Crons
 
     public void checkMemberStatus(SecurityContext context) {
@@ -125,12 +140,29 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    public void linkMemberToUSer(SecurityContext context) {
+        logger.info("Linking member to user");
+        List<Member> members = memberRepository.findAll();
+        for(Member member: members){
+            try {
+                UserDTO userDTO = userService.getUserByEmail(member.getEmail());
+                if(userDTO != null){
+                    member.setUser(mapper.map(userDTO, User.class));
+                    memberRepository.save(member);
+                }
+            } catch (ResourceNotFoundException e) {
+                continue;
+            }
+        }
+    }
+
     @Transactional
     @Scheduled(fixedRate = 1000 * 60 * 30) // Adjust the fixedRate as needed
     public void performTask() {
         SecurityContext context = securityContextGenerator.createSecurityContext();
         try {
             checkMemberStatus(context);
+            linkMemberToUSer(context);
         } finally {
             //context.setAuthentication(null);
         }

@@ -8,4 +8,6 @@ import java.util.List;
 public interface UserService {
     UserDetailsService userDetailsService();
     List<UserDTO> getUsers();
+    UserDTO getUserByToken(String token);
+    UserDTO getUserByEmail(String email);
 }

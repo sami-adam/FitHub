@@ -11,5 +11,6 @@ public interface MemberService {
     MemberDTO updateMember(Long id, MemberDTO membershipDTO);
     Map<String, String> deleteMember(Long id);
     List<MemberDTO> searchMembers(String keyword);
+    MemberDTO getMyProfile(String token);
 
 }

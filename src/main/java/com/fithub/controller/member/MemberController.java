@@ -50,4 +50,10 @@ public class MemberController {
     public ResponseEntity<List<MemberDTO>> searchMembers(@PathVariable("keyword") String keyword){
         return new ResponseEntity<>(memberService.searchMembers(keyword), HttpStatus.OK);
     }
+
+    // My Profile
+    @GetMapping("/member/profile")
+    public ResponseEntity<MemberDTO> getMyProfile(@RequestHeader("Authorization") String token){
+        return new ResponseEntity<>(memberService.getMyProfile(token), HttpStatus.OK);
+    }
 }

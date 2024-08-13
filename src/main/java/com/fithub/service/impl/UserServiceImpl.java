@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private ModelMapper mapper = new ModelMapper();
-    private JWTService jwtService;
+    private final JWTService jwtService;
 
     public UserDetailsService  userDetailsService(){
         return username -> userRepository.findByEmail(username)
@@ -34,5 +34,9 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByToken(String token){
         String username = jwtService.extractUsername(token);
         return mapper.map(userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found")), UserDTO.class);
+    }
+
+    public UserDTO getUserByEmail(String email){
+        return mapper.map(userRepository.findByEmail(email) , UserDTO.class);
     }
 }
