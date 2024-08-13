@@ -2,6 +2,7 @@ package com.fithub.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.address.AddressDTO;
+import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.dto.user.UserDTO;
@@ -36,6 +37,6 @@ public class MemberDTO extends BaseEntityDTO {
     @JsonIgnoreProperties({"member"})
     private List<SubscriptionDTO> subscriptions;
     private MemberStatus status;
-
+    private AttachmentDTO profilePicture;
 
 }

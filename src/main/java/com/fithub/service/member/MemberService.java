@@ -1,5 +1,6 @@
 package com.fithub.service.member;
 
+import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.member.MemberDTO;
 
 import java.util.List;
@@ -12,5 +13,6 @@ public interface MemberService {
     Map<String, String> deleteMember(Long id);
     List<MemberDTO> searchMembers(String keyword);
     MemberDTO getMyProfile(String token);
+    MemberDTO uploadProfilePicture(Long id, AttachmentDTO picture);
 
 }

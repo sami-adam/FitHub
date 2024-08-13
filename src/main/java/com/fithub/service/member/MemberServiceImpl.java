@@ -1,9 +1,11 @@
 package com.fithub.service.member;
 
 import com.fithub.config.SecurityContextGenerator;
+import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.user.UserDTO;
 import com.fithub.exception.ResourceNotFoundException;
+import com.fithub.model.base.Attachment;
 import com.fithub.model.member.Member;
 import com.fithub.model.member.MemberStatus;
 import com.fithub.model.subscription.Subscription;
@@ -111,6 +113,17 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findByEmail(userDTO.getEmail());
         if (member != null)  return mapper.map(member, MemberDTO.class);
         else throw new ResourceNotFoundException("Member not found");
+    }
+
+    @Override
+    public MemberDTO uploadProfilePicture(Long id, AttachmentDTO picture) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        if(member.getId() > 0){
+            member.setProfilePicture(mapper.map(picture, Attachment.class));
+            memberRepository.save(member);
+            return mapper.map(member, MemberDTO.class);
+        }
+        return null;
     }
 
     // Crons

@@ -1,5 +1,6 @@
 package com.fithub.model.member;
 
+import com.fithub.model.base.Attachment;
 import com.fithub.model.user.User;
 import com.fithub.model.address.Address;
 import com.fithub.model.base.BaseEntity;
@@ -48,6 +49,10 @@ public class Member extends BaseEntity {
     private List<Subscription> subscriptions;
 
     private MemberStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_picture_id")
+    private Attachment profilePicture;
 
 
 }
