@@ -11,4 +11,5 @@ public class AttachmentDTO {
     private String type;
     private byte[] data;
     private String url;
+    private String path;
 }

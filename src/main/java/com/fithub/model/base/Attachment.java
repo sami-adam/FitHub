@@ -18,6 +18,7 @@ public class Attachment extends BaseEntity {
     private String type;
     private byte[] data;
     private String url;
+    private String path;
 
     @ManyToOne
     @JoinColumn(name = "email_id")

@@ -7,26 +7,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AttachmentServiceImpl implements AttachmentService{
     private final AttachmentRepository attachmentRepository;
     private final ModelMapper mapper;
+    private final Path fileStorageLocation;
 
     @Autowired
     public AttachmentServiceImpl(AttachmentRepository attachmentRepository){
         this.attachmentRepository = attachmentRepository;
         this.mapper = new ModelMapper();
+        this.fileStorageLocation = Paths.get("files").toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
     }
 
     public AttachmentDTO storeAttachmentByContent(MultipartFile file) throws IOException {
+        // Generate a unique file name to avoid collisions
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path targetLocation = this.fileStorageLocation.resolve(fileName);
+
+        // Save the file to the specified location
+        Files.copy(file.getInputStream(), targetLocation);
+
+        // Create and populate the Attachment entity
         Attachment attachment = new Attachment();
         attachment.setName(file.getOriginalFilename());
         attachment.setType(file.getContentType());
-        attachment.setData(file.getBytes());
+        attachment.setPath(targetLocation.toString()); // Store the file path
+
+        // Save the Attachment entity to the database
         Attachment saved = attachmentRepository.save(attachment);
+
+        // Convert the saved entity to a DTO and return it
         return mapper.map(saved, AttachmentDTO.class);
     }
 

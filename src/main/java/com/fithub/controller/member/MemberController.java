@@ -3,6 +3,7 @@ package com.fithub.controller.member;
 import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.model.base.AttachmentType;
+import com.fithub.model.base.ResponseModel;
 import com.fithub.service.base.AttachmentService;
 import com.fithub.service.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,8 @@ public class MemberController {
 
     // My Profile
     @GetMapping("/member/profile")
-    public ResponseEntity<MemberDTO> getMyProfile(@RequestHeader("Authorization") String token){
-        return new ResponseEntity<>(memberService.getMyProfile(token), HttpStatus.OK);
+    public ResponseModel<MemberDTO> getMyProfile(@RequestHeader("Authorization") String token){
+        return new ResponseModel<>(true, memberService.getMyProfile(token), "My Profile");
     }
 
     // Upload Profile Picture
