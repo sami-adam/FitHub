@@ -83,5 +83,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return jwt;
     }
 
+    // Sing out method
+    public void signOut(String token){
+        jwtService.invalidateToken(token);
+    }
+
 
 }

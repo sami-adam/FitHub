@@ -50,6 +50,18 @@ public class AuthenticationController {
         );
     }
 
+    @GetMapping("/v1/auth/signOut")
+    public ResponseEntity<ResponseModel<String>> signOut(@RequestHeader("Authorization") String token){
+        jwtService.invalidateToken(token.substring(7));
+        return ResponseEntity.ok(
+                new ResponseModel<>(
+                        true,
+                        null,
+                        "User signed out successfully"
+                )
+        );
+    }
+
     @PostMapping("/v1/auth/refresh")
     public ResponseEntity<JWTAuthenticationResponse> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO){
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenDTO));

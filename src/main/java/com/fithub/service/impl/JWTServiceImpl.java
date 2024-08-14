@@ -1,10 +1,12 @@
 package com.fithub.service.impl;
+import com.fithub.service.base.TokenService;
 import com.fithub.service.user.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class JWTServiceImpl implements JWTService {
     @Value("${refresh-token-expiration}")
     private Long refreshTokenExpiration;
 
+    @Autowired
+    private TokenService tokenService;
+
     public String generateToken(UserDetails userDetails){
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -39,6 +44,11 @@ public class JWTServiceImpl implements JWTService {
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    @Override
+    public void invalidateToken(String token) {
+        tokenService.invalidateToken(token);
     }
 
     public String extractUsername(String token){
@@ -62,7 +72,7 @@ public class JWTServiceImpl implements JWTService {
 
     public Boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) && tokenService.isTokenValid(token);
     }
 
     private Boolean isTokenExpired(String token){
