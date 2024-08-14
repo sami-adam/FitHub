@@ -7,7 +7,7 @@ public class FileUrlGenerator {
 
     public String generateFileUrl(String fileName) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/files/")
+                .path("/api/v1/files/")
                 .path(fileName)
                 .toUriString();
     }
