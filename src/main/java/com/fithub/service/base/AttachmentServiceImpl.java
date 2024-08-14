@@ -1,4 +1,5 @@
 package com.fithub.service.base;
+import com.fithub.config.FileUrlGenerator;
 import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.model.base.Attachment;
 import com.fithub.repository.base.AttachmentRepository;
@@ -19,10 +20,12 @@ public class AttachmentServiceImpl implements AttachmentService{
     private final AttachmentRepository attachmentRepository;
     private final ModelMapper mapper;
     private final Path fileStorageLocation;
+    private final FileUrlGenerator fileUrlGenerator; // Inject URL generator
 
     @Autowired
-    public AttachmentServiceImpl(AttachmentRepository attachmentRepository){
+    public AttachmentServiceImpl(AttachmentRepository attachmentRepository, FileUrlGenerator fileUrlGenerator){
         this.attachmentRepository = attachmentRepository;
+        this.fileUrlGenerator = fileUrlGenerator;
         this.mapper = new ModelMapper();
         this.fileStorageLocation = Paths.get("files").toAbsolutePath().normalize();
         try {
@@ -45,6 +48,10 @@ public class AttachmentServiceImpl implements AttachmentService{
         attachment.setName(file.getOriginalFilename());
         attachment.setType(file.getContentType());
         attachment.setPath(targetLocation.toString()); // Store the file path
+
+        // Generate the URL to access the file
+        String fileUrl = fileUrlGenerator.generateFileUrl(fileName);
+        attachment.setUrl(fileUrl); // Set the URL in the Attachment entity
 
         // Save the Attachment entity to the database
         Attachment saved = attachmentRepository.save(attachment);
