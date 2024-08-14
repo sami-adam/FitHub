@@ -89,7 +89,9 @@ public class MemberServiceImpl implements MemberService{
     // Delete Member
     public Map<String, String> deleteMember(Long id) {
         Map<String, String> response = new HashMap<>();
-        memberRepository.deleteById(id);
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Member not found"));
+        memberRepository.delete(member);
         response.put("message", "Resource has been successfully deleted");
         response.put("status", "success");
         return  response;
