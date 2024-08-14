@@ -20,7 +20,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Void invalidateToken(String token) {
+    public void invalidateToken(String token) {
         Token savedToken = tokenRepository.findByToken(token);
         if(savedToken != null) {
             savedToken.setValid(false);
@@ -30,6 +30,5 @@ public class TokenServiceImpl implements TokenService {
         invalidToken.setToken(token);
         invalidToken.setValid(false);
         tokenRepository.save(invalidToken);
-        return null;
     }
 }
