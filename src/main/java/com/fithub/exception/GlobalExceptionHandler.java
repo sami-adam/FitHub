@@ -1,6 +1,5 @@
 package com.fithub.exception;
 
-import com.fithub.model.base.ResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,22 +36,30 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseModel<?>> handleAllExceptions(Exception ex, WebRequest request) {
-        ResponseModel<Object> errorResponse = new ResponseModel<>(
-                false,
-                request.getDescription(false),
-                ex.getMessage()
+    public ResponseEntity<?> handleAllExceptions(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                        ex.getMessage(),
+                        request.getDescription(false)
+                ),
+                HttpStatus.INTERNAL_SERVER_ERROR
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(LoginException.class)
-    public ResponseEntity<ResponseModel<?>> handleLoginException(LoginException ex, WebRequest request) {
-        ResponseModel<Object> errorResponse = new ResponseModel<>(
-                false,
-                ex.getMessage(),
-                "Login failed"
+    public ResponseEntity<?> handleLoginException(LoginException ex, WebRequest request) {
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.UNAUTHORIZED.value(),
+                        HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                        ex.getMessage(),
+                        request.getDescription(false)
+                ),
+                HttpStatus.UNAUTHORIZED
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }
