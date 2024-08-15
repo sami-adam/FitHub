@@ -127,13 +127,31 @@ public class MemberServiceImpl implements MemberService{
         if (member != null) {
             Attachment attachment = mapper.map(picture, Attachment.class);
             member.setProfilePicture(attachment);
-            member.setUser(mapper.map(userService.getUserByEmail(member.getEmail()), User.class));
+            try {
+                if(member.getUser() == null){
+                    member.setUser(mapper.map(userService.getUserByEmail(member.getEmail()), User.class));
+                }
+            } catch (Exception e) {
+                // Do nothing;
+            }
             memberRepository.save(member);
             return mapper.map(member, MemberDTO.class);
         }
         else {
             throw new ResourceNotFoundException("Member not found");
         }
+    }
+
+    @Override
+    public Map<String, String> deleteProfilePicture(Long id) {
+        Map<String, String> response = new HashMap<>();
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Member not found"));
+        member.setProfilePicture(null);
+        memberRepository.save(member);
+        response.put("message", "Profile picture has been successfully deleted");
+        response.put("status", "success");
+        return  response;
     }
 
     // Crons

@@ -71,4 +71,9 @@ public class MemberController {
         AttachmentDTO attachmentDTO = attachmentService.storeAttachmentByContent(picture);
         return new ResponseEntity<>(memberService.uploadProfilePicture(id, attachmentDTO), HttpStatus.OK);
     }
+
+    @DeleteMapping("/member/{id}/picture")
+    public ResponseEntity<Map<String, String>> deleteProfilePicture(@PathVariable("id") Long id){
+        return new ResponseEntity<>(memberService.deleteProfilePicture(id), HttpStatus.OK);
+    }
 }
