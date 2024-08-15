@@ -15,6 +15,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
             "LOWER(m.member.firstName) LIKE LOWER(CONCAT('%', :firstName, '%')) OR " +
             "LOWER(m.member.lastName) LIKE LOWER(CONCAT('%', :lastName, '%')) OR " +
             "LOWER(m.member.identificationNumber) LIKE LOWER(CONCAT('%', :identificationNumber, '%')) OR " +
-            "m.status = :status")
-    List<Subscription> searchByKeyword(String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status);
+            "m.status = :status OR " +
+            "m.product.name LIKE CONCAT('%', :product, '%')")
+    List<Subscription> searchByKeyword(String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status, String product);
 }
