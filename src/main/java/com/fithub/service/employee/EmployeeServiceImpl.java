@@ -48,6 +48,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employeeDTO.getAddress() != null && !employeeDTO.getAddress().isBlank()) {
             employee.setAddress(employeeDTO.getAddress());
         }
+        if(employeeDTO.getEmployeeType() != null) {
+            employee.setEmployeeType(employeeDTO.getEmployeeType());
+        }
         if(employeeDTO.getUser() != null) {
             employee.setUser(employeeDTO.getUser());
         }

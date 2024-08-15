@@ -22,7 +22,16 @@ public class Employee extends BaseEntity {
     private String phone;
     private String address;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employee_type")
+    private EmployeeType employeeType;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public enum EmployeeType {
+        EMPLOYEE,
+        INSTRUCTOR
+    }
 }
