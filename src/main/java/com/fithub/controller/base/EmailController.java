@@ -77,4 +77,9 @@ public class EmailController {
     public ResponseEntity<String> deleteEmail(@PathVariable("id") Long id){
         return new ResponseEntity<>(emailService.deleteEmail(id), HttpStatus.OK);
     }
+
+    @GetMapping("/emails/search/{query}")
+    public ResponseEntity<List<EmailDTO>> searchEmails(@PathVariable("query") String query){
+        return new ResponseEntity<>(emailService.searchEmails(query), HttpStatus.OK);
+    }
 }

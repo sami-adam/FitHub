@@ -35,4 +35,9 @@ public class AccountController {
     public ResponseEntity<Map<String, String>> deleteAccount(@PathVariable Long id){
         return ResponseEntity.ok(accountService.deleteAccount(id));
     }
+
+    @GetMapping("/v1/accounts/search/{keyword}")
+    public ResponseEntity<List<AccountDTO>> searchAccounts(@PathVariable String keyword){
+        return ResponseEntity.ok(accountService.searchAccounts(keyword));
+    }
 }

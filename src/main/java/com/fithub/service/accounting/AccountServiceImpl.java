@@ -69,6 +69,13 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public List<AccountDTO> searchAccounts(String keyword) {
-        return List.of();
+        Account.Type type = null;
+        try {
+            type = Account.Type.valueOf(keyword.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return accountRepository.findByCodeContainingIgnoreCaseOrNameContainingIgnoreCaseOrTypeEquals(keyword, keyword, type)
+                .stream().map(account -> mapper.map(account, AccountDTO.class)).toList();
     }
 }

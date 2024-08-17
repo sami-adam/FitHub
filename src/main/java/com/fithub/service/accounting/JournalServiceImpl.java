@@ -58,6 +58,13 @@ public class JournalServiceImpl implements JournalService{
 
     @Override
     public List<JournalDTO> searchJournals(String keyword) {
-        return List.of();
+        Journal.Type type = null;
+        try {
+            type = Journal.Type.valueOf(keyword);
+        } catch (IllegalArgumentException ignored) {}
+
+        return journalRepository.findByCodeContainingIgnoreCaseOrNameContainingIgnoreCaseOrTypeEquals(keyword, keyword, type).stream()
+                .map(journal -> mapper.map(journal, JournalDTO.class))
+                .toList();
     }
 }

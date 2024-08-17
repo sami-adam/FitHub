@@ -8,4 +8,5 @@ public interface ProductCategoryService {
     ProductCategoryDTO addProductCategory(ProductCategoryDTO productCategoryDTO);
     ProductCategoryDTO updateProductCategory(Long id, ProductCategoryDTO productCategoryDTO);
     Map<String, String> deleteProductCategory(Long productCategoryId);
+    List<ProductCategoryDTO> searchProductCategories(String keyword);
 }

@@ -51,6 +51,6 @@ public class EntryServiceImpl implements EntryService{
 
     @Override
     public List<EntryDTO> searchEntries(String keyword) {
-        return List.of();
+        return entryRepository.searchEntries(keyword, keyword, keyword, keyword).stream().map(entry -> mapper.map(entry, EntryDTO.class)).toList();
     }
 }

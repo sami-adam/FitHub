@@ -49,6 +49,8 @@ public class BenefitServiceImpl implements BenefitService{
 
     @Override
     public List<BenefitDTO> searchBenefits(String keyword) {
-        return List.of();
+        return benefitRepository.findByNameContainingIgnoreCase(keyword).stream()
+                .map(benefit -> mapper.map(benefit, BenefitDTO.class))
+                .toList();
     }
 }

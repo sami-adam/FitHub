@@ -36,4 +36,9 @@ public class EntryController {
         return ResponseEntity.ok(entryService.deleteEntry(id));
     }
 
+    @GetMapping("/v1/entries/search/{keyword}")
+    public ResponseEntity<List<EntryDTO>> searchEntries(@PathVariable String keyword){
+        return ResponseEntity.ok(entryService.searchEntries(keyword));
+    }
+
 }

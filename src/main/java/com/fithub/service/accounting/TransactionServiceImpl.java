@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -81,12 +80,11 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public Map<String, String> deleteTransaction(Long id) {
-        return Map.of();
+    public void deleteTransaction(Long id) {
     }
 
     @Override
-    public String postTransaction(Long id) {
+    public void postTransaction(Long id) {
         Transaction transaction = transactionRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Transaction not found with id: " + id));
         for(Entry entry: transaction.getEntries()){
@@ -98,6 +96,11 @@ public class TransactionServiceImpl implements TransactionService{
         }
         transaction.setStatus(Transaction.Status.POSTED);
         transactionRepository.save(transaction);
-        return "Transaction posted successfully";
+    }
+
+    @Override
+    public List<TransactionDTO> searchTransactions(String query) {
+        return transactionRepository.findByReferenceContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query).stream()
+                .map(transaction -> mapper.map(transaction, TransactionDTO.class)).toList();
     }
 }

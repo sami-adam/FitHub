@@ -88,6 +88,11 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
+    @Override
+    public List<EmailDTO> searchEmails(String query) {
+        return emailRepository.findBySubjectContainingIgnoreCaseOrEmailFromContainingIgnoreCaseOrEmailToContainingIgnoreCase(query, query, query).stream().map(email -> mapper.map(email, EmailDTO.class)).toList();
+    }
+
     public List<EmailDTO> getEmails() {
         List<EmailDTO> emailDTOS = new ArrayList<>();
         for(Email email: emailRepository.findAll()){

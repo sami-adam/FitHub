@@ -10,4 +10,5 @@ public interface UserService {
     List<UserDTO> getUsers();
     UserDTO getUserByToken(String token);
     UserDTO getUserByEmail(String email);
+    List<UserDTO> searchUsers(String keyword);
 }

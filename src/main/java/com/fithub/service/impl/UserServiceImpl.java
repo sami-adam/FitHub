@@ -39,4 +39,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByEmail(String email){
         return mapper.map(userRepository.findByEmail(email) , UserDTO.class);
     }
+
+    @Override
+    public List<UserDTO> searchUsers(String keyword) {
+        return userRepository.findByNameContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword, keyword).stream()
+                .map(user -> mapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+    }
 }

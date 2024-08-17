@@ -36,6 +36,11 @@ public class TransactionController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/v1/transactions/search/{query}")
+    public ResponseEntity<List<TransactionDTO>> searchTransactions(@PathVariable String query){
+        return ResponseEntity.ok(transactionService.searchTransactions(query));
+    }
+
     @GetMapping("/v1/transaction/post/{id}")
     public ResponseEntity<String> postTransaction(@PathVariable Long id){
         transactionService.postTransaction(id);

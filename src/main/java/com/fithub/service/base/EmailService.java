@@ -11,4 +11,5 @@ public interface EmailService {
     EmailDTO getEmail(Long id);
     String sendEmail(EmailDTO emailDTO) throws MessagingException, IOException;
     String deleteEmail(Long id);
+    List<EmailDTO> searchEmails(String query);
 }

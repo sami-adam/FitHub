@@ -39,4 +39,9 @@ public class ProductCategoryController {
     public ResponseEntity<?> deleteProductCategory(@PathVariable Long id) {
         return new ResponseEntity<>(productCategoryService.deleteProductCategory(id), HttpStatus.OK);
     }
+
+    @GetMapping("/product-categories/search/{keyword}")
+    public ResponseEntity<List<ProductCategoryDTO>> searchProductCategories(@PathVariable String keyword) {
+        return new ResponseEntity<>(productCategoryService.searchProductCategories(keyword), HttpStatus.OK);
+    }
 }

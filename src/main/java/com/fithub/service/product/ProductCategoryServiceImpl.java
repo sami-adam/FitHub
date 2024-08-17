@@ -73,4 +73,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         productCategoryRepository.deleteById(productCategoryId);
         return Map.of("message", "Product category deleted successfully", "status", "success");
     }
+
+    @Override
+    public List<ProductCategoryDTO> searchProductCategories(String keyword) {
+        return productCategoryRepository.findByNameContainingIgnoreCase(keyword).stream()
+                .map(productCategory -> mapper.map(productCategory, ProductCategoryDTO.class))
+                .collect(Collectors.toList());
+    }
 }

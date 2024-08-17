@@ -78,4 +78,9 @@ public class AuthenticationController {
     public ResponseEntity<List<UserDTO>> getUsers(){
         return ResponseEntity.ok(userService.getUsers());
     }
+
+    @GetMapping("/v1/auth/users/search/{keyword}")
+    public ResponseEntity<List<UserDTO>> searchUsers(@PathVariable("keyword") String keyword){
+        return ResponseEntity.ok(userService.searchUsers(keyword));
+    }
 }
