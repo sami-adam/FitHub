@@ -18,6 +18,8 @@ public class Attachment extends BaseEntity {
     private AttachmentType attachmentType;
     private String type;
     private byte[] data;
+
+    @Column(columnDefinition = "TEXT", length = 1024)
     private String url;
     private String path;
 

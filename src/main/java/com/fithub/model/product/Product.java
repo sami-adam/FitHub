@@ -16,6 +16,7 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "TEXT", length = 1024)
     private String image;
     private String name;
     private String description;
