@@ -1,9 +1,12 @@
 package com.fithub.model.fitnessClass;
 
+import com.fithub.model.base.Attachment;
 import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -22,8 +25,9 @@ public class FitnessClass extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private IntensityLevel intensityLevel;
 
-    @Column(columnDefinition = "TEXT", length = 1024)
-    private String images;
+    @OneToMany
+    @JoinColumn(name = "fitness_class_id")
+    private List<Attachment> images;
 
     public enum IntensityLevel {
         LOW, MEDIUM, HIGH

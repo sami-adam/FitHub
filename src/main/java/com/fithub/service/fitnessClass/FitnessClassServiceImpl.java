@@ -1,21 +1,29 @@
 package com.fithub.service.fitnessClass;
 
+import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.fitnessClass.FitnessClassDTO;
+import com.fithub.exception.ResourceNotFoundException;
+import com.fithub.model.base.Attachment;
 import com.fithub.model.fitnessClass.FitnessClass;
+import com.fithub.repository.base.AttachmentRepository;
 import com.fithub.repository.fitnessClass.FitnessClassRepository;
+import com.fithub.service.base.AttachmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class FitnessClassServiceImpl implements FitnessClassService{
     private final FitnessClassRepository fitnessClassRepository;
+    private final AttachmentRepository attachmentRepository;
     private final ModelMapper mapper;
 
-    public FitnessClassServiceImpl(FitnessClassRepository fitnessClassRepository) {
+    public FitnessClassServiceImpl(FitnessClassRepository fitnessClassRepository, AttachmentRepository attachmentRepository) {
         this.fitnessClassRepository = fitnessClassRepository;
+        this.attachmentRepository = attachmentRepository;
         this.mapper = new ModelMapper();
     }
     @Override
@@ -45,8 +53,21 @@ public class FitnessClassServiceImpl implements FitnessClassService{
         if(fitnessClassDTO.getIntensityLevel() != null && !fitnessClassDTO.getIntensityLevel().isEmpty()) {
             fitnessClass.setIntensityLevel(FitnessClass.IntensityLevel.valueOf(fitnessClassDTO.getIntensityLevel()));
         }
-        if(fitnessClassDTO.getImages() != null && !fitnessClassDTO.getImages().isEmpty()) {
-            fitnessClass.setImages(fitnessClassDTO.getImages());
+        if(fitnessClassDTO.getImages() != null) {
+            List<Attachment> images = new ArrayList<>();
+            fitnessClass.getImages().clear();
+            for(AttachmentDTO attachmentDTO: fitnessClassDTO.getImages()){
+                if(attachmentDTO.getId() != null){
+                    Attachment attachment = attachmentRepository.findById(attachmentDTO.getId()).orElseThrow();
+                    attachment.setFitnessClass(fitnessClass);
+                    images.add(attachmentRepository.save(attachment));
+                } else {
+                    Attachment attachment = attachmentRepository.save(mapper.map(attachmentDTO, Attachment.class));
+                    attachment.setFitnessClass(fitnessClass);
+                    images.add(attachmentRepository.save(attachment));
+                }
+                fitnessClass.setImages(images);
+            }
         }
 
         fitnessClassRepository.save(fitnessClass);

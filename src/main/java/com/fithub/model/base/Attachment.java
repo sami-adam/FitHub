@@ -1,4 +1,5 @@
 package com.fithub.model.base;
+import com.fithub.model.fitnessClass.FitnessClass;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,4 +24,8 @@ public class Attachment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "email_id")
     private Email email;
+
+    @ManyToOne
+    @JoinColumn(name = "fitness_class_id")
+    private FitnessClass fitnessClass;
 }

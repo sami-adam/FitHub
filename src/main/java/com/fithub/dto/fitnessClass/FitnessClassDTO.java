@@ -1,4 +1,5 @@
 package com.fithub.dto.fitnessClass;
+import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.base.BaseEntityDTO;
 import lombok.Data;
 
@@ -11,5 +12,5 @@ public class FitnessClassDTO extends BaseEntityDTO {
     private String name;
     private String description;
     private String intensityLevel;
-    private String images;
+    private List<AttachmentDTO> images;
 }
