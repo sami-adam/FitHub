@@ -50,6 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             memberDTO.setFirstName(firstName);
             memberDTO.setLastName(lastName);
             memberDTO.setUser(savedUser);
+            memberDTO.setIdentificationNumber(savedUser.getId().toString());
             memberService.addMember(memberDTO);
         }
 
