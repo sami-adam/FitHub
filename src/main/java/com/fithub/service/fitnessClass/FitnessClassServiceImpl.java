@@ -60,6 +60,7 @@ public class FitnessClassServiceImpl implements FitnessClassService{
                 if(attachmentDTO.getId() != null){
                     Attachment attachment = attachmentRepository.findById(attachmentDTO.getId()).orElseThrow();
                     attachment.setFitnessClass(fitnessClass);
+                    attachment.setUrl(attachmentDTO.getUrl());
                     images.add(attachmentRepository.save(attachment));
                 } else {
                     Attachment attachment = attachmentRepository.save(mapper.map(attachmentDTO, Attachment.class));
