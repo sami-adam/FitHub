@@ -37,6 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAllExceptions(Exception ex, WebRequest request) {
+        ex.printStackTrace();
         return new ResponseEntity<>(
                 new ErrorResponse(
                         LocalDateTime.now(),

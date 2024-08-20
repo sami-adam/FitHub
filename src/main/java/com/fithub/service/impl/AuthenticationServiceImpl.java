@@ -1,16 +1,17 @@
 package com.fithub.service.impl;
 
-import com.fithub.dto.user.JWTAuthenticationResponse;
-import com.fithub.dto.user.RefreshTokenDTO;
-import com.fithub.dto.user.SignInDTO;
-import com.fithub.dto.user.SignUpDTO;
+import com.fithub.dto.member.MemberDTO;
+import com.fithub.dto.user.*;
 import com.fithub.exception.LoginException;
 import com.fithub.model.user.Role;
 import com.fithub.model.user.User;
 import com.fithub.repository.user.UserRepository;
+import com.fithub.service.member.MemberService;
 import com.fithub.service.user.AuthenticationService;
 import com.fithub.service.user.JWTService;
 import lombok.RequiredArgsConstructor;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final MemberService memberService;
+    private final ModelMapper mapper = new ModelMapper();
 
     public User signUp(SignUpDTO signUpDTO){
         User user = new User();
@@ -35,7 +39,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        // Create Member
+        MemberDTO existingMember = memberService.findMemberByEmail(signUpDTO.getEmail());
+        if(existingMember == null) {
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setEmail(signUpDTO.getEmail());
+            String firstName = signUpDTO.getName().split(" ").length > 0 ? signUpDTO.getName().split(" ")[0] : "";
+            String lastName = signUpDTO.getName().split(" ").length > 1 ? signUpDTO.getName().split(" ")[1] : "";
+            memberDTO.setFirstName(firstName);
+            memberDTO.setLastName(lastName);
+            memberDTO.setUser(savedUser);
+            memberService.addMember(memberDTO);
+        }
+
+        return savedUser;
     }
 
     public JWTAuthenticationResponse signIn(SignInDTO signInDTO){
@@ -58,6 +76,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return jwtAuthenticationResponse;
 
+    }
+
+    public Map<String, String> deleteAccount(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+        MemberDTO member = memberService.findMemberByEmail(user.getEmail());
+
+        if(member != null){
+            memberService.deleteMember(member.getId());
+        }
+        userRepository.delete(user);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User Deleted Successfully");
+        response.put("status", "success");
+        return response;
     }
 
     public JWTAuthenticationResponse refreshToken(RefreshTokenDTO refreshTokenDTO){

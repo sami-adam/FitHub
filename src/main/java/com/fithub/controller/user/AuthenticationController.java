@@ -74,6 +74,11 @@ public class AuthenticationController {
         return new ResponseEntity<>(userDetails, HttpStatus.OK);
     }
 
+    @DeleteMapping("/v1/auth/user/{id}")
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable("id") Long id){
+        return ResponseEntity.ok(authenticationService.deleteAccount(id));
+    }
+
     @GetMapping("/v1/auth/users")
     public ResponseEntity<List<UserDTO>> getUsers(){
         return ResponseEntity.ok(userService.getUsers());

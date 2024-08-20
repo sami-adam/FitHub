@@ -1,5 +1,6 @@
 package com.fithub.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.address.AddressDTO;
 import com.fithub.dto.base.AttachmentDTO;
@@ -8,10 +9,12 @@ import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.dto.user.UserDTO;
 import com.fithub.model.member.MemberStatus;
 import com.fithub.model.member.Gender;
+import com.fithub.model.user.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -27,7 +30,8 @@ public class MemberDTO extends BaseEntityDTO {
     @NotNull(message = "Last name cannot be null")
     @Size(min = 2, message = "Last name must be at least 2 characters long")
     private String lastName;
-    private UserDTO user;
+    @JsonIgnore
+    private User user;
     private Gender gender;
     private AddressDTO address;
     @Email(message = "Email should be valid")
@@ -38,9 +42,5 @@ public class MemberDTO extends BaseEntityDTO {
     private List<SubscriptionDTO> subscriptions;
     private MemberStatus status;
     private AttachmentDTO profilePicture;
-
-    void setUser(UserDTO user) {
-        this.user = user;
-    }
 
 }

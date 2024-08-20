@@ -154,6 +154,17 @@ public class MemberServiceImpl implements MemberService{
         return  response;
     }
 
+    @Override
+    public MemberDTO findMemberByEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            return mapper.map(member, MemberDTO.class);
+        }
+        else {
+            return null;
+        }
+    }
+
     // Crons
 
     public void checkMemberStatus(SecurityContext context) {

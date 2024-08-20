@@ -15,5 +15,6 @@ public interface MemberService {
     MemberDTO getMyProfile(String token);
     MemberDTO uploadProfilePicture(Long id, AttachmentDTO picture);
     Map<String, String> deleteProfilePicture(Long id);
+    MemberDTO findMemberByEmail(String email);
 
 }
