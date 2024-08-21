@@ -27,6 +27,8 @@ public class ProductServiceImpl implements ProductService{
         this.taxRepository = taxRepository;
         this.mapper = new ModelMapper();
     }
+
+    // Get Products
     @Override
     public List<ProductDTO> getProducts() {
         return productRepository.findAll().stream().map(product -> mapper.map(product, ProductDTO.class))
