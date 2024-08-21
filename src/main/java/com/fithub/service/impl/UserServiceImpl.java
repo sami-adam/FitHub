@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         return mapper.map(userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found")), UserDTO.class);
     }
 
+    // Get User By Id
     public UserDTO getUserByEmail(String email){
         return mapper.map(userRepository.findByEmail(email) , UserDTO.class);
     }
