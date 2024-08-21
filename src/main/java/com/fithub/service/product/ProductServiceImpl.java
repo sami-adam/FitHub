@@ -78,6 +78,7 @@ public class ProductServiceImpl implements ProductService{
         return Map.of("message", "Product deleted successfully", "status", "success");
     }
 
+    // Search Product
     @Override
     public List<ProductDTO> searchProducts(String keyword) {
         return  productRepository.searchProducts(keyword).stream().map(product -> mapper.map(product, ProductDTO.class))
