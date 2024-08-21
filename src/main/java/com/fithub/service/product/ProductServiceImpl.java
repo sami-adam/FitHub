@@ -20,6 +20,7 @@ public class ProductServiceImpl implements ProductService{
     private final TaxRepository taxRepository;
     private final ModelMapper mapper;
 
+    // Constructor
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository) {
         this.productRepository = productRepository;
