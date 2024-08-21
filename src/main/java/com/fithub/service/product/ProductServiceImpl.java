@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService{
         return mapper.map(product, ProductDTO.class);
     }
 
+    // Update Product
     @Override
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Product product = productRepository.findById(id).orElseThrow();
