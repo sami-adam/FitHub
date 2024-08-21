@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper = new ModelMapper();
     private final JWTService jwtService;
 
+    // User Details Service
     public UserDetailsService  userDetailsService(){
         return username -> userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
