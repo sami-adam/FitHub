@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    // Get Users
     public List<UserDTO> getUsers(){
         return userRepository.findAll().stream()
                 .map(user -> mapper.map(user, UserDTO.class))
