@@ -71,6 +71,7 @@ public class ProductServiceImpl implements ProductService{
         return mapper.map(product, ProductDTO.class);
     }
 
+    // Delete Product
     @Override
     public Map<String, String> deleteProduct(Long productId) {
         productRepository.deleteById(productId);
