@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    // Get User By Id
     public UserDTO getUserByToken(String token){
         String username = jwtService.extractUsername(token);
         return mapper.map(userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found")), UserDTO.class);
