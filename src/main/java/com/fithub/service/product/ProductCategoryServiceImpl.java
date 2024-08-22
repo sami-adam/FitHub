@@ -69,6 +69,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         return mapper.map(productCategory, ProductCategoryDTO.class);
     }
 
+    // Delete Product Category
     @Override
     public Map<String, String> deleteProductCategory(Long productCategoryId) {
         productCategoryRepository.deleteById(productCategoryId);
