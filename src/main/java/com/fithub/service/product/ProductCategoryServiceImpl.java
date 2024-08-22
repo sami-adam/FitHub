@@ -31,6 +31,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
                 .collect(Collectors.toList());
     }
 
+    // Add Product Category
     @Override
     public ProductCategoryDTO addProductCategory(ProductCategoryDTO productCategoryDTO) {
         productCategoryDTO.setId(null);
