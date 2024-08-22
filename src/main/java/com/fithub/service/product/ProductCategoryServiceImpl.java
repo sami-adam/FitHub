@@ -25,6 +25,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     private final ModelMapper mapper = new ModelMapper();
 
 
+    // Get Product Categories
     @Override
     public List<ProductCategoryDTO> getProductCategories() {
         return productCategoryRepository.findAll().stream().map(productCategory -> mapper.map(productCategory, ProductCategoryDTO.class))
