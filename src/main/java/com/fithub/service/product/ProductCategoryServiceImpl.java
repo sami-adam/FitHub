@@ -39,6 +39,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         return mapper.map(productCategory, ProductCategoryDTO.class);
     }
 
+    // Update Product Category
     @Override
     public ProductCategoryDTO updateProductCategory(Long id, ProductCategoryDTO productCategoryDTO) {
         ProductCategory productCategory = productCategoryRepository.findById(id).orElseThrow();
