@@ -67,6 +67,6 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
     @Override
     public List<ClassScheduleDTO> searchFitnessClassSchedules(String keyword) {
-        return List.of();
+        return classScheduleRepository.findByReferenceContainingIgnoreCase(keyword).stream().map(schedule -> mapper.map(schedule, ClassScheduleDTO.class)).toList();
     }
 }
