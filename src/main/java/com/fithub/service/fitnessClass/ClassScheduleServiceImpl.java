@@ -29,6 +29,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
         return mapper.map(classScheduleRepository.save(schedule), ClassScheduleDTO.class);
     }
 
+    // Update the fitness class schedule
     @Override
     public ClassScheduleDTO updateFitnessClassSchedule(Long id, ClassScheduleDTO classScheduleDTO) {
         System.out.println(classScheduleDTO);
