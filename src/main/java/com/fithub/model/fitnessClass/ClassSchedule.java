@@ -29,10 +29,17 @@ public class ClassSchedule extends BaseEntity {
     @JoinColumn(name = "instructor_id")
     private Employee instructor;
 
+    private Double price;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status {
         NEW, PLANNED, RUNNING, FINISHED, CANCELLED
+    }
+
+    @PostPersist
+    public void postPersist() {
+        reference = "CSC" + String.format("%06d", id);
     }
 }

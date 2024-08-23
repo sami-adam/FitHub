@@ -2,7 +2,9 @@ package com.fithub.service.fitnessClass;
 
 import com.fithub.dto.fitnessClass.ClassScheduleDTO;
 import com.fithub.exception.ResourceNotFoundException;
+import com.fithub.model.employee.Employee;
 import com.fithub.model.fitnessClass.ClassSchedule;
+import com.fithub.model.fitnessClass.FitnessClass;
 import com.fithub.repository.fitnessClass.ClassScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -29,11 +31,27 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
     @Override
     public ClassScheduleDTO updateFitnessClassSchedule(Long id, ClassScheduleDTO classScheduleDTO) {
-        ClassSchedule schedule = mapper.map(classScheduleDTO, ClassSchedule.class);
-        if (!classScheduleRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Fitness Schedule not found with id: " + id);
+        System.out.println(classScheduleDTO);
+        ClassSchedule schedule = classScheduleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Fitness Schedule not found with id: " + id));
+        if(classScheduleDTO.getFitnessClass() != null) {
+            schedule.setFitnessClass(mapper.map(classScheduleDTO.getFitnessClass(), FitnessClass.class));
         }
-        schedule.setId(id);
+        if(classScheduleDTO.getInstructor() != null) {
+            schedule.setInstructor(mapper.map(classScheduleDTO.getInstructor(), Employee.class));
+        }
+        if(classScheduleDTO.getPrice() != null) {
+            schedule.setPrice(classScheduleDTO.getPrice());
+        }
+        if(classScheduleDTO.getStartDate() != null) {
+            schedule.setStartDate(classScheduleDTO.getStartDate());
+        }
+        if(classScheduleDTO.getEndDate() != null) {
+            schedule.setEndDate(classScheduleDTO.getEndDate());
+        }
+        if(classScheduleDTO.getStatus() != null) {
+            schedule.setStatus(classScheduleDTO.getStatus());
+        }
+
         return mapper.map(classScheduleRepository.save(schedule), ClassScheduleDTO.class);
     }
 

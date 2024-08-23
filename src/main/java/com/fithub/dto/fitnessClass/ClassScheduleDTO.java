@@ -15,5 +15,6 @@ public class ClassScheduleDTO extends BaseEntityDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private EmployeeDTO instructor;
+    private Double price;
     private ClassSchedule.Status status;
 }
