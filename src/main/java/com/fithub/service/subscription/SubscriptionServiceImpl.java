@@ -22,7 +22,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -71,7 +70,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // Add New Membership
     public SubscriptionDTO addSubscription(SubscriptionDTO subscriptionDTO) {
-        System.out.println(subscriptionDTO);
         subscriptionRepository.save(mapper.map(subscriptionDTO, Subscription.class));
         return subscriptionDTO;
     }
@@ -125,7 +123,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // Search Memberships
     public List<SubscriptionDTO> searchSubscription(String keyword){
-        System.out.println(keyword);
         SubscriptionStatus status;
         try{
             status = SubscriptionStatus.valueOf(keyword.toUpperCase());
