@@ -20,6 +20,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactions());
     }
 
+    @GetMapping("/v1/transaction/{id}")
+    public ResponseEntity<TransactionDTO> getTransaction(@PathVariable Long id){
+        return ResponseEntity.ok(transactionService.getTransaction(id));
+    }
+
     @PostMapping("/v1/transaction")
     public ResponseEntity<TransactionDTO> addTransaction(@RequestBody TransactionDTO transactionDTO){
         return ResponseEntity.ok(transactionService.addTransaction(transactionDTO));

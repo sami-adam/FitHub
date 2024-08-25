@@ -32,6 +32,13 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
+    public TransactionDTO getTransaction(Long id) {
+        Transaction transaction = transactionRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Transaction not found with id: " + id));
+        return mapper.map(transaction, TransactionDTO.class);
+    }
+
+    @Override
     public TransactionDTO addTransaction(TransactionDTO transactionDTO) {
         Transaction transaction = mapper.map(transactionDTO, Transaction.class);
         Transaction savedTransaction = transactionRepository.save(transaction);

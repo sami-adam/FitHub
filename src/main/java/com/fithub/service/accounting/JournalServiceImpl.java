@@ -26,6 +26,14 @@ public class JournalServiceImpl implements JournalService{
     }
 
     @Override
+    public JournalDTO getJournal(Long id) {
+        Journal journal = journalRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Journal not found with id: " + id)
+        );
+        return mapper.map(journal, JournalDTO.class);
+    }
+
+    @Override
     public JournalDTO addJournal(JournalDTO journalDTO) {
         Journal journal = mapper.map(journalDTO, Journal.class);
         journalRepository.save(journal);

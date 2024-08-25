@@ -10,33 +10,38 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
 
-    @GetMapping("/v1/accounts")
+    @GetMapping("/accounts")
     public ResponseEntity<List<AccountDTO>> getAccounts(){
         return ResponseEntity.ok(accountService.getAccounts());
     }
 
-    @PostMapping("/v1/account")
+    @GetMapping("/account/{id}")
+    public ResponseEntity<AccountDTO> getAccount(@PathVariable Long id){
+        return ResponseEntity.ok(accountService.getAccount(id));
+    }
+
+    @PostMapping("/account")
     public ResponseEntity<AccountDTO> addAccount(@RequestBody AccountDTO accountDTO){
         return ResponseEntity.ok(accountService.addAccount(accountDTO));
     }
 
-    @PutMapping("/v1/account/{id}")
+    @PutMapping("/account/{id}")
     public ResponseEntity<AccountDTO> updateAccount(@PathVariable Long id,@RequestBody AccountDTO accountDTO){
         return ResponseEntity.ok(accountService.updateAccount(id, accountDTO));
     }
 
-    @DeleteMapping("/v1/account/{id}")
+    @DeleteMapping("/account/{id}")
     public ResponseEntity<Map<String, String>> deleteAccount(@PathVariable Long id){
         return ResponseEntity.ok(accountService.deleteAccount(id));
     }
 
-    @GetMapping("/v1/accounts/search/{keyword}")
+    @GetMapping("/accounts/search/{keyword}")
     public ResponseEntity<List<AccountDTO>> searchAccounts(@PathVariable String keyword){
         return ResponseEntity.ok(accountService.searchAccounts(keyword));
     }

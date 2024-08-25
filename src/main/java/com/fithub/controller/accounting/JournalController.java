@@ -9,33 +9,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class JournalController {
     private final JournalService journalService;
 
-    @GetMapping("/v1/journals")
+    @GetMapping("/journals")
     public ResponseEntity<List<JournalDTO>> getJournals(){
         return ResponseEntity.ok(journalService.getJournals());
     }
 
-    @PostMapping("/v1/journal")
+    @GetMapping("/journal/{id}")
+    public ResponseEntity<JournalDTO> getJournal(@PathVariable Long id){
+        return ResponseEntity.ok(journalService.getJournal(id));
+    }
+
+    @PostMapping("/journal")
     public ResponseEntity<JournalDTO> addJournal(@RequestBody JournalDTO journalDTO){
         return ResponseEntity.ok(journalService.addJournal(journalDTO));
     }
 
-    @PutMapping("/v1/journal/{id}")
+    @PutMapping("/journal/{id}")
     public ResponseEntity<JournalDTO> updateJournal(@PathVariable Long id, @RequestBody JournalDTO journalDTO){
         return ResponseEntity.ok(journalService.updateJournal(id, journalDTO));
     }
 
-    @DeleteMapping("/v1/journal/{id}")
+    @DeleteMapping("/journal/{id}")
     public ResponseEntity<?> deleteJournal(@PathVariable Long id){
         return ResponseEntity.ok(journalService.deleteJournal(id));
     }
 
-    @GetMapping("/v1/journals/search/{keyword}")
+    @GetMapping("/journals/search/{keyword}")
     public ResponseEntity<List<JournalDTO>> searchJournals(@PathVariable String keyword){
         return ResponseEntity.ok(journalService.searchJournals(keyword));
     }

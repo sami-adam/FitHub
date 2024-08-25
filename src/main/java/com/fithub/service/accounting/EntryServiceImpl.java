@@ -25,6 +25,12 @@ public class EntryServiceImpl implements EntryService{
     }
 
     @Override
+    public EntryDTO getEntry(Long id) {
+        Entry entry = entryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entry not found"));
+        return mapper.map(entry, EntryDTO.class);
+    }
+
+    @Override
     public EntryDTO addEntry(EntryDTO entryDTO) {
         Entry entry = mapper.map(entryDTO, Entry.class);
         entryRepository.save(entry);

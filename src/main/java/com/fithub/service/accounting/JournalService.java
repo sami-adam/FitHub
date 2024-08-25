@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface JournalService {
     List<JournalDTO> getJournals();
+    JournalDTO getJournal(Long id);
     JournalDTO addJournal(JournalDTO journalDTO);
     JournalDTO updateJournal(Long id, JournalDTO journalDTO);
     Map<String, String> deleteJournal(Long id);

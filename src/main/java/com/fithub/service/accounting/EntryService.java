@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface EntryService {
     List<EntryDTO> getEntries();
+    EntryDTO getEntry(Long id);
     EntryDTO addEntry(EntryDTO entryDTO);
     EntryDTO updateEntry(Long id, EntryDTO entryDTO);
     Map<String, String> deleteEntry(Long id);

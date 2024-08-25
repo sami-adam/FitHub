@@ -9,6 +9,7 @@ import java.util.Map;
 public interface AccountService {
     AccountDTO addAccount(AccountDTO accountDTO);
     List<AccountDTO> getAccounts();
+    AccountDTO getAccount(Long id);
     AccountDTO updateAccount(Long id, AccountDTO accountDTO);
     Map<String, String> deleteAccount(Long id);
     List<AccountDTO> searchAccounts(String keyword);

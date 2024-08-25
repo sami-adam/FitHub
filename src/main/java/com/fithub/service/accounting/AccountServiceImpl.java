@@ -32,6 +32,12 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public AccountDTO getAccount(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found with id: " + id));
+        return mapper.map(account, AccountDTO.class);
+    }
+
+    @Override
     public AccountDTO updateAccount(Long id, AccountDTO accountDTO) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found with id: " + id));
         if(accountDTO.getName() != null) account.setName(accountDTO.getName());
