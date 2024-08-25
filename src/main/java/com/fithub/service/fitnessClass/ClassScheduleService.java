@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface ClassScheduleService {
     List<ClassScheduleDTO> getFitnessClassSchedules();
+    ClassScheduleDTO getFitnessClassSchedule(Long id);
     ClassScheduleDTO addFitnessClassSchedule(ClassScheduleDTO classScheduleDTO);
     ClassScheduleDTO updateFitnessClassSchedule(Long id, ClassScheduleDTO classScheduleDTO);
     Map<String, String> deleteFitnessClassSchedule(Long id);

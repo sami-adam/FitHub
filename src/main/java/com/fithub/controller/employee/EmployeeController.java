@@ -25,6 +25,11 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getEmployees(), HttpStatus.OK);
     }
 
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable Long id) {
+        return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
+    }
+
     @PostMapping("/employee")
     public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return new ResponseEntity<>(employeeService.addEmployee(employeeDTO), HttpStatus.CREATED);

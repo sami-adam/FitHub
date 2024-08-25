@@ -5,6 +5,7 @@ import java.util.Map;
 
 public interface ProductService {
     List<ProductDTO> getProducts();
+    ProductDTO getProduct(Long id);
     ProductDTO addProduct(ProductDTO productDTO);
     ProductDTO updateProduct(Long id, ProductDTO productDTO);
     Map<String,String> deleteProduct(Long productId);

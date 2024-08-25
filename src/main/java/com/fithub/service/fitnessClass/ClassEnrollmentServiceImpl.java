@@ -1,6 +1,7 @@
 package com.fithub.service.fitnessClass;
 
 import com.fithub.dto.fitnessClass.ClassEnrollmentDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.fitnessClass.ClassEnrollment;
 import com.fithub.model.fitnessClass.ClassSchedule;
 import com.fithub.model.fitnessClass.FitnessClass;
@@ -23,6 +24,13 @@ public class ClassEnrollmentServiceImpl implements ClassEnrollmentService{
         return classEnrollmentRepository.findAll().stream()
                 .map(classEnrollment -> mapper.map(classEnrollment, ClassEnrollmentDTO.class))
                 .toList();
+    }
+
+    @Override
+    public ClassEnrollmentDTO getClassEnrollment(Long id) {
+        ClassEnrollment classEnrollment = classEnrollmentRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Class enrollment not found"));
+        return mapper.map(classEnrollment, ClassEnrollmentDTO.class);
     }
 
     @Override

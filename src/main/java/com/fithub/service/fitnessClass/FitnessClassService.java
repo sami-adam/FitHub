@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface FitnessClassService {
     List<FitnessClassDTO> getFitnessClasses();
+    FitnessClassDTO getFitnessClass(Long id);
     FitnessClassDTO addFitnessClass(FitnessClassDTO fitnessClassDTO);
     FitnessClassDTO updateFitnessClass(Long id, FitnessClassDTO fitnessClassDTO);
     Map<String, String> deleteFitnessClass(Long id);

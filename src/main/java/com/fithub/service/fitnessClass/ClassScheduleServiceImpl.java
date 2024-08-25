@@ -24,6 +24,12 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     }
 
     @Override
+    public ClassScheduleDTO getFitnessClassSchedule(Long id) {
+        ClassSchedule schedule = classScheduleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Fitness Schedule not found with id: " + id));
+        return mapper.map(schedule, ClassScheduleDTO.class);
+    }
+
+    @Override
     public ClassScheduleDTO addFitnessClassSchedule(ClassScheduleDTO classScheduleDTO) {
         ClassSchedule schedule = mapper.map(classScheduleDTO, ClassSchedule.class);
         return mapper.map(classScheduleRepository.save(schedule), ClassScheduleDTO.class);

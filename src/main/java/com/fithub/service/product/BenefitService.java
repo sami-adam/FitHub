@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface BenefitService {
     List<BenefitDTO> getBenefits();
+    BenefitDTO getBenefit(Long id);
     BenefitDTO addBenefit(BenefitDTO benefitDTO);
     BenefitDTO updateBenefit(Long id, BenefitDTO benefitDTO);
     Map<String, String> deleteBenefit(Long id);

@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface MemberService {
     List<MemberDTO> getMembers();
+    MemberDTO getMember(Long id);
     MemberDTO addMember(MemberDTO membershipDTO);
     MemberDTO updateMember(Long id, MemberDTO membershipDTO);
     Map<String, String> deleteMember(Long id);

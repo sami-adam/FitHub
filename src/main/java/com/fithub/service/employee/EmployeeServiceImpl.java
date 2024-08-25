@@ -1,6 +1,7 @@
 package com.fithub.service.employee;
 
 import com.fithub.dto.employee.EmployeeDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.employee.Employee;
 import com.fithub.repository.employee.EmployeeRepository;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> getEmployees() {
         return employeeRepository.findAll().stream().map(employee -> mapper.map(employee, EmployeeDTO.class)).toList();
+    }
+
+    @Override
+    public EmployeeDTO getEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Employee not found with id: " + id));
+        return mapper.map(employee, EmployeeDTO.class);
     }
 
     @Override

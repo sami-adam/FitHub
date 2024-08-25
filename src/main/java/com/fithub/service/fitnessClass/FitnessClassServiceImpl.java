@@ -34,6 +34,14 @@ public class FitnessClassServiceImpl implements FitnessClassService{
     }
 
     @Override
+    public FitnessClassDTO getFitnessClass(Long id) {
+        FitnessClass fitnessClass = fitnessClassRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Fitness class not found with id: " + id)
+        );
+        return mapper.map(fitnessClass, FitnessClassDTO.class);
+    }
+
+    @Override
     public FitnessClassDTO addFitnessClass(FitnessClassDTO fitnessClassDTO) {
         fitnessClassRepository.save(mapper.map(fitnessClassDTO, FitnessClass.class));
         return fitnessClassDTO;

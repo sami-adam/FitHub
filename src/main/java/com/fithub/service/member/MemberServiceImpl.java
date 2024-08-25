@@ -51,6 +51,13 @@ public class MemberServiceImpl implements MemberService{
         return members.stream().map(member -> mapper.map(member, MemberDTO.class)).toList();
     }
 
+    @Override
+    public MemberDTO getMember(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Member not found"));
+        return mapper.map(member, MemberDTO.class);
+    }
+
     // Add New Member
     public MemberDTO addMember(MemberDTO membershipDTO) {
         Member member = memberRepository.save(mapper.map(membershipDTO, Member.class));

@@ -21,6 +21,11 @@ public class BenefitController {
         return new ResponseEntity<>(benefitService.getBenefits(), HttpStatus.OK);
     }
 
+    @GetMapping("/benefit/{id}")
+    public ResponseEntity<BenefitDTO> getBenefit(@PathVariable Long id) {
+        return new ResponseEntity<>(benefitService.getBenefit(id), HttpStatus.OK);
+    }
+
     @PostMapping("/benefit")
     public ResponseEntity<BenefitDTO> addBenefit(@RequestBody BenefitDTO benefitDTO) {
         return new ResponseEntity<>(benefitService.addBenefit(benefitDTO), HttpStatus.CREATED);

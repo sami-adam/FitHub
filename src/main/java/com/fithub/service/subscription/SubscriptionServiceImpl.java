@@ -1,6 +1,7 @@
 package com.fithub.service.subscription;
 
 import com.fithub.dto.subscription.SubscriptionDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
@@ -59,7 +60,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public SubscriptionDTO getSubscription(Long id) {
-        Subscription subscription = subscriptionRepository.findById(id).orElseThrow();
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Subscription not found")
+        );
         if(subscription.getId() > 0){
             return mapper.map(subscription, SubscriptionDTO.class);
         }

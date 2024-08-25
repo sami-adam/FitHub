@@ -19,6 +19,11 @@ public class ClassEnrollmentController {
         return classEnrollmentService.getClassEnrollments();
     }
 
+    @GetMapping("/class-enrollment/{id}")
+    public ClassEnrollmentDTO getClassEnrollment(@PathVariable Long id) {
+        return classEnrollmentService.getClassEnrollment(id);
+    }
+
     @PostMapping("/class-enrollment")
     public ClassEnrollmentDTO addClassEnrollment(@RequestBody ClassEnrollmentDTO classEnrollmentDTO) {
         return classEnrollmentService.addClassEnrollment(classEnrollmentDTO);

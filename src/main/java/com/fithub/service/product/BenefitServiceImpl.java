@@ -1,6 +1,7 @@
 package com.fithub.service.product;
 
 import com.fithub.dto.product.BenefitDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.product.Benefit;
 import com.fithub.repository.product.BenefitRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,13 @@ public class BenefitServiceImpl implements BenefitService{
         return benefitRepository.findAll().stream()
                 .map(benefit -> mapper.map(benefit, BenefitDTO.class))
                 .toList();
+    }
+
+    @Override
+    public BenefitDTO getBenefit(Long id) {
+        Benefit benefit = benefitRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Benefit not found with id: " + id));
+        return mapper.map(benefit, BenefitDTO.class);
     }
 
     @Override

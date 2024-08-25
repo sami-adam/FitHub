@@ -2,6 +2,7 @@ package com.fithub.service.product;
 
 import com.fithub.dto.product.BenefitDTO;
 import com.fithub.dto.product.ProductCategoryDTO;
+import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.model.product.Benefit;
 import com.fithub.model.product.ProductCategory;
@@ -30,6 +31,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     public List<ProductCategoryDTO> getProductCategories() {
         return productCategoryRepository.findAll().stream().map(productCategory -> mapper.map(productCategory, ProductCategoryDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductCategoryDTO getProductCategory(Long id) {
+        ProductCategory productCategory = productCategoryRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product category not found with id: " + id)
+        );
+        return mapper.map(productCategory, ProductCategoryDTO.class);
     }
 
     // Add Product Category

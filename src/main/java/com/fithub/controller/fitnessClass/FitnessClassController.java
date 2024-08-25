@@ -25,6 +25,11 @@ public class FitnessClassController {
         return new ResponseEntity<>(fitnessClassService.getFitnessClasses(), HttpStatus.OK);
     }
 
+    @GetMapping("/fitness-class/{id}")
+    public ResponseEntity<FitnessClassDTO> getFitnessClass(@PathVariable Long id) {
+        return new ResponseEntity<>(fitnessClassService.getFitnessClass(id), HttpStatus.OK);
+    }
+
     @PostMapping("/fitness-class")
     public ResponseEntity<FitnessClassDTO> addFitnessClass(@RequestBody FitnessClassDTO fitnessClassDTO) {
         return new ResponseEntity<>(fitnessClassService.addFitnessClass(fitnessClassDTO), HttpStatus.CREATED);

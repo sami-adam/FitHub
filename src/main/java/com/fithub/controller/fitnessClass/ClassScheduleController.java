@@ -21,6 +21,11 @@ public class ClassScheduleController {
         return new ResponseEntity<>(classScheduleService.getFitnessClassSchedules(), HttpStatus.OK);
     }
 
+    @GetMapping("/class-schedule/{id}")
+    public ResponseEntity<ClassScheduleDTO> getClassSchedule(@PathVariable Long id) {
+        return new ResponseEntity<>(classScheduleService.getFitnessClassSchedule(id), HttpStatus.OK);
+    }
+
     @PostMapping("/class-schedule")
     public ResponseEntity<ClassScheduleDTO> addClassSchedule(@RequestBody ClassScheduleDTO classScheduleDTO) {
         return new ResponseEntity<>(classScheduleService.addFitnessClassSchedule(classScheduleDTO), HttpStatus.CREATED);

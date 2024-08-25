@@ -35,6 +35,12 @@ public class MemberController {
         return new ResponseEntity<>(memberService.getMembers(), HttpStatus.OK);
     }
 
+    // Get Member
+    @GetMapping("/member/{id}")
+    public ResponseEntity<MemberDTO> getMember(@PathVariable("id") Long id){
+        return new ResponseEntity<>(memberService.getMember(id), HttpStatus.OK);
+    }
+
     // Add New Member
     @PostMapping("/member")
     public ResponseEntity<MemberDTO> addMember(@RequestBody MemberDTO memberDTO){
