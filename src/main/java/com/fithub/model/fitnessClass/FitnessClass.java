@@ -2,6 +2,7 @@ package com.fithub.model.fitnessClass;
 
 import com.fithub.model.base.Attachment;
 import com.fithub.model.base.BaseEntity;
+import com.fithub.model.base.Tax;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,10 @@ public class FitnessClass extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private IntensityLevel intensityLevel;
+
+    @ManyToOne
+    @JoinColumn(name = "tax_id")
+    private Tax tax;
 
     @OneToMany
     @JoinColumn(name = "fitness_class_id")

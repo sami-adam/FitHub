@@ -5,15 +5,15 @@ import com.fithub.dto.employee.EmployeeDTO;
 import com.fithub.model.fitnessClass.ClassSchedule;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class ClassScheduleDTO extends BaseEntityDTO {
     private Long id;
     private String reference;
     private FitnessClassDTO fitnessClass;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Date startDate;
+    private Date endDate;
     private EmployeeDTO instructor;
     private Double price;
     private ClassSchedule.Status status;

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -22,8 +22,8 @@ public class ClassSchedule extends BaseEntity {
     @JoinColumn(name = "fitness_class_id")
     private  FitnessClass fitnessClass;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Date startDate;
+    private Date endDate;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
@@ -40,6 +40,11 @@ public class ClassSchedule extends BaseEntity {
 
     @PostPersist
     public void postPersist() {
+        reference = "CSC" + String.format("%06d", id);
+    }
+
+    @PreUpdate
+    public void preUpdate() {
         reference = "CSC" + String.format("%06d", id);
     }
 }
