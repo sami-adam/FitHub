@@ -13,4 +13,5 @@ public interface SubscriptionService {
     Map<String, String> deleteSubscription(Long id);
     List<SubscriptionDTO> searchSubscription(String keyword);
     String changeStatus(Long id);
+    SubscriptionDTO generateAccountTransaction(Long id);
 }

@@ -1,5 +1,6 @@
 package com.fithub.service.subscription;
 
+import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.member.Member;
@@ -10,6 +11,7 @@ import com.fithub.repository.base.TaxRepository;
 import com.fithub.repository.member.MemberRepository;
 import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
+import com.fithub.service.accounting.TransactionService;
 import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import lombok.Data;
@@ -34,6 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final ProductRepository productRepository;
     private final TaxRepository taxRepository;
     private final ModelMapper mapper;
+    private final TransactionService transactionService;
     private final Logger logger = Logger.getLogger(SubscriptionServiceImpl.class.getName());
 
     @Autowired
@@ -43,11 +46,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private JWTService jwtUtil;
 
     @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository, TaxRepository taxRepository) {
+    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository, TaxRepository taxRepository, TransactionService transactionService) {
         this.subscriptionRepository = subscriptionRepository;
         this.memberRepository = memberRepository;
         this.productRepository = productRepository;
         this.taxRepository = taxRepository;
+        this.transactionService = transactionService;
         this.mapper = new ModelMapper();
     }
 
@@ -148,6 +152,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             return "Status Changed";
         }
         return "Failed To Change Status";
+    }
+
+    @Override
+    public SubscriptionDTO generateAccountTransaction(Long id) {
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Subscription not found")
+        );
+        if(subscription.getTransaction() == null){
+            TransactionDTO transactionDTO = new TransactionDTO();
+            transactionDTO.setDescription(String.format("Subscription Payment for %s", subscription.getReference()));
+            // Todo: Add Transaction Amount
+        }
+        return null;
     }
 
     public void checkSubscriptionStatus(String token){

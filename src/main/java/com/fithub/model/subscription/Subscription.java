@@ -1,5 +1,6 @@
 package com.fithub.model.subscription;
 
+import com.fithub.model.accounting.Transaction;
 import com.fithub.model.base.BaseEntity;
 import com.fithub.model.base.Tax;
 import com.fithub.model.member.Member;
@@ -53,6 +54,10 @@ public class Subscription extends BaseEntity {
 
     @Column(name = "net_amount")
     private double netAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "transaction_id")
+    private Transaction transaction;
 
     @ManyToOne
     @JoinColumn(name = "tax_id")
