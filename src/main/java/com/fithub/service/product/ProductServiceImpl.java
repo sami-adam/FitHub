@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -34,7 +33,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<ProductDTO> getProducts() {
         return productRepository.findAll().stream().map(product -> mapper.map(product, ProductDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -94,6 +93,6 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<ProductDTO> searchProducts(String keyword) {
         return  productRepository.searchProducts(keyword).stream().map(product -> mapper.map(product, ProductDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
