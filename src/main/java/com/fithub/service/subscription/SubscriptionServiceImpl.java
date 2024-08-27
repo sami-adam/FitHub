@@ -1,8 +1,12 @@
 package com.fithub.service.subscription;
 
+import com.fithub.dto.accounting.AccountDTO;
+import com.fithub.dto.accounting.EntryDTO;
 import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
+import com.fithub.model.accounting.Entry;
+import com.fithub.model.accounting.Transaction;
 import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
@@ -25,6 +29,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -161,8 +167,24 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         );
         if(subscription.getTransaction() == null){
             TransactionDTO transactionDTO = new TransactionDTO();
+            transactionDTO.setTimestamp(LocalDate.now().atStartOfDay());
             transactionDTO.setDescription(String.format("Subscription Payment for %s", subscription.getReference()));
-            // Todo: Add Transaction Amount
+            EntryDTO firstEntry = new EntryDTO();
+            firstEntry.setDebit((BigDecimal.valueOf(subscription.getSubscriptionUnitPrice() * subscription.getSubscriptionQty())));
+            firstEntry.setType(Entry.Type.DEBIT);
+            firstEntry.setAccount(mapper.map(subscription.getProduct().getCategory().getIncomeAccount(), AccountDTO.class));
+            firstEntry.setTransaction(transactionDTO);
+
+            EntryDTO secondEntry = new EntryDTO();
+            secondEntry.setCredit((BigDecimal.valueOf(subscription.getSubscriptionUnitPrice() * subscription.getSubscriptionQty())));
+            secondEntry.setType(Entry.Type.CREDIT);
+            secondEntry.setAccount(mapper.map(subscription.getProduct().getCategory().getExpenseAccount(), AccountDTO.class));
+            secondEntry.setTransaction(transactionDTO);
+
+            transactionDTO.setEntries(List.of(firstEntry, secondEntry));
+            TransactionDTO savedTransactionDTO = transactionService.addTransaction(transactionDTO);
+            subscription.setTransaction(mapper.map(transactionService.getTransaction(savedTransactionDTO.getId()), Transaction.class));
+            subscriptionRepository.save(subscription);
         }
         return null;
     }

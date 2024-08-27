@@ -61,4 +61,9 @@ public class SubscriptionController {
     public ResponseEntity<String> changeStatus(@PathVariable Long id){
         return new ResponseEntity<>(subscriptionService.changeStatus(id), HttpStatus.OK);
     }
+
+    @PostMapping("/subscription/account-transaction/{id}")
+    public ResponseEntity<SubscriptionDTO> generateAccountTransaction(@PathVariable Long id){
+        return new ResponseEntity<>(subscriptionService.generateAccountTransaction(id), HttpStatus.OK);
+    }
 }
