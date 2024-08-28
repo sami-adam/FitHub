@@ -2,6 +2,7 @@ package com.fithub.service.subscription;
 
 import com.fithub.dto.accounting.AccountDTO;
 import com.fithub.dto.accounting.EntryDTO;
+import com.fithub.dto.accounting.JournalDTO;
 import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
@@ -15,10 +16,12 @@ import com.fithub.repository.base.TaxRepository;
 import com.fithub.repository.member.MemberRepository;
 import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
+import com.fithub.service.accounting.JournalService;
 import com.fithub.service.accounting.TransactionService;
 import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,30 +39,22 @@ import java.util.logging.Logger;
 
 @Service
 @Data
+@RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final TaxRepository taxRepository;
-    private final ModelMapper mapper;
     private final TransactionService transactionService;
+    private final JournalService journalService;
     private final Logger logger = Logger.getLogger(SubscriptionServiceImpl.class.getName());
+    private final ModelMapper mapper = new ModelMapper();
 
     @Autowired
     private UserService usersService;
 
     @Autowired
     private JWTService jwtUtil;
-
-    @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, MemberRepository memberRepository, ProductRepository productRepository, TaxRepository taxRepository, TransactionService transactionService) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.memberRepository = memberRepository;
-        this.productRepository = productRepository;
-        this.taxRepository = taxRepository;
-        this.transactionService = transactionService;
-        this.mapper = new ModelMapper();
-    }
 
     // Get All Memberships
     public List<SubscriptionDTO> getSubscriptions(){
@@ -166,6 +161,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 () -> new ResourceNotFoundException("Subscription not found")
         );
         if(subscription.getTransaction() == null){
+            List<JournalDTO> journalDTOS = journalService.searchJournals("Sale");
             TransactionDTO transactionDTO = new TransactionDTO();
             transactionDTO.setTimestamp(LocalDate.now().atStartOfDay());
             transactionDTO.setDescription(String.format("Subscription Payment for %s", subscription.getReference()));
@@ -182,6 +178,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             secondEntry.setTransaction(transactionDTO);
 
             transactionDTO.setEntries(List.of(firstEntry, secondEntry));
+            if(!journalDTOS.isEmpty()) {
+                transactionDTO.setJournal(journalDTOS.getFirst());
+            }
             TransactionDTO savedTransactionDTO = transactionService.addTransaction(transactionDTO);
             subscription.setTransaction(mapper.map(transactionService.getTransaction(savedTransactionDTO.getId()), Transaction.class));
             subscriptionRepository.save(subscription);
