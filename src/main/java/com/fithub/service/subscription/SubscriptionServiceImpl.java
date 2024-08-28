@@ -181,6 +181,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             if(!journalDTOS.isEmpty()) {
                 transactionDTO.setJournal(journalDTOS.getFirst());
             }
+            transactionDTO.setStatus(Transaction.Status.DRAFT);
             TransactionDTO savedTransactionDTO = transactionService.addTransaction(transactionDTO);
             subscription.setTransaction(mapper.map(transactionService.getTransaction(savedTransactionDTO.getId()), Transaction.class));
             subscriptionRepository.save(subscription);
