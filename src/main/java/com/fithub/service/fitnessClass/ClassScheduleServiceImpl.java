@@ -1,13 +1,19 @@
 package com.fithub.service.fitnessClass;
 
+import com.fithub.dto.fitnessClass.ClassEnrollmentDTO;
 import com.fithub.dto.fitnessClass.ClassScheduleDTO;
+import com.fithub.dto.member.MemberDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.employee.Employee;
+import com.fithub.model.fitnessClass.ClassEnrollment;
 import com.fithub.model.fitnessClass.ClassSchedule;
 import com.fithub.model.fitnessClass.FitnessClass;
 import com.fithub.repository.fitnessClass.ClassScheduleRepository;
+import com.fithub.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +23,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ClassScheduleServiceImpl implements ClassScheduleService {
     private final ClassScheduleRepository classScheduleRepository;
+    private final MemberService memberService;
+    private final ClassEnrollmentService classEnrollmentService;
     private final ModelMapper mapper = new ModelMapper();
     @Override
     public List<ClassScheduleDTO> getFitnessClassSchedules() {
@@ -74,5 +82,28 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     @Override
     public List<ClassScheduleDTO> searchFitnessClassSchedules(String keyword) {
         return classScheduleRepository.findByReferenceContainingIgnoreCase(keyword).stream().map(schedule -> mapper.map(schedule, ClassScheduleDTO.class)).toList();
+    }
+
+    @Override
+    public ClassEnrollmentDTO enroll(Long classScheduleId, Long memberId, String token) {
+        if(memberId == null) {
+            MemberDTO memberDTO = memberService.getMyProfile(token.substring(7));
+            if(memberDTO != null) {
+                memberId = memberDTO.getId();
+            }else {
+                return null;
+            }
+        }
+        MemberDTO member = memberService.getMember(memberId);
+        ClassScheduleDTO classSchedule = getFitnessClassSchedule(classScheduleId);
+        ClassEnrollmentDTO enrollment = new ClassEnrollmentDTO();
+        enrollment.setMember(member);
+        enrollment.setClassSchedule(classSchedule);
+        enrollment.setFitnessClass(classSchedule.getFitnessClass());
+        enrollment.setStartDate(classSchedule.getStartDate());
+        enrollment.setEndDate(classSchedule.getEndDate());
+        enrollment.setPrice(classSchedule.getPrice());
+        enrollment.setStatus(ClassEnrollment.Status.NEW);
+        return classEnrollmentService.addClassEnrollment(enrollment);
     }
 }

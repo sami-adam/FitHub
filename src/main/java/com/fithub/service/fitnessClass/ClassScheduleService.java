@@ -1,5 +1,6 @@
 package com.fithub.service.fitnessClass;
 
+import com.fithub.dto.fitnessClass.ClassEnrollmentDTO;
 import com.fithub.dto.fitnessClass.ClassScheduleDTO;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ClassScheduleService {
     ClassScheduleDTO updateFitnessClassSchedule(Long id, ClassScheduleDTO classScheduleDTO);
     Map<String, String> deleteFitnessClassSchedule(Long id);
     List<ClassScheduleDTO>  searchFitnessClassSchedules(String keyword);
+    ClassEnrollmentDTO enroll(Long classScheduleId, Long memberId, String token);
 }
