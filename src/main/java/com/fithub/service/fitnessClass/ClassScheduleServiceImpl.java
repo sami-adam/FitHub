@@ -87,7 +87,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     @Override
     public ClassEnrollmentDTO enroll(Long classScheduleId, Long memberId, String token) {
         if(memberId == null) {
-            MemberDTO memberDTO = memberService.getMyProfile(token.substring(7));
+            MemberDTO memberDTO = memberService.getMyProfile(token);
             if(memberDTO != null) {
                 memberId = memberDTO.getId();
             }else {
