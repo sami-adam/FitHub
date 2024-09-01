@@ -5,6 +5,7 @@ import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.fitnessClass.ClassEnrollment;
 import com.fithub.model.fitnessClass.ClassSchedule;
 import com.fithub.model.fitnessClass.FitnessClass;
+import com.fithub.model.member.Member;
 import com.fithub.repository.fitnessClass.ClassEnrollmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,9 @@ public class ClassEnrollmentServiceImpl implements ClassEnrollmentService{
     @Override
     public ClassEnrollmentDTO updateClassEnrollment(Long id, ClassEnrollmentDTO classEnrollmentDTO) {
         ClassEnrollment classEnrollment = mapper.map(classEnrollmentDTO, ClassEnrollment.class);
+        if(classEnrollmentDTO.getMember() != null) {
+            classEnrollment.setMember(mapper.map(classEnrollmentDTO.getMember(), Member.class));
+        }
         if(classEnrollmentDTO.getFitnessClass() != null) {
             classEnrollment.setFitnessClass(mapper.map(classEnrollmentDTO.getFitnessClass(), FitnessClass.class));
         }

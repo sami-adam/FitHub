@@ -2,6 +2,7 @@ package com.fithub.model.fitnessClass;
 
 import com.fithub.model.base.BaseEntity;
 import com.fithub.model.base.Tax;
+import com.fithub.model.member.Member;
 import com.fithub.model.subscription.SubscriptionStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,6 +19,10 @@ public class ClassEnrollment extends BaseEntity {
     private  Long id;
 
     private String reference;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "fitness_class_id")

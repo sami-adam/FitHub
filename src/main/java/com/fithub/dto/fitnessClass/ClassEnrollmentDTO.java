@@ -1,6 +1,7 @@
 package com.fithub.dto.fitnessClass;
 
 import com.fithub.dto.base.TaxDTO;
+import com.fithub.dto.member.MemberDTO;
 import com.fithub.model.fitnessClass.ClassEnrollment;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 public class ClassEnrollmentDTO {
     private  Long id;
     private String reference;
+    private MemberDTO member;
     private FitnessClassDTO fitnessClass;
     private ClassScheduleDTO classSchedule;
     private Date startDate;
