@@ -24,6 +24,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -57,9 +59,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private JWTService jwtUtil;
 
     // Get All Memberships
-    public List<SubscriptionDTO> getSubscriptions(){
-        List<Subscription> subscriptions = subscriptionRepository.findAll().stream().toList();
-        return subscriptions.stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    public Page<SubscriptionDTO> getSubscriptions(Pageable pageable){
+        return subscriptionRepository.findAll(pageable).map(subscription -> mapper.map(subscription, SubscriptionDTO.class));
     }
 
     @Override

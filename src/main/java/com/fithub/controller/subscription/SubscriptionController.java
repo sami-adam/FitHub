@@ -3,13 +3,17 @@ package com.fithub.controller.subscription;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.service.subscription.SubscriptionService;
 import lombok.Data;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Data
@@ -24,13 +28,20 @@ public class SubscriptionController {
 
     // Get All Subscription
     @GetMapping(path = "/subscriptions", produces = {"Application/json"})
-    public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(){
-        return new ResponseEntity<>(subscriptionService.getSubscriptions(), HttpStatus.OK);
+    public ResponseEntity<Page<SubscriptionDTO>> getSubscriptions(Pageable pageable){
+        return new ResponseEntity<>(subscriptionService.getSubscriptions(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/subscription/{id}")
-    public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") Long id){
-        return new ResponseEntity<>(subscriptionService.getSubscription(id), HttpStatus.OK);
+    public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") Optional<Object> id){
+        if(id.isPresent()){
+            if(id.get() instanceof Long){
+                return new ResponseEntity<>(subscriptionService.getSubscription((Long) id.get()), HttpStatus.OK);
+            }else if(id.get() instanceof String){
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     // Add New Subscription
