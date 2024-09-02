@@ -6,6 +6,8 @@ import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,8 @@ public class UserServiceImpl implements UserService {
     }
 
     // Get Users
-    public List<UserDTO> getUsers(){
-        return userRepository.findAll().stream()
-                .map(user -> mapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
+    public Page<UserDTO> getUsers(Pageable pageable){
+        return userRepository.findAll(pageable).map(user -> mapper.map(user, UserDTO.class));
     }
 
     // Get User By Id

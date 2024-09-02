@@ -8,6 +8,7 @@ import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,8 +81,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/v1/auth/users")
-    public ResponseEntity<List<UserDTO>> getUsers(){
-        return ResponseEntity.ok(userService.getUsers());
+    public ResponseEntity<List<UserDTO>> getUsers(Pageable pageable){
+        return ResponseEntity.ok(userService.getUsers(pageable).getContent());
     }
 
     @GetMapping("/v1/auth/users/search/{keyword}")
