@@ -13,7 +13,7 @@ public interface SubscriptionService {
     SubscriptionDTO addSubscription(SubscriptionDTO subscriptionDTO);
     SubscriptionDTO updateSubscription(SubscriptionDTO subscriptionDTO, Long id);
     Map<String, String> deleteSubscription(Long id);
-    List<SubscriptionDTO> searchSubscription(String keyword);
+    Page<SubscriptionDTO> searchSubscription(Pageable pageable, String keyword);
     String changeStatus(Long id);
     SubscriptionDTO generateAccountTransaction(Long id);
 }

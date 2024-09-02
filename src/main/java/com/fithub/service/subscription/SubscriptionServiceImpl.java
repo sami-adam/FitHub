@@ -128,15 +128,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     // Search Memberships
-    public List<SubscriptionDTO> searchSubscription(String keyword){
+    public Page<SubscriptionDTO> searchSubscription(Pageable pageable, String keyword){
         SubscriptionStatus status;
         try{
             status = SubscriptionStatus.valueOf(keyword.toUpperCase());
         } catch (Exception e){
             status = null;
         }
-        List<Subscription> subscriptions = subscriptionRepository.searchByKeyword(keyword, keyword, keyword, keyword, status, keyword);
-        return subscriptions.stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+        return subscriptionRepository.searchByKeyword(pageable, keyword, keyword, keyword, keyword, status, keyword).map(subscription -> mapper.map(subscription, SubscriptionDTO.class));
     }
 
     @Override

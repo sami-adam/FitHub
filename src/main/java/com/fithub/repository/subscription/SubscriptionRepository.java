@@ -2,6 +2,8 @@ package com.fithub.repository.subscription;
 
 import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,5 +19,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
             "LOWER(m.member.identificationNumber) LIKE LOWER(CONCAT('%', :identificationNumber, '%')) OR " +
             "m.status = :status OR " +
             "m.product.name LIKE CONCAT('%', :product, '%')")
-    List<Subscription> searchByKeyword(String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status, String product);
+    Page<Subscription> searchByKeyword(Pageable pageable, String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status, String product);
 }

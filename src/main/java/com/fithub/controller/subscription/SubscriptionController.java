@@ -64,8 +64,8 @@ public class SubscriptionController {
 
     // Search Subscriptions
     @GetMapping("subscriptions/search/{keyword}")
-    public ResponseEntity<List<SubscriptionDTO>> searchSubscription(@PathVariable("keyword") String keyword){
-        return new ResponseEntity<>(subscriptionService.searchSubscription(keyword), HttpStatus.OK);
+    public ResponseEntity<Page<SubscriptionDTO>> searchSubscription(Pageable pageable, @PathVariable("keyword") String keyword){
+        return new ResponseEntity<>(subscriptionService.searchSubscription(pageable, keyword), HttpStatus.OK);
     }
 
     @PutMapping("/subscription/status/{id}")
