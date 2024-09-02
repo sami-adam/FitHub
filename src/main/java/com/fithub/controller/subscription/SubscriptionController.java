@@ -33,15 +33,8 @@ public class SubscriptionController {
     }
 
     @GetMapping("/subscription/{id}")
-    public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") Optional<Object> id){
-        if(id.isPresent()){
-            if(id.get() instanceof Long){
-                return new ResponseEntity<>(subscriptionService.getSubscription((Long) id.get()), HttpStatus.OK);
-            }else if(id.get() instanceof String){
-                return new ResponseEntity<>(null, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<SubscriptionDTO> getSubscription(@PathVariable("id") Long id){
+        return new ResponseEntity<>(subscriptionService.getSubscription(id), HttpStatus.OK);
     }
 
     // Add New Subscription
