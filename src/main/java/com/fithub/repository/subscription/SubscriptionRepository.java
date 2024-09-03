@@ -20,4 +20,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
             "m.status = :status OR " +
             "m.product.name LIKE CONCAT('%', :product, '%')")
     Page<Subscription> searchByKeyword(Pageable pageable, String reference, String firstName, String lastName, String identificationNumber, SubscriptionStatus status, String product);
+
+    List<Subscription> findByMemberId(Long memberId);
 }

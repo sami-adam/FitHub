@@ -14,6 +14,7 @@ public interface SubscriptionService {
     SubscriptionDTO updateSubscription(SubscriptionDTO subscriptionDTO, Long id);
     Map<String, String> deleteSubscription(Long id);
     Page<SubscriptionDTO> searchSubscription(Pageable pageable, String keyword);
+    List<SubscriptionDTO> getMemberSubscriptions(Long memberId);
     String changeStatus(Long id);
     SubscriptionDTO generateAccountTransaction(Long id);
 }

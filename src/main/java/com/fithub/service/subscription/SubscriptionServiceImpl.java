@@ -139,6 +139,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public List<SubscriptionDTO> getMemberSubscriptions(Long memberId) {
+        return subscriptionRepository.findByMemberId(memberId).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
     public String changeStatus(Long id) {
         Subscription subscription = subscriptionRepository.findById(id).orElseThrow();
         if(subscription.getId() > 0){

@@ -61,6 +61,11 @@ public class SubscriptionController {
         return new ResponseEntity<>(subscriptionService.searchSubscription(pageable, keyword), HttpStatus.OK);
     }
 
+    @GetMapping("/subscriptions/member/{memberId}")
+    public ResponseEntity<List<SubscriptionDTO>> getMemberSubscriptions(@PathVariable Long memberId){
+        return new ResponseEntity<>(subscriptionService.getMemberSubscriptions(memberId), HttpStatus.OK);
+    }
+
     @PutMapping("/subscription/status/{id}")
     public ResponseEntity<String> changeStatus(@PathVariable Long id){
         return new ResponseEntity<>(subscriptionService.changeStatus(id), HttpStatus.OK);
