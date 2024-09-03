@@ -81,4 +81,11 @@ public class ClassEnrollmentServiceImpl implements ClassEnrollmentService{
     public List<ClassEnrollmentDTO> searchClassEnrollments(String keyword) {
         return List.of();
     }
+
+    @Override
+    public List<ClassEnrollmentDTO> getMemberClassEnrollments(Long memberId) {
+        return classEnrollmentRepository.findByMemberId(memberId).stream()
+                .map(classEnrollment -> mapper.map(classEnrollment, ClassEnrollmentDTO.class))
+                .toList();
+    }
 }

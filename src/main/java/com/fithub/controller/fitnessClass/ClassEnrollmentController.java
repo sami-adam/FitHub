@@ -43,4 +43,9 @@ public class ClassEnrollmentController {
     public List<ClassEnrollmentDTO> searchClassEnrollments(@PathVariable String keyword) {
         return classEnrollmentService.searchClassEnrollments(keyword);
     }
+
+    @GetMapping("/class-enrollments/member/{memberId}")
+    public List<ClassEnrollmentDTO> getMemberClassEnrollments(@PathVariable Long memberId) {
+        return classEnrollmentService.getMemberClassEnrollments(memberId);
+    }
 }

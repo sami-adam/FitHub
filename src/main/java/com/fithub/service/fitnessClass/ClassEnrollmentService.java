@@ -12,4 +12,5 @@ public interface ClassEnrollmentService {
     ClassEnrollmentDTO updateClassEnrollment(Long id, ClassEnrollmentDTO classEnrollmentDTO);
     Map<String, String> deleteClassEnrollment(Long id);
     List<ClassEnrollmentDTO>  searchClassEnrollments(String keyword);
+    List<ClassEnrollmentDTO> getMemberClassEnrollments(Long memberId);
 }
