@@ -24,6 +24,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByProduct = new JsonObject();
         products.forEach(product -> {
             JsonObject productJson = new JsonObject();
+            productJson.addProperty("name", product.getName());
             productJson.addProperty("productName", product.getName());
             productJson.addProperty("subscriptionCount", productService.getSubscriptionsByProduct(product.getId()).size());
             productJson.addProperty("Amount", productService.getSubscriptionsByProduct(product.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
@@ -38,6 +39,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByCategory = new JsonObject();
         productCategories.forEach(productCategory -> {
             JsonObject productCategoryJson = new JsonObject();
+            productCategoryJson.addProperty("name", productCategory.getName());
             productCategoryJson.addProperty("productCategoryName", productCategory.getName());
             productCategoryJson.addProperty("subscriptionCount", productCategoryService.getSubscriptionsByCategory(productCategory.getId()).size());
             productCategoryJson.addProperty("Amount", productCategoryService.getSubscriptionsByCategory(productCategory.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
@@ -57,6 +59,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYear = new JsonObject();
         years.forEach(year -> {
             JsonObject yearJson = new JsonObject();
+            yearJson.addProperty("name", year);
             yearJson.addProperty("year", year);
             yearJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByYear(year).size());
             yearJson.addProperty("Amount", subscriptionService.getSubscriptionsByYear(year).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
@@ -69,6 +72,7 @@ public class DashboardServiceImpl implements DashboardService{
     public JsonObject getSubscriptionsByYear(int year) {
         JsonObject subscriptionsByYear = new JsonObject();
         JsonObject yearJson = new JsonObject();
+        yearJson.addProperty("name", year);
         yearJson.addProperty("year", year);
         yearJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByYear(year).size());
         yearJson.addProperty("Amount", subscriptionService.getSubscriptionsByYear(year).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
@@ -91,6 +95,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearAndMonth = new JsonObject();
         yearMonthList.forEach(yearMonth -> {
             JsonObject yearMonthJson = new JsonObject();
+            yearMonthJson.addProperty("name", yearMonth.get("year") + "-" + yearMonth.get("month"));
             yearMonthJson.addProperty("year", yearMonth.get("year"));
             yearMonthJson.addProperty("month", yearMonth.get("month"));
             yearMonthJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByYearAndMonth(yearMonth.get("year"), yearMonth.get("month")).size());
@@ -113,6 +118,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearAndMonth = new JsonObject();
         yearMonthList.forEach(yearMonth -> {
             JsonObject yearMonthJson = new JsonObject();
+            yearMonthJson.addProperty("name", yearMonth.get("year") + "-" + yearMonth.get("month"));
             yearMonthJson.addProperty("year", yearMonth.get("year"));
             yearMonthJson.addProperty("month", yearMonth.get("month"));
             yearMonthJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByYearAndMonth(yearMonth.get("year"), yearMonth.get("month")).size());
@@ -133,6 +139,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearAndMonth = new JsonObject();
         yearMonthList.forEach(yearMonthMap -> {
             JsonObject yearMonthJson = new JsonObject();
+            yearMonthJson.addProperty("name", yearMonthMap.get("year") + "-" + yearMonthMap.get("month"));
             yearMonthJson.addProperty("year", yearMonthMap.get("year"));
             yearMonthJson.addProperty("month", yearMonthMap.get("month"));
             yearMonthJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByYearAndMonth(yearMonthMap.get("year"), yearMonthMap.get("month")).size());
@@ -161,6 +168,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearMonthAndDay = new JsonObject();
         yearMonthDayList.forEach(yearMonthDay -> {
             JsonObject yearMonthDayJson = new JsonObject();
+            yearMonthDayJson.addProperty("name", yearMonthDay.get("year") + "-" + yearMonthDay.get("month") + "-" + yearMonthDay.get("day"));
             yearMonthDayJson.addProperty("year", yearMonthDay.get("year"));
             yearMonthDayJson.addProperty("month", yearMonthDay.get("month"));
             yearMonthDayJson.addProperty("day", yearMonthDay.get("day"));
@@ -187,6 +195,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearMonthAndDay = new JsonObject();
         yearMonthDayList.forEach(yearMonthDay -> {
             JsonObject yearMonthDayJson = new JsonObject();
+            yearMonthDayJson.addProperty("name", yearMonthDay.get("year") + "-" + yearMonthDay.get("month") + "-" + yearMonthDay.get("day"));
             yearMonthDayJson.addProperty("year", yearMonthDay.get("year"));
             yearMonthDayJson.addProperty("month", yearMonthDay.get("month"));
             yearMonthDayJson.addProperty("day", yearMonthDay.get("day"));
@@ -211,6 +220,7 @@ public class DashboardServiceImpl implements DashboardService{
         JsonObject subscriptionsByYearMonthAndDay = new JsonObject();
         yearMonthDayList.forEach(yearMonthDay -> {
             JsonObject yearMonthDayJson = new JsonObject();
+            yearMonthDayJson.addProperty("name", yearMonthDay.get("year") + "-" + yearMonthDay.get("month") + "-" + yearMonthDay.get("day"));
             yearMonthDayJson.addProperty("year", yearMonthDay.get("year"));
             yearMonthDayJson.addProperty("month", yearMonthDay.get("month"));
             yearMonthDayJson.addProperty("day", yearMonthDay.get("day"));
@@ -226,6 +236,7 @@ public class DashboardServiceImpl implements DashboardService{
     public JsonObject getSubscriptionsByYearMonthAndDay(int year, int month, int day) {
         JsonObject subscriptionsByYearMonthAndDay = new JsonObject();
         JsonObject yearMonthDayJson = new JsonObject();
+        yearMonthDayJson.addProperty("name", year + "-" + month + "-" + day);
         yearMonthDayJson.addProperty("year", year);
         yearMonthDayJson.addProperty("month", month);
         yearMonthDayJson.addProperty("day", day);
@@ -238,6 +249,7 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public JsonObject getSubscriptionsByStartDateAndEndDate(String startDate, String endDate) {
         JsonObject subscriptionsByStartDateAndEndDate = new JsonObject();
+        subscriptionsByStartDateAndEndDate.addProperty("name", startDate + " to " + endDate);
         subscriptionsByStartDateAndEndDate.addProperty("startDate", startDate);
         subscriptionsByStartDateAndEndDate.addProperty("endDate", endDate);
         subscriptionsByStartDateAndEndDate.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByStartDateAndEndDate(startDate, endDate).size());
