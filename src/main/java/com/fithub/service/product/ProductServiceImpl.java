@@ -1,11 +1,13 @@
 package com.fithub.service.product;
 
 import com.fithub.dto.product.ProductDTO;
+import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.product.Product;
 import com.fithub.repository.base.TaxRepository;
 import com.fithub.repository.product.ProductCategoryRepository;
 import com.fithub.repository.product.ProductRepository;
+import com.fithub.service.subscription.SubscriptionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,16 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final TaxRepository taxRepository;
+    private final SubscriptionService subscriptionService;
     private final ModelMapper mapper;
 
     // Constructor
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository, SubscriptionService subscriptionService) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.taxRepository = taxRepository;
+        this.subscriptionService = subscriptionService;
         this.mapper = new ModelMapper();
     }
 
@@ -94,5 +98,10 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductDTO> searchProducts(String keyword) {
         return  productRepository.searchProducts(keyword).stream().map(product -> mapper.map(product, ProductDTO.class))
                 .toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByProduct(Long productId) {
+        return subscriptionService.getSubscriptionsByProduct(productId);
     }
 }

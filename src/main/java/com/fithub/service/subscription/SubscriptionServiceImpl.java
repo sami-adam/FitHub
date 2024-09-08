@@ -194,6 +194,36 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return null;
     }
 
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByProduct(Long productId) {
+        return subscriptionRepository.findByProductId(productId).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByCategory(Long productCategoryId) {
+        return subscriptionRepository.findByProductCategoryId(productCategoryId).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByYear(int year) {
+        return subscriptionRepository.findByYear(year).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByYearAndMonth(int year, int month) {
+        return subscriptionRepository.findByYearAndMonth(year, month).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByYearMonthAndDay(int year, int month, int day) {
+        return subscriptionRepository.findByYearMonthAndDay(year, month, day).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByStartDateAndEndDate(String startDate, String endDate) {
+        return subscriptionRepository.findByStartDateAndEndDate(startDate, endDate).stream().map(subscription -> mapper.map(subscription, SubscriptionDTO.class)).toList();
+    }
+
     public void checkSubscriptionStatus(String token){
         logger.info("Checking subscription status");
         List<Subscription> subscriptions = subscriptionRepository.findAll();

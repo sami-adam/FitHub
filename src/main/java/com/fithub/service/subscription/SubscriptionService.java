@@ -17,4 +17,10 @@ public interface SubscriptionService {
     List<SubscriptionDTO> getMemberSubscriptions(Long memberId);
     String changeStatus(Long id);
     SubscriptionDTO generateAccountTransaction(Long id);
+    List<SubscriptionDTO> getSubscriptionsByProduct(Long productId);
+    List<SubscriptionDTO> getSubscriptionsByCategory(Long productCategoryId);
+    List<SubscriptionDTO> getSubscriptionsByYear(int year);
+    List<SubscriptionDTO> getSubscriptionsByYearAndMonth(int year, int month);
+    List<SubscriptionDTO> getSubscriptionsByYearMonthAndDay(int year, int month, int day);
+    List<SubscriptionDTO> getSubscriptionsByStartDateAndEndDate(String startDate, String endDate);
 }

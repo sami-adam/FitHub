@@ -2,12 +2,14 @@ package com.fithub.service.product;
 
 import com.fithub.dto.product.BenefitDTO;
 import com.fithub.dto.product.ProductCategoryDTO;
+import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.model.product.Benefit;
 import com.fithub.model.product.ProductCategory;
 import com.fithub.repository.product.BenefitRepository;
 import com.fithub.repository.product.ProductCategoryRepository;
+import com.fithub.service.subscription.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class ProductCategoryServiceImpl implements ProductCategoryService{
     private final ProductCategoryRepository productCategoryRepository;
     private final BenefitRepository benefitRepository;
+    private final SubscriptionService subscriptionService;
     private final ModelMapper mapper = new ModelMapper();
 
 
@@ -93,5 +96,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         return productCategoryRepository.findByNameContainingIgnoreCase(keyword).stream()
                 .map(productCategory -> mapper.map(productCategory, ProductCategoryDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubscriptionDTO> getSubscriptionsByCategory(Long productCategoryId) {
+        return subscriptionService.getSubscriptionsByCategory(productCategoryId);
     }
 }
