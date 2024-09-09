@@ -12,7 +12,7 @@ import java.util.Date;
 public class ClassScheduleDTO extends BaseEntityDTO {
     private Long id;
     private String reference;
-    @JsonIgnoreProperties({"images", "createdBy", "updatedBy"})
+    @JsonIgnoreProperties({"createdBy", "updatedBy"})
     private FitnessClassDTO fitnessClass;
     private Date startDate;
     private Date endDate;
