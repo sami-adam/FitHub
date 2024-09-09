@@ -16,11 +16,11 @@ public class BaseEntity {
     private Date updateDate;
 
     @JoinColumn(name = "created_by", updatable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User createdBy;
 
     @JoinColumn(name = "updated_by")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User updatedBy;
 
     @ManyToOne

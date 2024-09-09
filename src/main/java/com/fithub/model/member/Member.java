@@ -50,7 +50,7 @@ public class Member extends BaseEntity {
 
     private MemberStatus status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "profile_picture_id")
     private Attachment profilePicture;
 
