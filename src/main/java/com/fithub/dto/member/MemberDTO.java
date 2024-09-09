@@ -31,6 +31,7 @@ public class MemberDTO extends BaseEntityDTO {
     @Size(min = 2, message = "Last name must be at least 2 characters long")
     private String lastName;
     //@JsonIgnore
+    @JsonIgnoreProperties({"password", "authorities"})
     private User user;
     private Gender gender;
     private AddressDTO address;
