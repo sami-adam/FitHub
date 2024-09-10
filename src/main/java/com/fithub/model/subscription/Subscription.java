@@ -98,7 +98,7 @@ public class Subscription extends BaseEntity {
     }
 
     public double getNetAmount() {
-        return (getTotalAmount() - discountAmount);
+        return (getTotalAmount() + getTaxAmount() - discountAmount);
     }
 
     public double getTaxAmount() {
