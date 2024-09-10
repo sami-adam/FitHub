@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface TaxService {
-    public TaxDTO addTax(TaxDTO taxDTO);
-    public TaxDTO updateTax(Long id, TaxDTO taxDTO);
-    public Map<String, String> deleteTax(Long taxId);
-    public List<TaxDTO> getAllTaxes();
+    TaxDTO addTax(TaxDTO taxDTO);
+    TaxDTO updateTax(Long id, TaxDTO taxDTO);
+    Map<String, String> deleteTax(Long taxId);
+    List<TaxDTO> getAllTaxes();
+    TaxDTO getTaxById(Long taxId);
 }

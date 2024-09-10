@@ -22,6 +22,11 @@ public class TaxController {
         return ResponseEntity.ok(taxService.getAllTaxes());
     }
 
+    @GetMapping("/tax/{id}")
+    public ResponseEntity<TaxDTO> getTax(@PathVariable Long id) {
+        return ResponseEntity.ok(taxService.getTaxById(id));
+    }
+
     @PostMapping("/tax")
     public ResponseEntity<TaxDTO> add(@RequestBody TaxDTO taxDTO) {
         return ResponseEntity.ok(taxService.addTax(taxDTO));

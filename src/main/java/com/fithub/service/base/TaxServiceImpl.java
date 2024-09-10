@@ -54,4 +54,9 @@ public class TaxServiceImpl implements TaxService {
     public List<TaxDTO> getAllTaxes() {
         return taxRepository.findAll().stream().map(tax -> mapper.map(tax, TaxDTO.class)).toList();
     }
+
+    @Override
+    public TaxDTO getTaxById(Long taxId) {
+        return mapper.map(taxRepository.findById(taxId).orElseThrow(), TaxDTO.class);
+    }
 }
