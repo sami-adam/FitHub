@@ -15,10 +15,12 @@ public class Employee extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "identification_number")
+    @Column(unique = true, name = "identification_number")
     private String identificationNumber;
     private String name;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String phone;
     private String address;
 
