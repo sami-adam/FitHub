@@ -19,14 +19,13 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "identification_number")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "identification_number")
     private String identificationNumber;
 
-    @JoinColumn(name = "first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @JoinColumn(name = "last_name")
+    @Column(name = "last_name")
     private String lastName;
 
     @ManyToOne
@@ -40,7 +39,7 @@ public class Member extends BaseEntity {
     private Address address;
 
     @Email
-    @JoinColumn(unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String Phone;
