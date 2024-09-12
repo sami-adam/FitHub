@@ -4,6 +4,7 @@ import com.fithub.config.SecurityContextGenerator;
 import com.fithub.dto.base.AttachmentDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.user.UserDTO;
+import com.fithub.exception.DuplicateException;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.base.Attachment;
 import com.fithub.model.member.Member;
@@ -60,6 +61,14 @@ public class MemberServiceImpl implements MemberService{
 
     // Add New Member
     public MemberDTO addMember(MemberDTO membershipDTO) {
+        Member memberById = memberRepository.findByIdentificationNumber(membershipDTO.getIdentificationNumber());
+        Member memberByEmail = memberRepository.findByEmail(membershipDTO.getEmail());
+        if(memberById != null){
+            throw new DuplicateException("Member with identification number " + membershipDTO.getIdentificationNumber() + " already exists!");
+        }
+        if(memberByEmail != null){
+            throw new DuplicateException("Member with email " + membershipDTO.getEmail() + " already exists!");
+        }
         Member member = memberRepository.save(mapper.map(membershipDTO, Member.class));
         return mapper.map(member, MemberDTO.class);
     }

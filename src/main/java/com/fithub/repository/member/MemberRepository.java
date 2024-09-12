@@ -11,4 +11,5 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> searchByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingOrIdentificationNumberContainingOrStatusEquals(String firstName, String lastName, String email, String identificationNumber, MemberStatus status);
     Member findByEmail(String email);
+    Member findByIdentificationNumber(String identificationNumber);
 }

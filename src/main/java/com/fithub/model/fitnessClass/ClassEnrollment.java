@@ -79,7 +79,7 @@ public class ClassEnrollment extends BaseEntity {
         }
         tax = fitnessClass.getTax();
         // To Be Removed
-        price = classSchedule.getPrice();
+        price = classSchedule.getPrice() != null ? classSchedule.getPrice() : 0.0;
         taxAmount = tax != null ? price * tax.getRate()/100 : 0.0;
         netAmount = price + taxAmount - discountAmount;
     }
