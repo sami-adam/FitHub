@@ -36,8 +36,7 @@ public class JournalServiceImpl implements JournalService{
     @Override
     public JournalDTO addJournal(JournalDTO journalDTO) {
         Journal journal = mapper.map(journalDTO, Journal.class);
-        journalRepository.save(journal);
-        return mapper.map(journal, JournalDTO.class);
+        return mapper.map(journalRepository.save(journal), JournalDTO.class);
     }
 
     @Override

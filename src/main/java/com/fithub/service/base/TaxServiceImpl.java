@@ -21,8 +21,7 @@ public class TaxServiceImpl implements TaxService {
 
     @Override
     public TaxDTO addTax(TaxDTO taxDTO) {
-        taxRepository.save(mapper.map(taxDTO, Tax.class));
-        return mapper.map(taxDTO, TaxDTO.class);
+        return mapper.map(taxRepository.save(mapper.map(taxDTO, Tax.class)), TaxDTO.class);
     }
 
     @Override

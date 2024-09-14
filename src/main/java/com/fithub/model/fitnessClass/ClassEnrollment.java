@@ -62,25 +62,18 @@ public class ClassEnrollment extends BaseEntity {
         NEW, PAID, ACTIVE, EXPIRED, CANCELLED
     }
 
-    @PostPersist
-    public void postPersist() {
-        reference = "CET" + String.format("%06d", id);
-        status = Status.NEW;
-        tax = fitnessClass.getTax();
-        price = classSchedule.getPrice() != null ? classSchedule.getPrice() : 0.0;
-        taxAmount = tax != null ? price * tax.getRate()/100 : 0.0;
-        netAmount = price + taxAmount - discountAmount;
+    @PrePersist
+    public void prePersist() {
+        this.status = Status.NEW;
+        this.startDate = this.classSchedule.getStartDate();
+        this.endDate = this.classSchedule.getEndDate();
+        this.price = this.classSchedule.getPrice() != null ? classSchedule.getPrice() : 0.0;
+        this.taxAmount = this.tax != null ? this.price * this.tax.getRate()/100 : 0.0;
+        this.netAmount = this.price + this.taxAmount - this.discountAmount;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        if(status == null){
-            status = Status.NEW;
-        }
-        tax = fitnessClass.getTax();
-        // To Be Removed
-        price = classSchedule.getPrice() != null ? classSchedule.getPrice() : 0.0;
-        taxAmount = tax != null ? price * tax.getRate()/100 : 0.0;
-        netAmount = price + taxAmount - discountAmount;
+    @PostPersist
+    public void postPersist() {
+        this.reference = "CET" + String.format("%06d", id);
     }
 }

@@ -76,8 +76,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // Add New Membership
     public SubscriptionDTO addSubscription(SubscriptionDTO subscriptionDTO) {
-        subscriptionRepository.save(mapper.map(subscriptionDTO, Subscription.class));
-        return subscriptionDTO;
+        Subscription subscription = subscriptionRepository.save(mapper.map(subscriptionDTO, Subscription.class));
+        return mapper.map(subscription, SubscriptionDTO.class);
     }
 
     // Update Membership

@@ -3,6 +3,7 @@ package com.fithub.service.fitnessClass;
 import com.fithub.dto.fitnessClass.ClassEnrollmentDTO;
 import com.fithub.dto.fitnessClass.ClassScheduleDTO;
 import com.fithub.dto.member.MemberDTO;
+import com.fithub.exception.BadRequestException;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.employee.Employee;
 import com.fithub.model.fitnessClass.ClassEnrollment;
@@ -12,8 +13,6 @@ import com.fithub.repository.fitnessClass.ClassScheduleRepository;
 import com.fithub.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +38,18 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
     @Override
     public ClassScheduleDTO addFitnessClassSchedule(ClassScheduleDTO classScheduleDTO) {
+        if(classScheduleDTO.getStartDate() == null || classScheduleDTO.getEndDate() == null) {
+            throw new BadRequestException("Start date and end date are required");
+        }
+        if(classScheduleDTO.getStartDate().after(classScheduleDTO.getEndDate())) {
+            throw new BadRequestException("Start date cannot be after end date");
+        }
+        if(classScheduleDTO.getFitnessClass() == null) {
+            throw new BadRequestException("Fitness class is required");
+        }
+        if(classScheduleDTO.getInstructor() == null) {
+            throw new BadRequestException("Instructor is required");
+        }
         ClassSchedule schedule = mapper.map(classScheduleDTO, ClassSchedule.class);
         return mapper.map(classScheduleRepository.save(schedule), ClassScheduleDTO.class);
     }
@@ -46,7 +57,6 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     // Update the fitness class schedule
     @Override
     public ClassScheduleDTO updateFitnessClassSchedule(Long id, ClassScheduleDTO classScheduleDTO) {
-        System.out.println(classScheduleDTO);
         ClassSchedule schedule = classScheduleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Fitness Schedule not found with id: " + id));
         if(classScheduleDTO.getFitnessClass() != null) {
             schedule.setFitnessClass(mapper.map(classScheduleDTO.getFitnessClass(), FitnessClass.class));
@@ -81,7 +91,7 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
     @Override
     public List<ClassScheduleDTO> searchFitnessClassSchedules(String keyword) {
-        return classScheduleRepository.findByReferenceContainingIgnoreCase(keyword).stream().map(schedule -> mapper.map(schedule, ClassScheduleDTO.class)).toList();
+        return classScheduleRepository.searchFitnessClassSchedules(keyword).stream().map(schedule -> mapper.map(schedule, ClassScheduleDTO.class)).toList();
     }
 
     @Override
