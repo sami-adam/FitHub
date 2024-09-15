@@ -20,16 +20,14 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final TaxRepository taxRepository;
-    private final SubscriptionService subscriptionService;
     private final ModelMapper mapper;
 
     // Constructor
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository, SubscriptionService subscriptionService) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, TaxRepository taxRepository) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.taxRepository = taxRepository;
-        this.subscriptionService = subscriptionService;
         this.mapper = new ModelMapper();
     }
 
@@ -100,8 +98,4 @@ public class ProductServiceImpl implements ProductService{
                 .toList();
     }
 
-    @Override
-    public List<SubscriptionDTO> getSubscriptionsByProduct(Long productId) {
-        return subscriptionService.getSubscriptionsByProduct(productId);
-    }
 }

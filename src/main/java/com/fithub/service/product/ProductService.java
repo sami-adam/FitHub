@@ -12,5 +12,4 @@ public interface ProductService {
     ProductDTO updateProduct(Long id, ProductDTO productDTO);
     Map<String,String> deleteProduct(Long productId);
     List<ProductDTO> searchProducts(String keyword);
-    List<SubscriptionDTO> getSubscriptionsByProduct(Long productId);
 }

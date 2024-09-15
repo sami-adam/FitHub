@@ -4,10 +4,16 @@ import com.fithub.dto.accounting.AccountDTO;
 import com.fithub.dto.accounting.EntryDTO;
 import com.fithub.dto.accounting.JournalDTO;
 import com.fithub.dto.accounting.TransactionDTO;
+import com.fithub.dto.base.TaxDTO;
+import com.fithub.dto.employee.EmployeeDTO;
+import com.fithub.dto.member.MemberDTO;
+import com.fithub.dto.product.ProductDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Entry;
 import com.fithub.model.accounting.Transaction;
+import com.fithub.model.base.Tax;
+import com.fithub.model.employee.Employee;
 import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
@@ -18,6 +24,10 @@ import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
 import com.fithub.service.accounting.JournalService;
 import com.fithub.service.accounting.TransactionService;
+import com.fithub.service.base.TaxService;
+import com.fithub.service.employee.EmployeeService;
+import com.fithub.service.member.MemberService;
+import com.fithub.service.product.ProductService;
 import com.fithub.service.user.JWTService;
 import com.fithub.service.user.UserService;
 import lombok.Data;
@@ -44,11 +54,12 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
-    private final MemberRepository memberRepository;
-    private final ProductRepository productRepository;
-    private final TaxRepository taxRepository;
+    private final MemberService memberService;
+    private final ProductService productService;
+    private final TaxService taxService;
     private final TransactionService transactionService;
     private final JournalService journalService;
+    private final EmployeeService employeeService;
     private final Logger logger = Logger.getLogger(SubscriptionServiceImpl.class.getName());
     private final ModelMapper mapper = new ModelMapper();
 
@@ -87,15 +98,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 () -> new ResourceNotFoundException("Subscription not found")
         );
         if (subscriptionDTO.getMember() != null && subscriptionDTO.getMember().getId() != null) {
-            Member member = memberRepository.findById(subscriptionDTO.getMember().getId()).orElseThrow();
-            subscription.setMember(member);
+            MemberDTO member = memberService.getMember(subscriptionDTO.getMember().getId());
+            subscription.setMember(mapper.map(member, Member.class));
+        }
+        if (subscriptionDTO.getSubscriptionType() != null) {
+            subscription.setSubscriptionType(subscriptionDTO.getSubscriptionType());
         }
         if(subscriptionDTO.getProduct() != null && subscriptionDTO.getProduct().getId() != null){
-            Product product = productRepository.findById(subscriptionDTO.getProduct().getId()).orElseThrow();
-            subscription.setProduct(product);
+            ProductDTO product = productService.getProduct(subscriptionDTO.getProduct().getId());
+            subscription.setProduct(mapper.map(product, Product.class));
+        }
+        if(subscriptionDTO.getInstructor() != null && subscriptionDTO.getInstructor().getId() != null){
+            EmployeeDTO instructor = employeeService.getEmployee(subscriptionDTO.getInstructor().getId());
+            subscription.setInstructor(mapper.map(instructor, Employee.class));
         }
         if(subscriptionDTO.getTax() != null && subscriptionDTO.getTax().getId() != null){
-            subscription.setTax(taxRepository.findById(subscriptionDTO.getTax().getId()).orElseThrow());
+            TaxDTO tax = taxService.getTaxById(subscriptionDTO.getTax().getId());
+            subscription.setTax(mapper.map(tax, Tax.class));
         }
         if(subscriptionDTO.getStartDate() != null){
             subscription.setStartDate(subscriptionDTO.getStartDate());

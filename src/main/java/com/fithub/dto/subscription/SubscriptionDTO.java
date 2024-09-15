@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fithub.dto.accounting.TransactionDTO;
 import com.fithub.dto.base.BaseEntityDTO;
 import com.fithub.dto.base.TaxDTO;
+import com.fithub.dto.employee.EmployeeDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.product.ProductDTO;
+import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -23,8 +25,10 @@ public class SubscriptionDTO extends BaseEntityDTO {
     @NotNull(message = "End date cannot be null")
     private Date endDate;
     // Membership Amounts
+    private Subscription.SubscriptionType subscriptionType;
     @JsonIgnoreProperties({"updatedBy", "createdBy", "updateDate", "createDate"})
     private ProductDTO product;
+    private EmployeeDTO instructor;
     private double subscriptionUnitPrice;
     private double subscriptionQty;
     private double totalAmount;

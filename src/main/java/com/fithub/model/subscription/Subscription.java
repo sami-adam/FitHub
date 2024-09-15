@@ -3,6 +3,7 @@ package com.fithub.model.subscription;
 import com.fithub.model.accounting.Transaction;
 import com.fithub.model.base.BaseEntity;
 import com.fithub.model.base.Tax;
+import com.fithub.model.employee.Employee;
 import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import jakarta.persistence.*;
@@ -37,9 +38,18 @@ public class Subscription extends BaseEntity {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     // Membership Amounts
+
+    @Enumerated(EnumType.STRING)
+    private SubscriptionType subscriptionType;
+
     @JoinColumn(name = "product_id")
     @ManyToOne
     private Product product;
+
+    @JoinColumn(name = "instructor_id")
+    @ManyToOne
+    private Employee instructor;
+
     @Column(name = "subscription_unit_price")
     private double subscriptionUnitPrice;
     @Column(name = "subscription_qty")
@@ -106,6 +116,10 @@ public class Subscription extends BaseEntity {
             return getTotalAmount() * tax.getRate()/100;
         }
         return 0.0;
+    }
+
+    public enum SubscriptionType {
+        PRODUCT, CLASS, INSTRUCTOR
     }
 
 }

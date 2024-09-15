@@ -26,8 +26,8 @@ public class DashboardServiceImpl implements DashboardService{
             JsonObject productJson = new JsonObject();
             productJson.addProperty("name", product.getName());
             productJson.addProperty("productName", product.getName());
-            productJson.addProperty("subscriptionCount", productService.getSubscriptionsByProduct(product.getId()).size());
-            productJson.addProperty("Amount", productService.getSubscriptionsByProduct(product.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
+            //productJson.addProperty("subscriptionCount", productService.getSubscriptionsByProduct(product.getId()).size());
+            //productJson.addProperty("Amount", productService.getSubscriptionsByProduct(product.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
             subscriptionsByProduct.add(product.getId().toString(), productJson);
         });
         return subscriptionsByProduct;
