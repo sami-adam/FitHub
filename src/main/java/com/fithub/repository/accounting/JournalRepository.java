@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface JournalRepository extends JpaRepository<Journal, Long> {
     List<Journal> findByCodeContainingIgnoreCaseOrNameContainingIgnoreCaseOrTypeEquals(String code, String name, Journal.Type type);
+    List<Journal> findByCode(String code);
 }

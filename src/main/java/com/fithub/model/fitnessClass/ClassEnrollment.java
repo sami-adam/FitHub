@@ -21,15 +21,15 @@ public class ClassEnrollment extends BaseEntity {
     private String reference;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "fitness_class_id")
+    @JoinColumn(name = "fitness_class_id", nullable = false)
     private FitnessClass fitnessClass;
 
     @ManyToOne
-    @JoinColumn(name = "class_schedule_id")
+    @JoinColumn(name = "class_schedule_id", nullable = false)
     private ClassSchedule classSchedule;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

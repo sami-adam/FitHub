@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findByCodeContainingIgnoreCaseOrNameContainingIgnoreCaseOrTypeEquals(String code, String name, Account.Type type);
+    List<Account> findByCode(String code);
 }

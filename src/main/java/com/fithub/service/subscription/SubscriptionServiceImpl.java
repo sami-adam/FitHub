@@ -83,7 +83,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     // Update Membership
     public SubscriptionDTO updateSubscription(SubscriptionDTO subscriptionDTO, Long id) {
         List<SubscriptionStatus> statuses = Arrays.stream(SubscriptionStatus.values()).toList();
-        Subscription subscription = subscriptionRepository.findById(id).orElseThrow();
+        Subscription subscription = subscriptionRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Subscription not found")
+        );
         if (subscriptionDTO.getMember() != null && subscriptionDTO.getMember().getId() != null) {
             Member member = memberRepository.findById(subscriptionDTO.getMember().getId()).orElseThrow();
             subscription.setMember(member);

@@ -1,6 +1,7 @@
 package com.fithub.service.accounting;
 
 import com.fithub.dto.accounting.AccountDTO;
+import com.fithub.exception.DuplicateException;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.repository.accounting.AccountRepository;
@@ -21,6 +22,10 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountDTO addAccount(AccountDTO accountDTO) {
+        List<Account> existingAccounts = accountRepository.findByCode(accountDTO.getCode());
+        if(!existingAccounts.isEmpty()) {
+            throw new DuplicateException("Account with code: " + accountDTO.getCode() + " already exists");
+        }
         Account account = mapper.map(accountDTO, Account.class);
         account = accountRepository.save(account);
         return mapper.map(account, AccountDTO.class);
@@ -39,6 +44,10 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountDTO updateAccount(Long id, AccountDTO accountDTO) {
+        List<Account> existingAccounts = accountRepository.findByCode(accountDTO.getCode());
+        if(!existingAccounts.isEmpty() && !existingAccounts.getFirst().getId().equals(id)) {
+            throw new DuplicateException("Account with code: " + accountDTO.getCode() + " already exists");
+        }
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found with id: " + id));
         if(accountDTO.getName() != null) account.setName(accountDTO.getName());
         if(accountDTO.getCode() != null) account.setCode(accountDTO.getCode());

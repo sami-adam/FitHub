@@ -1,6 +1,7 @@
 package com.fithub.service.accounting;
 
 import com.fithub.dto.accounting.JournalDTO;
+import com.fithub.exception.DuplicateException;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.model.accounting.Journal;
@@ -35,12 +36,20 @@ public class JournalServiceImpl implements JournalService{
 
     @Override
     public JournalDTO addJournal(JournalDTO journalDTO) {
+        List<Journal> existingJournals = journalRepository.findByCode(journalDTO.getCode());
+        if(!existingJournals.isEmpty()) {
+            throw new DuplicateException("Journal with code: " + journalDTO.getCode() + " already exists");
+        }
         Journal journal = mapper.map(journalDTO, Journal.class);
         return mapper.map(journalRepository.save(journal), JournalDTO.class);
     }
 
     @Override
     public JournalDTO updateJournal(Long id, JournalDTO journalDTO) {
+        List<Journal> existingJournals = journalRepository.findByCode(journalDTO.getCode());
+        if(!existingJournals.isEmpty() && !existingJournals.getFirst().getId().equals(id)) {
+            throw new DuplicateException("Journal with code: " + journalDTO.getCode() + " already exists");
+        }
         Journal journal = journalRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Journal not found with id: " + id)
         );

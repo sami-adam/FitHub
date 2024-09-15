@@ -42,7 +42,8 @@ public class ClassEnrollmentServiceImpl implements ClassEnrollmentService{
 
     @Override
     public ClassEnrollmentDTO updateClassEnrollment(Long id, ClassEnrollmentDTO classEnrollmentDTO) {
-        ClassEnrollment classEnrollment = mapper.map(classEnrollmentDTO, ClassEnrollment.class);
+        ClassEnrollment classEnrollment = classEnrollmentRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Class enrollment not found"));
         if(classEnrollmentDTO.getMember() != null) {
             classEnrollment.setMember(mapper.map(classEnrollmentDTO.getMember(), Member.class));
         }

@@ -2,6 +2,7 @@ package com.fithub.service.impl;
 
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.user.*;
+import com.fithub.exception.BadRequestException;
 import com.fithub.exception.LoginException;
 import com.fithub.model.user.Role;
 import com.fithub.model.user.User;
@@ -81,6 +82,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public Map<String, String> deleteAccount(Long id){
         User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+        if(user.getRole().equals(Role.ADMIN)){
+            throw new BadRequestException("Admin Account cannot be deleted");
+        }
         MemberDTO member = memberService.findMemberByEmail(user.getEmail());
 
         if(member != null){
