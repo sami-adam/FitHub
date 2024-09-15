@@ -26,8 +26,8 @@ public class DashboardServiceImpl implements DashboardService{
             JsonObject productJson = new JsonObject();
             productJson.addProperty("name", product.getName());
             productJson.addProperty("productName", product.getName());
-            //productJson.addProperty("subscriptionCount", productService.getSubscriptionsByProduct(product.getId()).size());
-            //productJson.addProperty("Amount", productService.getSubscriptionsByProduct(product.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
+            productJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByProduct(product.getId()).size());
+            productJson.addProperty("Amount", subscriptionService.getSubscriptionsByProduct(product.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
             subscriptionsByProduct.add(product.getId().toString(), productJson);
         });
         return subscriptionsByProduct;
@@ -41,8 +41,8 @@ public class DashboardServiceImpl implements DashboardService{
             JsonObject productCategoryJson = new JsonObject();
             productCategoryJson.addProperty("name", productCategory.getName());
             productCategoryJson.addProperty("productCategoryName", productCategory.getName());
-            productCategoryJson.addProperty("subscriptionCount", productCategoryService.getSubscriptionsByCategory(productCategory.getId()).size());
-            productCategoryJson.addProperty("Amount", productCategoryService.getSubscriptionsByCategory(productCategory.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
+            productCategoryJson.addProperty("subscriptionCount", subscriptionService.getSubscriptionsByCategory(productCategory.getId()).size());
+            productCategoryJson.addProperty("Amount", subscriptionService.getSubscriptionsByCategory(productCategory.getId()).stream().mapToDouble(SubscriptionDTO::getNetAmount).sum());
             subscriptionsByCategory.add(productCategory.getId().toString(), productCategoryJson);
         });
 

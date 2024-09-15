@@ -97,9 +97,4 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
                 .map(productCategory -> mapper.map(productCategory, ProductCategoryDTO.class))
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public List<SubscriptionDTO> getSubscriptionsByCategory(Long productCategoryId) {
-        return subscriptionService.getSubscriptionsByCategory(productCategoryId);
-    }
 }

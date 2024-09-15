@@ -12,5 +12,4 @@ public interface ProductCategoryService {
     ProductCategoryDTO updateProductCategory(Long id, ProductCategoryDTO productCategoryDTO);
     Map<String, String> deleteProductCategory(Long productCategoryId);
     List<ProductCategoryDTO> searchProductCategories(String keyword);
-    List<SubscriptionDTO> getSubscriptionsByCategory(Long productCategoryId);
 }
