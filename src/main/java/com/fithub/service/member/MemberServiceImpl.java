@@ -78,7 +78,9 @@ public class MemberServiceImpl implements MemberService{
 
     // Update Member
     public MemberDTO updateMember(Long id, MemberDTO membershipDTO) {
-        Member member = memberRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Member not found")
+        );
         if(member.getId() > 0) {
             if(membershipDTO.getIdentificationNumber() != null && !membershipDTO.getIdentificationNumber().isEmpty()){
                 member.setIdentificationNumber(membershipDTO.getIdentificationNumber());
@@ -101,8 +103,9 @@ public class MemberServiceImpl implements MemberService{
 
             memberRepository.save(member);
             return mapper.map(member, MemberDTO.class);
+        } else {
+            throw new ResourceNotFoundException("Member not found");
         }
-        return null;
     }
 
     // Delete Member
