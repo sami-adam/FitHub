@@ -205,7 +205,11 @@ public class MemberServiceImpl implements MemberService{
                         // Send Notification
                         String title = "Dear " + member.getFirstName() + " " + member.getLastName() + ", your subscription" + currentSubscription.getReference() + " is expiring soon";
                         String message = "Our valued member, your subscription " + currentSubscription.getReference() + " is expiring on " + currentSubscription.getEndDate();
-                        notificationService.sendNotification(userDTO, title, message);
+                        try {
+                            notificationService.sendNotification(userDTO, title, message);
+                        } catch (ResourceNotFoundException e) {
+                            continue;
+                        }
                     } else {
                         member.setStatus(MemberStatus.ACTIVE);
                     }
@@ -214,14 +218,22 @@ public class MemberServiceImpl implements MemberService{
                     // Send Notification
                     String title = "Dear " + member.getFirstName() + " " + member.getLastName() + ", your subscription has expired";
                     String message = "Our valued member, your subscription has expired. Please renew your subscription to continue enjoying our services";
-                    notificationService.sendNotification(userDTO, title, message);
+                    try {
+                        notificationService.sendNotification(userDTO, title, message);
+                    } catch (ResourceNotFoundException e) {
+                        continue;
+                    }
                 }
             } else {
                 member.setStatus(MemberStatus.NEW);
                 // Send Notification
                 String title = "Welcome " + member.getFirstName() + " " + member.getLastName();
                 String message = "Our valued member, welcome to our platform. Please subscribe to enjoy our services";
-                notificationService.sendNotification(userDTO, title, message);
+                try {
+                    notificationService.sendNotification(userDTO, title, message);
+                } catch (ResourceNotFoundException e) {
+                    continue;
+                }
             }
             memberRepository.save(member);
         }
