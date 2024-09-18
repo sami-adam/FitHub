@@ -33,7 +33,7 @@ public class Notification {
     private boolean read;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @PostPersist
