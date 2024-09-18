@@ -1,6 +1,7 @@
 package com.fithub.service.base;
 
 import com.fithub.dto.base.NotificationDTO;
+import com.fithub.dto.user.UserDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.base.Notification;
 import com.fithub.repository.base.NotificationRepository;
@@ -70,6 +71,18 @@ public class NotificationServiceImpl implements NotificationService{
                 () -> new ResourceNotFoundException("Notification not found with id: " + id));
         notification.setRead(false);
         return mapper.map(notificationRepository.save(notification), NotificationDTO.class);
+    }
+
+    @Override
+    public void sendNotification(UserDTO userDTO, String title, String message) {
+        List<NotificationDTO> sentNotifications = findByTitle(title);
+        if(sentNotifications.isEmpty()) {
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setUser(userDTO);
+            notificationDTO.setTitle(title);
+            notificationDTO.setMessage(message);
+            addNotification(notificationDTO);
+        }
     }
 
     @Override

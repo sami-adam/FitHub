@@ -12,6 +12,7 @@ import com.fithub.model.member.MemberStatus;
 import com.fithub.model.subscription.Subscription;
 import com.fithub.model.user.User;
 import com.fithub.repository.member.MemberRepository;
+import com.fithub.service.base.NotificationService;
 import com.fithub.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ import java.util.logging.Logger;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final UserService userService;
+    private final NotificationService notificationService;
     private final ModelMapper mapper;
 
     private final Logger logger = Logger.getLogger(MemberServiceImpl.class.getName());
@@ -40,9 +42,10 @@ public class MemberServiceImpl implements MemberService{
     private SecurityContextGenerator securityContextGenerator;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository, UserService userService){
+    public MemberServiceImpl(MemberRepository memberRepository, UserService userService, NotificationService notificationService) {
         this.memberRepository = memberRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
         this.mapper = new ModelMapper();
     }
 
@@ -187,6 +190,7 @@ public class MemberServiceImpl implements MemberService{
         logger.info("Checking member status");
         List<Member> members = memberRepository.findAll();
         for(Member member: members){
+            UserDTO userDTO = userService.getUserByEmail(member.getEmail());
             List<Subscription> subscriptions = member.getSubscriptions().stream().toList();
             if(!subscriptions.isEmpty()){
                 List<Subscription> currentSubscriptions = subscriptions.stream().filter(subscription -> subscription.getEndDate().after(new Date(System.currentTimeMillis()))).toList();
@@ -195,14 +199,26 @@ public class MemberServiceImpl implements MemberService{
                     Subscription currentSubscription = currentSubscriptions.stream().max((s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate())).orElseThrow();
                     if(currentSubscription.getEndDate().before(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7 * 2))){
                         member.setStatus(MemberStatus.EXPIRING);
+                        // Send Notification
+                        String title = "Dear " + member.getFirstName() + " " + member.getLastName() + ", your subscription" + currentSubscription.getReference() + " is expiring soon";
+                        String message = "Our valued member, your subscription " + currentSubscription.getReference() + " is expiring on " + currentSubscription.getEndDate();
+                        notificationService.sendNotification(userDTO, title, message);
                     } else {
                         member.setStatus(MemberStatus.ACTIVE);
                     }
                 } else {
                     member.setStatus(MemberStatus.EXPIRED);
+                    // Send Notification
+                    String title = "Dear " + member.getFirstName() + " " + member.getLastName() + ", your subscription has expired";
+                    String message = "Our valued member, your subscription has expired. Please renew your subscription to continue enjoying our services";
+                    notificationService.sendNotification(userDTO, title, message);
                 }
             } else {
                 member.setStatus(MemberStatus.NEW);
+                // Send Notification
+                String title = "Welcome " + member.getFirstName() + " " + member.getLastName();
+                String message = "Our valued member, welcome to our platform. Please subscribe to enjoy our services";
+                notificationService.sendNotification(userDTO, title, message);
             }
             memberRepository.save(member);
         }

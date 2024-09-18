@@ -10,6 +10,7 @@ import com.fithub.dto.employee.EmployeeDTO;
 import com.fithub.dto.member.MemberDTO;
 import com.fithub.dto.product.ProductDTO;
 import com.fithub.dto.subscription.SubscriptionDTO;
+import com.fithub.dto.user.UserDTO;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Entry;
 import com.fithub.model.accounting.Transaction;
@@ -256,14 +257,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 subscription.setStatus(SubscriptionStatus.EXPIRED);
                 subscriptionRepository.save(subscription);
                 // Send Notification
-                List<NotificationDTO> sentNotifications = notificationService.findByTitle(subscription.getReference() + " has expired");
-                if(sentNotifications.isEmpty()) {
-                    NotificationDTO notificationDTO = new NotificationDTO();
-                    notificationDTO.setUser(usersService.getUserByEmail(adminEmail));
-                    notificationDTO.setTitle(subscription.getReference() + " has expired!");
-                    notificationDTO.setMessage("Subscription has expired. Please inform " + subscription.getMember().getFirstName() + " " + subscription.getMember().getLastName() + " to renew their subscription");
-                    notificationService.addNotification(notificationDTO);
-                }
+                String title = subscription.getReference() + " has expired!";
+                String message = "Subscription has expired. Please inform " + subscription.getMember().getFirstName() + " " + subscription.getMember().getLastName() + " to renew their subscription";
+                UserDTO admin = usersService.getUserByEmail(adminEmail);
+                notificationService.sendNotification(admin, title, message);
+
             }
             if(new Date(System.currentTimeMillis()).after(subscription.getStartDate()) && new Date(System.currentTimeMillis()).before(subscription.getEndDate())){
                 subscription.setStatus(SubscriptionStatus.ACTIVE);

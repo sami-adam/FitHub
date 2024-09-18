@@ -1,6 +1,7 @@
 package com.fithub.service.base;
 
 import com.fithub.dto.base.NotificationDTO;
+import com.fithub.dto.user.UserDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ public interface NotificationService {
     Map<String, String> deleteNotification(Long id);
     NotificationDTO markNotificationAsRead(Long id);
     NotificationDTO markNotificationAsUnread(Long id);
+    void sendNotification(UserDTO userDTO, String title, String message);
     List<NotificationDTO> findByTitle(String title);
     List<NotificationDTO> findByMessage(String message);
 }
