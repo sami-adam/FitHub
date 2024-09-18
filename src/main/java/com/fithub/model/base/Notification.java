@@ -27,7 +27,7 @@ public class Notification {
     private String message;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private boolean read;

@@ -4,6 +4,7 @@ import com.fithub.dto.accounting.AccountDTO;
 import com.fithub.dto.accounting.EntryDTO;
 import com.fithub.dto.accounting.JournalDTO;
 import com.fithub.dto.accounting.TransactionDTO;
+import com.fithub.dto.base.NotificationDTO;
 import com.fithub.dto.base.TaxDTO;
 import com.fithub.dto.employee.EmployeeDTO;
 import com.fithub.dto.member.MemberDTO;
@@ -18,12 +19,10 @@ import com.fithub.model.member.Member;
 import com.fithub.model.product.Product;
 import com.fithub.model.subscription.Subscription;
 import com.fithub.model.subscription.SubscriptionStatus;
-import com.fithub.repository.base.TaxRepository;
-import com.fithub.repository.member.MemberRepository;
-import com.fithub.repository.product.ProductRepository;
 import com.fithub.repository.subscription.SubscriptionRepository;
 import com.fithub.service.accounting.JournalService;
 import com.fithub.service.accounting.TransactionService;
+import com.fithub.service.base.NotificationService;
 import com.fithub.service.base.TaxService;
 import com.fithub.service.employee.EmployeeService;
 import com.fithub.service.member.MemberService;
@@ -34,6 +33,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,6 +60,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final TransactionService transactionService;
     private final JournalService journalService;
     private final EmployeeService employeeService;
+    private final NotificationService notificationService;
     private final Logger logger = Logger.getLogger(SubscriptionServiceImpl.class.getName());
     private final ModelMapper mapper = new ModelMapper();
 
@@ -69,6 +70,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     private JWTService jwtUtil;
 
+    @Value("${admin-email}")
+    String adminEmail;
     // Get All Memberships
     public Page<SubscriptionDTO> getSubscriptions(Pageable pageable){
         return subscriptionRepository.findAll(pageable).map(subscription -> mapper.map(subscription, SubscriptionDTO.class));
@@ -252,6 +255,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             if(subscription.getEndDate().before(new Date(System.currentTimeMillis()))){
                 subscription.setStatus(SubscriptionStatus.EXPIRED);
                 subscriptionRepository.save(subscription);
+                // Send Notification
+                List<NotificationDTO> sentNotifications = notificationService.findByTitle(subscription.getReference() + " has expired");
+                if(sentNotifications.isEmpty()) {
+                    NotificationDTO notificationDTO = new NotificationDTO();
+                    notificationDTO.setUser(usersService.getUserByEmail(adminEmail));
+                    notificationDTO.setTitle(subscription.getReference() + " has expired!");
+                    notificationDTO.setMessage("Subscription has expired. Please inform " + subscription.getMember().getFirstName() + " " + subscription.getMember().getLastName() + " to renew their subscription");
+                    notificationService.addNotification(notificationDTO);
+                }
             }
             if(new Date(System.currentTimeMillis()).after(subscription.getStartDate()) && new Date(System.currentTimeMillis()).before(subscription.getEndDate())){
                 subscription.setStatus(SubscriptionStatus.ACTIVE);

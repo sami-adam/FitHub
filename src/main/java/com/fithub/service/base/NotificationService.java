@@ -14,4 +14,6 @@ public interface NotificationService {
     Map<String, String> deleteNotification(Long id);
     NotificationDTO markNotificationAsRead(Long id);
     NotificationDTO markNotificationAsUnread(Long id);
+    List<NotificationDTO> findByTitle(String title);
+    List<NotificationDTO> findByMessage(String message);
 }

@@ -71,4 +71,18 @@ public class NotificationServiceImpl implements NotificationService{
         notification.setRead(false);
         return mapper.map(notificationRepository.save(notification), NotificationDTO.class);
     }
+
+    @Override
+    public List<NotificationDTO> findByTitle(String title) {
+        return notificationRepository.findByTitle(title).stream()
+                .map(notification -> mapper.map(notification, NotificationDTO.class))
+                .toList();
+    }
+
+    @Override
+    public List<NotificationDTO> findByMessage(String message) {
+        return notificationRepository.findByMessage(message).stream()
+                .map(notification -> mapper.map(notification, NotificationDTO.class))
+                .toList();
+    }
 }

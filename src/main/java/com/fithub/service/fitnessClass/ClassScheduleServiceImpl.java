@@ -101,8 +101,11 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
             if(memberDTO != null) {
                 memberId = memberDTO.getId();
             }else {
-                return null;
+                throw new ResourceNotFoundException("Member not found");
             }
+        }
+        if(memberId == null) {
+            throw new BadRequestException("Member ID is required");
         }
         MemberDTO member = memberService.getMember(memberId);
         ClassScheduleDTO classSchedule = getFitnessClassSchedule(classScheduleId);

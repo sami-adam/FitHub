@@ -11,4 +11,6 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByUserIdAndReadIsFalse(Long user_id);
     List<Notification> findByUserId(Long userId);
+    List<Notification> findByTitle(String title);
+    List<Notification> findByMessage(String message);
 }
