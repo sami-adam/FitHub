@@ -75,6 +75,9 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public void sendNotification(UserDTO userDTO, String title, String message) {
+        if(userDTO == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
         List<NotificationDTO> sentNotifications = findByTitle(title);
         if(sentNotifications.isEmpty()) {
             NotificationDTO notificationDTO = new NotificationDTO();
