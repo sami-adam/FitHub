@@ -7,6 +7,8 @@ import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.repository.accounting.AccountRepository;
 import com.fithub.service.odoo.OdooService;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.transaction.Transactional;
@@ -124,7 +126,8 @@ public class AccountServiceImpl implements AccountService{
             odooService.authenticate(odooUrl, odooDb, odooLogin, odooPassword);
             String response = odooService.getRecords(odooUrl, "account.account", new String[]{"code", "name", "account_type"});
             JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
-            jsonObject.get("result").getAsJsonArray().forEach(jsonElement -> {
+            JsonArray accounts = jsonObject.get("result").getAsJsonArray();
+            for(JsonElement jsonElement : accounts){
                 JsonObject accountJson = jsonElement.getAsJsonObject();
                 String code = accountJson.get("code").getAsString();
                 String name = accountJson.get("name").getAsString();
@@ -141,19 +144,19 @@ public class AccountServiceImpl implements AccountService{
                         logger.error("Invalid account type: " + type);
                     }
                 }
-            });
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
-    @Transactional
+    //@Transactional
     @Scheduled(fixedRate = 1000 * 60 * 30) // Adjust the fixedRate as needed
     public void performTask() {
         SecurityContext context = securityContextGenerator.createSecurityContext();
         try {
-            //syncAccounts(context);
-            System.out.println("Syncing accounts with Odoo");
+            syncAccounts(context);
+            //System.out.println("Syncing accounts with Odoo");
         } finally {
             //context.setAuthentication(null);
         }
