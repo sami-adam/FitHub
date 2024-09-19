@@ -1,13 +1,22 @@
 package com.fithub.service.accounting;
 
+import com.fithub.config.SecurityContextGenerator;
 import com.fithub.dto.accounting.AccountDTO;
 import com.fithub.exception.DuplicateException;
 import com.fithub.exception.ResourceNotFoundException;
 import com.fithub.model.accounting.Account;
 import com.fithub.repository.accounting.AccountRepository;
+import com.fithub.service.odoo.OdooService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +28,20 @@ import java.util.Map;
 public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
     private final ModelMapper mapper = new ModelMapper();
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(AccountServiceImpl.class);
+
+    @Autowired
+    private SecurityContextGenerator securityContextGenerator;
+    // Odoo Properties
+    @Value("${odoo.url}")
+    private String odooUrl;
+    @Value("${odoo.db}")
+    private String odooDb;
+    @Value("${odoo.username}")
+    private String odooLogin;
+    @Value("${odoo.password}")
+    private String odooPassword;
+    private final OdooService odooService;
 
     @Override
     public AccountDTO addAccount(AccountDTO accountDTO) {
@@ -92,5 +115,46 @@ public class AccountServiceImpl implements AccountService{
         }
         return accountRepository.findByCodeContainingIgnoreCaseOrNameContainingIgnoreCaseOrTypeEquals(keyword, keyword, type)
                 .stream().map(account -> mapper.map(account, AccountDTO.class)).toList();
+    }
+
+    // Odoo Integration
+    void syncAccounts(SecurityContext context){
+        logger.info("Syncing accounts with Odoo");
+        try {
+            odooService.authenticate(odooUrl, odooDb, odooLogin, odooPassword);
+            String response = odooService.getRecords(odooUrl, "account.account", new String[]{"code", "name", "account_type"});
+            JsonObject jsonObject = JsonParser.parseString(response).getAsJsonObject();
+            jsonObject.get("result").getAsJsonArray().forEach(jsonElement -> {
+                JsonObject accountJson = jsonElement.getAsJsonObject();
+                String code = accountJson.get("code").getAsString();
+                String name = accountJson.get("name").getAsString();
+                String type = accountJson.get("account_type").getAsString();
+                List<Account> existingAccounts = accountRepository.findByCode(code);
+                if(existingAccounts.isEmpty()) {
+                    Account account = new Account();
+                    account.setCode(code);
+                    account.setName(name);
+                    try {
+                        account.setType(Account.Type.valueOf(type.toUpperCase()));
+                        accountRepository.save(account);
+                    } catch (IllegalArgumentException e) {
+                        logger.error("Invalid account type: " + type);
+                    }
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Transactional
+    @Scheduled(fixedRate = 1000 * 60 * 30) // Adjust the fixedRate as needed
+    public void performTask() {
+        SecurityContext context = securityContextGenerator.createSecurityContext();
+        try {
+            syncAccounts(context);
+        } finally {
+            //context.setAuthentication(null);
+        }
     }
 }
