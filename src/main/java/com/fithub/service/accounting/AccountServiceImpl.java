@@ -152,7 +152,8 @@ public class AccountServiceImpl implements AccountService{
     public void performTask() {
         SecurityContext context = securityContextGenerator.createSecurityContext();
         try {
-            syncAccounts(context);
+            //syncAccounts(context);
+            System.out.println("Syncing accounts with Odoo");
         } finally {
             //context.setAuthentication(null);
         }
