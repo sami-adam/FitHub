@@ -101,6 +101,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public List<AccountDTO> getAccountsByCode(String code) {
+        return accountRepository.findByCode(code).stream().map(account -> mapper.map(account, AccountDTO.class)).toList();
+    }
+
+    @Override
     public Map<String, String> deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found with id: " + id));
         accountRepository.delete(account);

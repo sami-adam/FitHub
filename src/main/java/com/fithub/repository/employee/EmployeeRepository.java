@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> searchByIdentificationNumberContainingIgnoreCaseOrNameContainsIgnoreCaseOrEmailContaining(String identificationNumber, String name, String email);
+    List<Employee> findByEmail(String email);
 }

@@ -4,7 +4,6 @@ import com.fithub.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,16 +37,16 @@ public class Transaction extends BaseEntity {
         DRAFT, POSTED, CANCELLED
     }
 
-    @PostPersist
-    public void postPersist() {
-        reference = "TRX" + String.format("%06d", id);
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        if(reference == null) {
-            reference = "TRX" + String.format("%06d", id);
-        }
-    }
+//    @PostPersist
+//    public void postPersist() {
+//        reference = "TRX" + String.format("%06d", id);
+//    }
+//
+//    @PreUpdate
+//    public void preUpdate() {
+//        if(reference == null) {
+//            reference = "TRX" + String.format("%06d", id);
+//        }
+//    }
 }
 

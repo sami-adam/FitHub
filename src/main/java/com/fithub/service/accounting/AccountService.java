@@ -15,4 +15,5 @@ public interface AccountService {
     List<AccountDTO> searchAccounts(String keyword);
     AccountDTO creditAccount(Long id, BigDecimal amount);
     AccountDTO debitAccount(Long id, BigDecimal amount);
+    List<AccountDTO> getAccountsByCode(String code);
 }

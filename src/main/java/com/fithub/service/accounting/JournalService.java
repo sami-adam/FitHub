@@ -1,6 +1,7 @@
 package com.fithub.service.accounting;
 
 import com.fithub.dto.accounting.JournalDTO;
+import com.fithub.model.accounting.Journal;
 
 import java.util.List;
 import java.util.Map;
@@ -12,4 +13,5 @@ public interface JournalService {
     JournalDTO updateJournal(Long id, JournalDTO journalDTO);
     Map<String, String> deleteJournal(Long id);
     List<JournalDTO> searchJournals(String keyword);
+    List<JournalDTO> getJournalsByCode(String code);
 }
