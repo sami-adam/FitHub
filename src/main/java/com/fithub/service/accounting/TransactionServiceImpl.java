@@ -202,10 +202,10 @@ public class TransactionServiceImpl implements TransactionService{
                 Transaction transaction = new Transaction();
                 transaction.setReference(name);
                 transaction.setDescription("Odoo Transaction" + name);
-                logger.info("Journal Code: " + journalCode);
                 transaction.setJournal(mapper.map(journalService.getJournalsByCode(journalCode).getFirst(), Journal.class));
                 transaction.setEntries(entries);
                 transaction.setTimestamp(convertToLocalDateTime(invoiceDate));
+                transaction.setStatus(Transaction.Status.POSTED);
                 addTransaction(mapper.map(transaction, TransactionDTO.class));
             }
         }
