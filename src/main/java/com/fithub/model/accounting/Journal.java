@@ -31,6 +31,6 @@ public class Journal extends BaseEntity {
 
 
     public enum Type {
-        SALES, PURCHASE, CASH, BANK, GENERAL
+        SALE, PURCHASE, CASH, BANK, GENERAL
     }
 }
